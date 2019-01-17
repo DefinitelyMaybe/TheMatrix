@@ -5,11 +5,36 @@ let x = math.matrix([[1,0],[0,1]])
 console.log(x);
 console.log(x.toString());
 
+vueData = {
+  message: 'hello world',
+  // An array of objects which describe all the matrices
+  matrices: [
+    {
+      id: "test1",
+      entries: [[1,2,3],[4,5,6],[7,8,9]]
+    },
+    {
+      id : "test2",
+      entries: [[1,1,1],[1,1,1],[1,1,1]]
+    },
+    {
+      id : "test3"
+    }
+  ]
+}
+
 const TheMatrix = new Vue({
   el: '#TheMatrix',
-  data: {
-    message: 'hello world'
-  }
+  data: function () {
+    return vueData
+  },
+  template: `<div><p>{{message}}</p>
+  <math-matrix v-for="(matrix, index) in matrices"
+  v-bind:key="index"
+  v-bind:id="matrix.id"
+  v-bind:initEntries="matrix.entries">
+  </math-matrix>
+</div>`
 })
 
 /*
