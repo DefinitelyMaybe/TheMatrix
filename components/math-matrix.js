@@ -9,12 +9,9 @@ Vue.component("math-matrix", {
       position: [0,0],
       styleObj: {
         position: 'absolute',
-        // we can either orientate things from the bottom left, or the top right.
-        // that or centre everything?
         left: `0px`,
-        bottom: `0px`,
+        top: `0px`,
       }
-      //shouldUpdate: false
     }
   },
   created: function () {
@@ -24,7 +21,7 @@ Vue.component("math-matrix", {
     if (this.initPosition) {
       this.position = this.initPosition
       this.styleObj.left = `${this.initPosition[0]}px`
-      this.styleObj.bottom   = `${this.initPosition[1]}px`
+      this.styleObj.top   = `${this.initPosition[1]}px`
     }
   },
   methods: {

@@ -14,6 +14,7 @@ mainData = {
     },
     {
       id : "test2",
+      position: [50, 50],
       entries: [[1,1,1],[1,1,1],[1,1,1]]
     },
     {
@@ -26,7 +27,7 @@ function createMatrix(event) {
   //console.log(event);
   mainData.matrices.push({
     id:"testing",
-    position: [100, 100],
+    position: [event.x, event.y],
     entries: [[5,5,5],[4,4,4],[3,2,1]]
   })
 }
@@ -41,7 +42,7 @@ const TheMatrix = new Vue({
       // 
     }
   },
-  template: `<div><p>{{message}}</p>
+  template: `<div>
   <math-matrix v-for="(matrix, index) in matrices"
   v-bind:key="index"
   v-bind:id="matrix.id"
