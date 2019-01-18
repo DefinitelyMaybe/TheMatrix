@@ -24,12 +24,7 @@ mainData = {
 }
 
 function createMatrix(event) {
-  //console.log(event);
-  mainData.matrices.push({
-    id:"testing",
-    position: [event.x, event.y],
-    entries: [[5,5,5],[4,4,4],[3,2,1]]
-  })
+  
 }
 
 const TheMatrix = new Vue({
@@ -38,11 +33,16 @@ const TheMatrix = new Vue({
     return mainData
   },
   methods: {
-    createMatrix: function () {
-      // 
+    createMatrix: function (event) {
+      console.log(event);
+      mainData.matrices.push({
+        id:"testing",
+        position: [event.x, event.y],
+        entries: [[5,5,5],[4,4,4],[3,2,1]]
+      })
     }
   },
-  template: `<div>
+  template: `<div v-on:click="createMatrix">
   <math-matrix v-for="(matrix, index) in matrices"
   v-bind:key="index"
   v-bind:id="matrix.id"
@@ -59,5 +59,3 @@ window.onload = function () {
   console.log("hello again, again");
   //mainData.matrices.push({id:"test4",entries:[[3,3],[2,1]]})
 }
-
-document.onclick = createMatrix

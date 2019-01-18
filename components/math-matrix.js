@@ -1,7 +1,8 @@
 Vue.component("math-matrix", {
   props: {
     initEntries: Array,
-    initPosition: Array
+    initPosition: Array,
+    needsUpdate: Boolean
   },
   data: function () {
     return {
@@ -25,27 +26,34 @@ Vue.component("math-matrix", {
     }
   },
   methods: {
-    newEntry: function () {
+    newEntry: function (row, col, value) {
       try {
-        this.entries[i][j] = value
-        //this.shouldUpdate = true
+        this.entries[row][col] = value
       } catch (error) {
         console.log(error);
       }
+    },
+    getInputForEntry: function (event) {
+      //console.log(event);
+      let currentNumber = event.target.innerText
+      let newNumber = prompt("Change the number?", currentNumber)
+      if (currentNumber != newNumber) {
+        let row = parseInt(event.target.attributes["row"].value)
+        let col = parseInt(event.target.attributes["col"].value)
+        console.log("Row and Col clicked");
+        console.log([row, col]);
+        this.newEntry(row, col, parseFloat(newNumber))
+        this.needsUpdate = true
+      }
     }
   },
-  computed: {
-    generateTemplate: function () {
-      return `<table v-bind:style="styleObj">
-      <tr v-for="(row, i) in entries">
-        <td v-for="(item, j) in row"> {{ entries[i][j] }} </td>
-      </tr>
-    </table>`
-    }
-  },
-  template: `<table v-bind:style="styleObj">
+  template: `<table v-bind:style="styleObj"
+  v-if>
   <tr v-for="(row, i) in entries">
-    <td v-for="(item, j) in row"> {{ entries[i][j] }} </td>
+    <td v-for="(item, j) in row" 
+    v-bind:row="i"
+    v-bind:col="j"
+    v-on:click.stop="getInputForEntry">{{ entries[i][j] }}</td>
   </tr>
 </table>`,
 })
