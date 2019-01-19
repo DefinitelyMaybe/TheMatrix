@@ -1,8 +1,7 @@
 Vue.component("math-matrix", {
   props: {
     initEntries: Array,
-    initPosition: Array,
-    needsUpdate: Boolean
+    initPosition: Array
   },
   data: function () {
     return {
@@ -17,18 +16,20 @@ Vue.component("math-matrix", {
   },
   created: function () {
     if (this.initEntries) {
-      this.entries = this.initEntries 
+      this.entries = this.initEntries.slice()
     }
     if (this.initPosition) {
-      this.position = this.initPosition
-      this.styleObj.left = `${this.initPosition[0]}px`
-      this.styleObj.top   = `${this.initPosition[1]}px`
+      this.position = this.initPosition.slice()
+      this.styleObj.left = `${this.position[0]}px`
+      this.styleObj.top   = `${this.position[1]}px`
     }
   },
   methods: {
     newEntry: function (row, col, value) {
       try {
-        this.entries[row][col] = value
+        let newRow = this.entries[row]
+        newRow[col] = value
+        this.entries.splice(row, 1, newRow)
       } catch (error) {
         console.log(error);
       }
@@ -37,13 +38,11 @@ Vue.component("math-matrix", {
       //console.log(event);
       let currentNumber = event.target.innerText
       let newNumber = prompt("Change the number?", currentNumber)
-      if (currentNumber != newNumber) {
+      if (newNumber && currentNumber != newNumber) {
         let row = parseInt(event.target.attributes["row"].value)
         let col = parseInt(event.target.attributes["col"].value)
-        console.log("Row and Col clicked");
-        console.log([row, col]);
-        this.newEntry(row, col, parseFloat(newNumber))
-        this.needsUpdate = true
+        
+        this.newEntry(row, col, newNumber)
       }
     }
   },

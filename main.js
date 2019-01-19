@@ -23,10 +23,6 @@ mainData = {
   ]
 }
 
-function createMatrix(event) {
-  
-}
-
 const TheMatrix = new Vue({
   el: '#TheMatrix',
   data: function () {
@@ -34,7 +30,7 @@ const TheMatrix = new Vue({
   },
   methods: {
     createMatrix: function (event) {
-      console.log(event);
+      //console.log(event);
       mainData.matrices.push({
         id:"testing",
         position: [event.x, event.y],
