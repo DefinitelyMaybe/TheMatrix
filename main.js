@@ -5,6 +5,7 @@
 
 mainData = {
   message: 'hello world',
+  selectedObj: null,
   // An array of objects which describe all the matrices
   matrices: [
     {
@@ -38,27 +39,39 @@ const TheMatrix = new Vue({
     return mainData
   },
   methods: {
-    createMatrix: function (event) {
+    createObj: function (event, obj) {
+      console.log(`trying to create a ${obj}`);
+      // First check if 
+      switch (obj) {
+        case 'matrix':
+          mainData.matrices.push({
+            id:"testing",
+            position: [event.x, event.y],
+            entries: [[5,5,5],[4,4,4],[3,2,1]]
+          })
+          break;
+        default:
+          console.log("default case when creating obj.")
+          break;
+      }
       //console.log(event);
-      mainData.matrices.push({
-        id:"testing",
-        position: [event.x, event.y],
-        entries: [[5,5,5],[4,4,4],[3,2,1]]
-      })
+      
     },
-    onDrop: function (event) {
-      console.log("main.js");
+    selectObj: function (event) {
+      console.log("select obb function called");
+      console.log(id);
       console.log(event);
     }
   },
-  template: `<div ondragover="event.preventDefault()" dragend="onDrop"
-  v-on:click="createMatrix"
+  template: `<div ondragover="event.preventDefault()"
+  v-on:click.self="createObj($event, 'matrix')"
   v-bind:style=styleObj>
     <math-matrix v-for="(matrix, index) in matrices"
     v-bind:key="index"
     v-bind:id="matrix.id"
     v-bind:initEntries="matrix.entries"
-    v-bind:initPosition="matrix.position">
+    v-bind:initPosition="matrix.position"
+    v-on:click.self="selectObj">
     </math-matrix>
 </div>`
 })

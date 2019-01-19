@@ -9,8 +9,16 @@ body {
   margin: 0px;
 }
 
+td {
+  text-align: center;
+}
+
 .matrix {
   border-radius: 10px;
   border-left: 2px solid rgb(0, 0, 0);
   border-right: 2px solid rgb(0, 0, 0);
+}
+
+.matrix .selected {
+  background: rgb(170, 170, 170)
 }
