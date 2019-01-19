@@ -1,5 +1,16 @@
+html {
+  height: 100%;
+}
+
 body {
   background: rgb(146, 146, 146);
+  height: 100%;
   overflow: hidden;
   margin: 0px;
+}
+
+.matrix {
+  border-radius: 10px;
+  border-left: 2px solid rgb(0, 0, 0);
+  border-right: 2px solid rgb(0, 0, 0);
 }

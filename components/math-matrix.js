@@ -6,12 +6,16 @@ Vue.component("math-matrix", {
   data: function () {
     return {
       entries: [[1,0,0],[0,1,0],[0,0,1]],
-      position: [0,0],
+      x: 0,
+      y: 0,
+      dragOffsetX: 0,
+      dragOffsetY: 0,
       styleObj: {
         position: 'absolute',
         left: `0px`,
         top: `0px`,
-      }
+      },
+      selected: false,
     }
   },
   created: function () {
@@ -19,9 +23,8 @@ Vue.component("math-matrix", {
       this.entries = this.initEntries.slice()
     }
     if (this.initPosition) {
-      this.position = this.initPosition.slice()
-      this.styleObj.left = `${this.position[0]}px`
-      this.styleObj.top   = `${this.position[1]}px`
+      this.styleObj.left = `${this.initPosition[0]}px`
+      this.styleObj.top   = `${this.initPosition[1]}px`
     }
   },
   methods: {
@@ -44,10 +47,23 @@ Vue.component("math-matrix", {
         
         this.newEntry(row, col, newNumber)
       }
+    },
+    onDragStart: function (event) {
+      console.log("matrix.js");
+      console.log(event);
     }
   },
-  template: `<table v-bind:style="styleObj"
-  v-if>
+  computed: {
+    classObj: function () {
+      return {
+        matrix: true,
+        selected: this.selected
+      }
+    }
+  },
+  template: `<table draggable="true" v-on:ondragstart="onDragStart"
+  v-bind:style="styleObj"
+  v-bind:class=classObj>
   <tr v-for="(row, i) in entries">
     <td v-for="(item, j) in row" 
     v-bind:row="i"

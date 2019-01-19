@@ -18,9 +18,18 @@ mainData = {
       entries: [[1,1,1],[1,1,1],[1,1,1]]
     },
     {
-      id : "test3"
+      id : "test3",
+      entries: [[3,4],[2,1]]
+    },
+    {
+      id : "test3",
+      position: [400, 400],
     }
-  ]
+  ],
+  styleObj: {
+    width: '100%',
+    height: '100%'
+  }
 }
 
 const TheMatrix = new Vue({
@@ -36,15 +45,21 @@ const TheMatrix = new Vue({
         position: [event.x, event.y],
         entries: [[5,5,5],[4,4,4],[3,2,1]]
       })
+    },
+    onDrop: function (event) {
+      console.log("main.js");
+      console.log(event);
     }
   },
-  template: `<div v-on:click="createMatrix">
-  <math-matrix v-for="(matrix, index) in matrices"
-  v-bind:key="index"
-  v-bind:id="matrix.id"
-  v-bind:initEntries="matrix.entries"
-  v-bind:initPosition="matrix.position">
-  </math-matrix>
+  template: `<div ondragover="event.preventDefault()" dragend="onDrop"
+  v-on:click="createMatrix"
+  v-bind:style=styleObj>
+    <math-matrix v-for="(matrix, index) in matrices"
+    v-bind:key="index"
+    v-bind:id="matrix.id"
+    v-bind:initEntries="matrix.entries"
+    v-bind:initPosition="matrix.position">
+    </math-matrix>
 </div>`
 })
 
@@ -52,6 +67,5 @@ const TheMatrix = new Vue({
 //console.log(TheMatrix.$refs);
 
 window.onload = function () {
-  console.log("hello again, again");
-  //mainData.matrices.push({id:"test4",entries:[[3,3],[2,1]]})
+  //console.log("hello again, again");
 }
