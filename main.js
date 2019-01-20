@@ -35,9 +35,7 @@ mainData = {
 
 const TheMatrix = new Vue({
   el: '#TheMatrix',
-  data: function () {
-    return mainData
-  },
+  data: mainData,
   methods: {
     createObj: function (event, obj) {
       console.log(`trying to create a ${obj}`);
@@ -85,6 +83,7 @@ const TheMatrix = new Vue({
     }
   },
   template: `<div ondragover="event.preventDefault()"
+  v-on:test="console.log('hello world')"
   v-on:click.self="createObj($event, 'matrix')"
   v-bind:style=styleObj>
     <math-matrix v-for="(matrix, index) in matrices"

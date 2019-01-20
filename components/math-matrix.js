@@ -31,7 +31,8 @@ Vue.component("math-matrix", {
         let newRow = this.entries[row]
         newRow[col] = value
         this.entries.splice(row, 1, newRow)
-        this.$emit('selectObj')
+        console.log(this);
+        //this.$root.$emit('test');
       } catch (error) {
         console.log('New entry error:');
         console.log(error);
@@ -40,7 +41,7 @@ Vue.component("math-matrix", {
     getInputForEntry: function (event) {
       //console.log(event);
       // select the matrix before getting input from user
-      this.$emit('selectObj')
+      //this.$emit('test-func')
       let currentNumber = event.target.innerText
       let newNumber = prompt("Change the number?", currentNumber)
       if (newNumber && currentNumber != newNumber) {
@@ -53,8 +54,11 @@ Vue.component("math-matrix", {
     onDragEnd: function (event) {
       //console.log("onDragEnd function says...");
       //console.log(event);
-      this.styleObj.left = `${event.x - this.dragOffsetX}px`
-      this.styleObj.top   = `${event.y - this.dragOffsetY}px`
+      let x = event.x - this.dragOffsetX
+      let y = event.y - this.dragOffsetY
+      //this.$emit('test-func', [x, y])
+      this.styleObj.left = `${x}px`
+      this.styleObj.top   = `${y}px`
     },
     onDragStart: function (event) {
       //console.log("onDragStart function says...");
@@ -71,7 +75,7 @@ Vue.component("math-matrix", {
       }
     }
   },
-  template: `<table draggable="true" 
+  template: `<table draggable="true"
   v-on:dragend="onDragEnd"
   v-on:dragstart="onDragStart"
   v-bind:style="styleObj"
