@@ -23,7 +23,7 @@ mainData = {
       entries: [[3,4],[2,1]]
     },
     {
-      id : "test3",
+      id : "test4",
       position: [400, 400],
     }
   ],
@@ -54,13 +54,34 @@ const TheMatrix = new Vue({
           console.log("default case when creating obj.")
           break;
       }
-      //console.log(event);
-      
     },
     selectObj: function (event) {
-      console.log("select obb function called");
+      console.log("select obj function called");
       console.log(id);
       console.log(event);
+    },
+    printMainData: function () {
+      console.log(JSON.stringify(this.$data, this.printMainDataReplacer, 2))
+    },
+    printMainDataReplacer: function (key, value) {
+      //console.log(key, value);
+      if (key === 'entries') {
+        if (value) {
+          let x = ''
+          for (let i = 0; i < value.length; i++) {
+            x = x.concat(`[${value[i].toString()}]`);
+            if (i < value.length-1) {
+              x = x.concat(',')
+            }
+          }
+          return `[${x}]`
+        } else {
+          console.log('there was no entries array');
+        }
+      } else if (key === 'position') {
+        return `[${value.toString()}]`
+      }
+      return value
     }
   },
   template: `<div ondragover="event.preventDefault()"

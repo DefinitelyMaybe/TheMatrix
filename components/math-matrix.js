@@ -31,7 +31,9 @@ Vue.component("math-matrix", {
         let newRow = this.entries[row]
         newRow[col] = value
         this.entries.splice(row, 1, newRow)
+        this.$emit('selectObj')
       } catch (error) {
+        console.log('New entry error:');
         console.log(error);
       }
     },
