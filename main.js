@@ -4,7 +4,7 @@
 //let x = math.matrix([[1,0],[0,1]])
 
 mainData = {
-  message: 'hello world',
+  name: 'hello world',
   selectedObj: null,
   // An array of objects which describe all the matrices
   matrices: [
@@ -55,8 +55,22 @@ const TheMatrix = new Vue({
     },
     selectObj: function (event) {
       console.log("select obj function called");
-      console.log(id);
       console.log(event);
+    },
+    updateData: function (id, key, value) {
+      let found = false
+      // first look for id
+      for (let i = 0; i < this.matrices.length; i++) {
+        if (this.matrices[i].id === id) {
+          found = true
+          // then for the key
+          // then update the value
+          this.matrices[i][key] = value
+        }
+      }
+      if (!found) {
+        console.log(`Did not find the following tuple to update: (id:${id}, key${key}`);
+      }
     },
     printMainData: function () {
       console.log(JSON.stringify(this.$data, this.printMainDataReplacer, 2))
@@ -83,7 +97,6 @@ const TheMatrix = new Vue({
     }
   },
   template: `<div ondragover="event.preventDefault()"
-  v-on:test="console.log('hello world')"
   v-on:click.self="createObj($event, 'matrix')"
   v-bind:style=styleObj>
     <math-matrix v-for="(matrix, index) in matrices"
@@ -91,7 +104,7 @@ const TheMatrix = new Vue({
     v-bind:id="matrix.id"
     v-bind:initEntries="matrix.entries"
     v-bind:initPosition="matrix.position"
-    v-on:click.self="selectObj">
+    v-on:click="selectObj">
     </math-matrix>
 </div>`
 })

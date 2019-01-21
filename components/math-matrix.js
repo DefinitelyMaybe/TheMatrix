@@ -31,8 +31,8 @@ Vue.component("math-matrix", {
         let newRow = this.entries[row]
         newRow[col] = value
         this.entries.splice(row, 1, newRow)
-        console.log(this);
-        //this.$root.$emit('test');
+        // Only works if root has this function
+        this.$root.updateData(this.$attrs.id, 'entries', this.entries)
       } catch (error) {
         console.log('New entry error:');
         console.log(error);
@@ -56,9 +56,9 @@ Vue.component("math-matrix", {
       //console.log(event);
       let x = event.x - this.dragOffsetX
       let y = event.y - this.dragOffsetY
-      //this.$emit('test-func', [x, y])
       this.styleObj.left = `${x}px`
       this.styleObj.top   = `${y}px`
+      this.$parent.updateData(this.$attrs.id, 'position', [x, y])
     },
     onDragStart: function (event) {
       //console.log("onDragStart function says...");
