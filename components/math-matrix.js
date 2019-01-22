@@ -41,14 +41,17 @@ Vue.component("math-matrix", {
     getInputForEntry: function (event) {
       //console.log(event);
       // select the matrix before getting input from user
-      this.onClick(event)
-      let currentNumber = event.target.innerText
-      let newNumber = prompt("Change the number?", currentNumber)
-      if (newNumber && currentNumber != newNumber) {
-        let row = parseInt(event.target.attributes["row"].value)
-        let col = parseInt(event.target.attributes["col"].value)
-        
-        this.newEntry(row, col, newNumber)
+      if (this.selected) {
+        let currentNumber = event.target.innerText
+        let newNumber = prompt("Change the number?", currentNumber)
+        if (newNumber && currentNumber != newNumber) {
+          let row = parseInt(event.target.attributes["row"].value)
+          let col = parseInt(event.target.attributes["col"].value)
+          
+          this.newEntry(row, col, newNumber)
+        } 
+      } else {
+        this.onClick(event)
       }
     },
     onDragEnd: function (event) {
@@ -79,7 +82,7 @@ v-on:dragend="onDragEnd"
 v-on:dragstart="onDragStart"
 v-bind:style="styleObj"
 v-bind:class="{ matrix: true, selected: selected}"
-v-on:click="onClick"
+v-on:click.self="onClick"
 v-on:contextmenu.prevent="onRightClick($event, 'matrix')">
   <tr v-for="(row, i) in entries">
     <td v-for="(item, j) in row" 

@@ -67,6 +67,7 @@ const TheMatrix = new Vue({
       //console.log("select obj function called");
       //console.log(this);
       let oldObj = this.selectedObj
+      this.selectedObj = id
       for (let i = 0; i < this.$children.length; i++) {
         const child = this.$children[i];
         if (child.$attrs.id === oldObj) {
@@ -123,7 +124,7 @@ const TheMatrix = new Vue({
     }
   },
   template: `<div ondragover="event.preventDefault()"
-v-on:click.self="createObj($event, 'matrix')"
+v-on:click.self="selectObj($event, 'none')"
 v-on:contextmenu.self.prevent="onContextMenu($event, 'main')"
 v-bind:style="styleObj">
   <math-matrix v-for="(matrix, index) in matrices"
@@ -135,14 +136,14 @@ v-bind:style="styleObj">
   </math-matrix>
   <div v-show="showContext" v-bind:style="contextMenuStyle">
     <ul id="operationsMenu" v-show="contextType === 'main'">
-      <p>main - hello</p>
-      <p>test</p>
-      <p>hello</p>
+      <li>-create-</li>
+      <li>matrix</li>
     </ul>
     <ul id="operationsMenu" v-show="contextType === 'matrix'">
-      <p>matrix - world</p>
-      <p>test</p>
-      <p>hello</p>
+      <li>-operators-</li>
+      <li>plus</li>
+      <li>minus</li>
+      <li>multiply</li>
     </ul>
   </div>
 </div>`
