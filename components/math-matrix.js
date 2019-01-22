@@ -11,8 +11,8 @@ Vue.component("math-matrix", {
       dragOffsetY: 0,
       styleObj: {
         position: 'absolute',
-        left: `0px`,
-        top: `0px`,
+        left: '0px',
+        top: '0px'
       }
     }
   },
@@ -41,7 +41,7 @@ Vue.component("math-matrix", {
     getInputForEntry: function (event) {
       //console.log(event);
       // select the matrix before getting input from user
-      //this.$emit('test-func')
+      this.onClick(event)
       let currentNumber = event.target.innerText
       let newNumber = prompt("Change the number?", currentNumber)
       if (newNumber && currentNumber != newNumber) {
@@ -63,23 +63,24 @@ Vue.component("math-matrix", {
     onDragStart: function (event) {
       //console.log("onDragStart function says...");
       //console.log(event);
+      this.onClick(event)
       this.dragOffsetX = event.offsetX
       this.dragOffsetY = event.offsetY
-    }
-  },
-  computed: {
-    classObj: function () {
-      return {
-        matrix: true,
-        selected: this.selected
-      }
+    },
+    onClick: function (event) {
+      this.$root.selectObj(event, this.$attrs.id)
+    },
+    onRightClick: function (event) {
+      this.$root.onContextMenu(event, 'matrix')
     }
   },
   template: `<table draggable="true"
-  v-on:dragend="onDragEnd"
-  v-on:dragstart="onDragStart"
-  v-bind:style="styleObj"
-  v-bind:class=classObj>
+v-on:dragend="onDragEnd"
+v-on:dragstart="onDragStart"
+v-bind:style="styleObj"
+v-bind:class="{ matrix: true, selected: selected}"
+v-on:click="onClick"
+v-on:contextmenu.prevent="onRightClick($event, 'matrix')">
   <tr v-for="(row, i) in entries">
     <td v-for="(item, j) in row" 
     v-bind:row="i"
