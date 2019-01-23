@@ -13,28 +13,10 @@ mainData = {
     left: '0px',
     top: '0px'
   },
+  contextMenus: DATA_contextmenus,
   // An array of objects which describe all the matrices
   matrixIDs: [], // if a matrix is ever removed. add its number here
-  matrices: [
-    {
-      id: "matrix-0",
-      position: [100, 100],
-      entries: [[1,2,3],[4,5,6],[7,8,9]]
-    },
-    {
-      id : "matrix-1",
-      position: [50, 50],
-      entries: [[1,1,1],[1,1,1],[1,1,1]]
-    },
-    {
-      id : "matrix-2",
-      entries: [[3,4],[2,1]]
-    },
-    {
-      id : "matrix-3",
-      position: [400, 400],
-    }
-  ],
+  matrices: DATA_matrices,
   styleObj: {
     width: '100%',
     height: '100%'
@@ -85,6 +67,12 @@ const TheMatrix = new Vue({
       this.contextType = type
       this.contextMenuStyle.left = `${event.x}px`
       this.contextMenuStyle.top = `${event.y}px`
+      if (this.contextType === 'main') {
+        // we right clicked someonewhere else so we need to make sure a selected object is de-selected
+        this.selectObj(event, '')
+        // because at the moment, selecting an obj hides the context, we need to turn it back on
+        this.showContext = true
+      }
     },
     updateData: function (id, key, value) {
       let found = false
@@ -101,10 +89,21 @@ const TheMatrix = new Vue({
         console.log(`Did not find the following pair to update: (id:${id}, key${key}`);
       }
     },
-    getMainData: function () {
-      let x = JSON.stringify(this.$data)
-      //console.log(x)
-      return x
+    toJSON: function () {
+      return JSON.stringify(this.$data)
+    },
+    getUserInputForMainData: function () {
+      let x = prompt("paste all of the JSON data here:")
+      try {
+        x = JSON.parse(x)
+      } catch (error) {
+        console.log("couldn't manage to parse the data, are you sure it was json formatted?");
+        console.log(error);
+      }
+      if (x) {
+        console.log(x);
+        //this.$data = x
+      }
     },
     loadMainData: function (data) {
       // question replace all of main data
@@ -113,14 +112,17 @@ const TheMatrix = new Vue({
       // Expects a JSON string
       let x = JSON.parse(data)
       if (x.matrices) {
-        console.log(x.matrices);
+        console.log("the input matrices:", x.matrices);
+        console.log("the current matrices:", this.matrices);
         this.matrices = []
         for (let i = 0; i < x.matrices.length; i++) {
           this.matrices.push(x.matrices[i]);
         }
+        console.log("the current matrices:", this.matrices);
       } else {
         console.log("there were no matrices");
       }
+      return "Something may have happened"
     }
   },
   template: `<div ondragover="event.preventDefault()"
@@ -134,31 +136,35 @@ v-bind:style="styleObj">
   v-bind:initPosition="matrix.position"
   v-bind:selected="matrix.id === selectedObj">
   </math-matrix>
-  <div v-show="showContext" v-bind:style="contextMenuStyle">
-    <ul id="operationsMenu" v-show="contextType === 'main'">
-      <li>-create-</li>
-      <li>matrix</li>
-    </ul>
-    <ul id="operationsMenu" v-show="contextType === 'matrix'">
-      <li>-operators-</li>
-      <li>plus</li>
-      <li>minus</li>
-      <li>multiply</li>
-    </ul>
-  </div>
+  <ui-menu v-show="showContext" v-bind:style="contextMenuStyle">
+    
+  </ui-menu>
 </div>`
 })
 /*
-
-  created() {
-    for (let i = 0; i < this.matrices.length; i++) {
-      this.$createElement(mathMatrix, this.matrices[i])
-    }
-  },
+<ul id="operationsMenu" v-show="contextType === 'main'">
+  <li>-load-</li>
+  <li>json</li>
+  <li>-create-</li>
+  <li>matrix</li>
+</ul>
+<ul id="operationsMenu" v-show="contextType === 'matrix'">
+  <li>-options-</li>
+  <li>delete</li>
+  <li>-operators-</li>
+  <li>plus</li>
+  <li>minus</li>
+  <li>multiply</li>
+</ul>
+created() {
+  for (let i = 0; i < this.matrices.length; i++) {
+    this.$createElement(mathMatrix, this.matrices[i])
+  }
+},
 */
 //console.log(TheMatrix);
 //console.log(TheMatrix.$refs);
-
+console.log(window);
 window.onload = function () {
   //console.log(TheMatrix);
 

@@ -3,10 +3,13 @@ html {
 }
 
 body {
-  background: rgb(146, 146, 146);
+  background: rgb(255, 255, 255);
   height: 100%;
   overflow: hidden;
   margin: 0px;
+  font-size: 20px;
+  background-size: 20px 20px;
+  background-image: linear-gradient(to right, rgb(103, 237, 255) 1px, transparent 1px), linear-gradient(to bottom, rgb(103, 237, 255) 1px, transparent 1px);
 }
 
 td {
@@ -19,8 +22,7 @@ td {
   border-right: 2px solid rgb(0, 0, 0);
 }
 
-.selected {
-  transition: all .2s ease-in-out;
+.matrix.selected {
+  transition: all .1s ease-in-out;
   transform: scale(1.2);
-  background: rgb(170, 170, 170);
 }

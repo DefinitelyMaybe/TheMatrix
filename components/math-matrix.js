@@ -42,6 +42,7 @@ Vue.component("math-matrix", {
       //console.log(event);
       // select the matrix before getting input from user
       if (this.selected) {
+        this.onClick(event)
         let currentNumber = event.target.innerText
         let newNumber = prompt("Change the number?", currentNumber)
         if (newNumber && currentNumber != newNumber) {
@@ -74,6 +75,7 @@ Vue.component("math-matrix", {
       this.$root.selectObj(event, this.$attrs.id)
     },
     onRightClick: function (event) {
+      this.$root.selectObj(event, this.$attrs.id)
       this.$root.onContextMenu(event, 'matrix')
     }
   },
