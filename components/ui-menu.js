@@ -13,9 +13,9 @@ Vue.component("ui-menu", {
     }
   },
   methods: {},
-  template: `<ol v-on:contextmenu.prevent="0">
-  <li v-for="(item, i) in menuitems" v-key="i">
-    <button type="button" disabled="item.disable">{{item.text}}</button>
+  template: `<ol v-on:contextmenu.prevent="0" v-bind:class="{menu: true}">
+  <li v-for="(item, i) in menuitems" v-key="i" v-bind:class="{menu: true}">
+    <button type="button" disabled="item.disable" v-bind:class="{menu: true}">{{item.text}}</button>
   </li>
 </ol>`,
 })

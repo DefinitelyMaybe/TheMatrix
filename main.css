@@ -30,3 +30,17 @@ td {
 .matrix:hover {
   transform: scale(1.2);
 }
+
+ol.menu {
+  border: 1px rgb(103, 237, 255) solid;
+  list-style: none;
+  padding-left: 0px;
+  margin-top: 0px;
+  margin-bottom: 0px;
+}
+li.menu {
+  background: rgb(255, 255, 255);
+}
+button.menu {
+  background: rgb(255, 255, 255);
+}
