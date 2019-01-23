@@ -1,31 +1,6 @@
-// Got a library library from the internet.
-// console.log(math);
-
-//let x = math.matrix([[1,0],[0,1]])
-
-mainData = {
-  name: 'hello world',
-  selectedObj: null,
-  showContext: false,
-  contextType: 'main',
-  contextMenuStyle: {
-    position: 'absolute',
-    left: '0px',
-    top: '0px'
-  },
-  contextMenus: DATA_contextmenus,
-  // An array of objects which describe all the matrices
-  matrixIDs: [], // if a matrix is ever removed. add its number here
-  matrices: DATA_matrices,
-  styleObj: {
-    width: '100%',
-    height: '100%'
-  }
-}
-
 const TheMatrix = new Vue({
   el: '#TheMatrix',
-  data: mainData,
+  data: DATA_scene_0,
   methods: {
     createObj: function (event, obj) {
       console.log(`trying to create a ${obj}`);
@@ -136,36 +111,22 @@ v-bind:style="styleObj">
   v-bind:initPosition="matrix.position"
   v-bind:selected="matrix.id === selectedObj">
   </math-matrix>
-  <ui-menu v-show="showContext" v-bind:style="contextMenuStyle">
-    
+  <ui-menu v-for="(value, key) in contextMenus"
+  v-key="menu"
+  v-show="showContext && contextType == key"
+  v-bind:style="contextMenuStyle"
+  v-bind:initItems="value">
   </ui-menu>
 </div>`
 })
-/*
-<ul id="operationsMenu" v-show="contextType === 'main'">
-  <li>-load-</li>
-  <li>json</li>
-  <li>-create-</li>
-  <li>matrix</li>
-</ul>
-<ul id="operationsMenu" v-show="contextType === 'matrix'">
-  <li>-options-</li>
-  <li>delete</li>
-  <li>-operators-</li>
-  <li>plus</li>
-  <li>minus</li>
-  <li>multiply</li>
-</ul>
-created() {
-  for (let i = 0; i < this.matrices.length; i++) {
-    this.$createElement(mathMatrix, this.matrices[i])
-  }
-},
-*/
-//console.log(TheMatrix);
-//console.log(TheMatrix.$refs);
-console.log(window);
+
 window.onload = function () {
   //console.log(TheMatrix);
-
 }
+
+// Got a library library from the internet.
+// console.log(math);
+// vs
+// console.log(Math);
+// i.e.
+//let x = math.matrix([[1,0],[0,1]])
