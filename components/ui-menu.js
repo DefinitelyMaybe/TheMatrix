@@ -1,10 +1,10 @@
 Vue.component("ui-menu", {
   props: {
-    initItems: Array
+    initItems: Array,
   },
   data: function () {
     return {
-      menuitems: [],
+      menuitems: []
     }
   },
   created: function () {
@@ -12,10 +12,9 @@ Vue.component("ui-menu", {
       this.menuitems = this.initItems.slice()
     }
   },
-  methods: {},
   template: `<ol v-on:contextmenu.prevent="0" v-bind:class="{menu: true}">
-  <li v-for="(item, i) in menuitems" v-key="i" v-bind:class="{menu: true}">
-    <button type="button" disabled="item.disable" v-bind:class="{menu: true}">{{item.text}}</button>
-  </li>
+  <li v-for="(item, i) in menuitems"
+  v-bind:key="i"
+  v-bind:class="{menu: true}">{{item.text}}</li>
 </ol>`,
 })

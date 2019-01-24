@@ -1,56 +1,39 @@
 DATA_contextmenus = {
   main: [
     {
-      id: "ui-menuitem-main-load",
-      disable: true,
-      text: "-load-"
-    },
-    {
       id: "ui-menuitem-main-json",
       disable: false,
-      text: "json"
+      text: "Load JSON",
+      func: "loadJSON"
     },
     {
       id: "ui-menuitem-main-create",
-      disable: true,
-      text: "-create-"
-    },
-    {
-      id: "ui-menuitem-main-matrix",
       disable: false,
-      text: "matrix"
+      text: "Create",
+      func: "create"
     }
   ],
   matrix: [
     {
-      id: "ui-menuitem-matrix-options",
-      disable: true,
-      text: "-options-"
-    },
-    {
       id: "ui-menuitem-matrix-delete",
       disable: false,
-      text: "delete"
+      text: "Delete",
+      func: "deleteObj"
     },
     {
-      id: "ui-menuitem-matrix-operators",
-      disable: true,
-      text: "-operators-"
-    },
-    {
-      id: "ui-menuitem-matrix-plus",
+      id: "ui-menuitem-matrix-add",
       disable: false,
-      text: "plus"
+      text: "Add"
     },
     {
       id: "ui-menuitem-matrix-minus",
       disable: false,
-      text: "minus"
+      text: "Minus"
     },
     {
       id: "ui-menuitem-matrix-multiply",
       disable: false,
-      text: "multiply"
+      text: "Multiply"
     }
   ]
 }

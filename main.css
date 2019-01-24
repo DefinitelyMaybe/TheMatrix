@@ -38,9 +38,13 @@ ol.menu {
   margin-top: 0px;
   margin-bottom: 0px;
 }
+
 li.menu {
   background: rgb(255, 255, 255);
+  font-size: 18px;
+  height: 100%;
 }
-button.menu {
-  background: rgb(255, 255, 255);
+
+li.menu:hover {
+  background: rgb(238, 253, 255)
 }

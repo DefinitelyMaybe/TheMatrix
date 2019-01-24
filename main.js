@@ -18,6 +18,9 @@ const TheMatrix = new Vue({
           break;
       }
     },
+    deleteObj: function (event) {
+      console.log("delete function");
+    },
     selectObj: function (event, id) {
       // if we just selected an obj, make sure we close the context menu
       this.showContext = false
@@ -112,7 +115,7 @@ v-bind:style="styleObj">
   v-bind:selected="matrix.id === selectedObj">
   </math-matrix>
   <ui-menu v-for="(value, key) in contextMenus"
-  v-key="menu"
+  v-bind:key="key"
   v-show="showContext && contextType == key"
   v-bind:style="contextMenuStyle"
   v-bind:initItems="value">
