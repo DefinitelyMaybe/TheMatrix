@@ -21,20 +21,39 @@ const TheMatrix = new Vue({
   methods: {
     createObj: function (event) {
       let obj = prompt("What would you like to create?\nmatrix\n...", '')
-      // First check if 
       switch (obj) {
         case 'matrix':
           let index = this.objects.length
           if (this.freeObjectIndices.length > 0) {
             index = this.objects.length
           }
-          
+          let rows = prompt("how many rows?", "1")
+          let cols = prompt("how many columns?", "1")
+
+          try {
+            rows = parseInt(rows)
+            cols = parseInt(cols)
+          } catch (error) {
+            alert("sorry, not sure how many rows and columns you wanted. default values are going to be used.")
+            rows = 1
+            cols = 1
+          }
+
+          let defaultEntries = []
+          for (let i = 0; i < rows; i++) {
+            let row = []
+            for (let j = 0; j < cols; j++) {
+              row.push(0)
+            }
+            defaultEntries.push(row)
+          }
+
           this.objects.push({
-            id: index,
+            id: index.toString(),
             type: 'math-matrix',
             data: {
               position: [event.x, event.y],
-              entries: [[5,5,5],[4,4,4],[3,2,1]]
+              entries: defaultEntries
             }
             
           })
@@ -73,8 +92,8 @@ const TheMatrix = new Vue({
     selectObj: function (event, id) {
       // if we just selected an obj, make sure we close the context menu
       this.showContext = false
-      console.log("select obj function called");
-      console.log(id);
+      //console.log("select obj function called");
+      //console.log(id);
       let oldObj = this.selectedObj
       this.selectedObj = id
       for (let i = 0; i < this.$children.length; i++) {
@@ -185,7 +204,7 @@ v-bind:style="styleObj">
 })
 
 window.onload = function () {
-  console.log(TheMatrix);
+  //console.log(TheMatrix);
 }
 
 // Got a library library from the internet.

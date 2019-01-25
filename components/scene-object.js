@@ -1,6 +1,6 @@
 Vue.component("scene-object", {
   props: {
-    id: Number,
+    id: String,
     type: String,
     data: Object,
     selected: Boolean
