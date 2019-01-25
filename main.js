@@ -24,7 +24,6 @@ const TheMatrix = new Vue({
       // First check if 
       switch (obj) {
         case 'matrix':
-          this.$createELement()
           this.objects.push({
             id:`matrix-${this.objects.length}`,
             position: [event.x, event.y],
@@ -41,14 +40,14 @@ const TheMatrix = new Vue({
     deleteObj: function (event) {
       // We can assume that selectedObj has the obj id we want to delete
       console.log("delete function");
-      let objIndex = -1
+      var indexToDel = -1
       for (let i = 0; i < this.objects.length; i++) {
         if (this.objects[i].id === this.selectedObj) {
-          objIndex = i        
+          indexToDel = i
         }
       }
-      if (objIndex != -1) {
-        this.objects.splice(objIndex, 1)
+      if (indexToDel != -1) {
+        this.objects.splice(indexToDel, 1)
       } else {
         console.log("Didn't delete anything");
       }
@@ -141,6 +140,13 @@ const TheMatrix = new Vue({
 v-on:click.self="selectObj($event, 'none')"
 v-on:contextmenu.self.prevent="onContextMenu($event, 'main')"
 v-bind:style="styleObj">
+<math-matrix v-for="(matrix, index) in objects"
+  v-bind:key="index"
+  v-bind:id="matrix.id"
+  v-bind:initEntries="matrix.entries"
+  v-bind:initPosition="matrix.position"
+  v-bind:selected="matrix.id === selectedObj">
+  </math-matrix>
   <ol v-on:contextmenu.prevent="0"
   v-bind:class="{menu: true}"
   v-show="showContext && contextType == 'main'"
@@ -171,13 +177,3 @@ window.onload = function () {
 // console.log(Math);
 // i.e.
 //let x = math.matrix([[1,0],[0,1]])
-
-/*
-<math-matrix v-for="(matrix, index) in objects"
-  v-bind:key="index"
-  v-bind:id="matrix.id"
-  v-bind:initEntries="matrix.entries"
-  v-bind:initPosition="matrix.position"
-  v-bind:selected="matrix.id === selectedObj">
-  </math-matrix>
-*/
