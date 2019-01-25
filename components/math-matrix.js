@@ -1,7 +1,6 @@
 Vue.component("math-matrix", {
   props: {
-    initEntries: Array,
-    initPosition: Array,
+    initData: Object,
     selected: Boolean
   },
   data: function () {
@@ -17,12 +16,12 @@ Vue.component("math-matrix", {
     }
   },
   created: function () {
-    if (this.initEntries) {
-      this.entries = this.initEntries.slice()
-    }
-    if (this.initPosition) {
-      this.styleObj.left = `${this.initPosition[0]}px`
-      this.styleObj.top   = `${this.initPosition[1]}px`
+    if (this.initData) {
+      // assuming there is both a position and entires
+      this.entries = this.initData.entries
+      this.styleObj.left = `${this.initData.position[0]}px`
+      this.styleObj.top   = `${this.initData.position[1]}px`
+      this.entries.slice()
     }
   },
   methods: {
@@ -62,7 +61,7 @@ Vue.component("math-matrix", {
       let y = event.y - this.dragOffsetY
       this.styleObj.left = `${x}px`
       this.styleObj.top   = `${y}px`
-      this.$parent.updateData(this.$attrs.id, 'position', [x, y])
+      this.$root.updateData(this.$attrs.id, 'position', [x, y])
     },
     onDragStart: function (event) {
       //console.log("onDragStart function says...");

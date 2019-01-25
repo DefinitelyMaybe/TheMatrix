@@ -11,27 +11,37 @@ const TheMatrix = new Vue({
       top: '0px'
     },
     // An array of objects which describe the scene
-    matrixIDs: [], // if a matrix is ever removed. add its number here
-    objects: DATA_matrices,
+    freeObjectIndices: [], // if a matrix is ever removed. add its number here
+    objects: DATA_objects,
     styleObj: {
       width: '100%',
       height: '100%'
     }
   },
   methods: {
-    createObj: function (event, obj) {
-      console.log(`trying to create a ${obj}`);
+    createObj: function (event) {
+      let obj = prompt("What would you like to create?\nmatrix\n...", '')
       // First check if 
       switch (obj) {
         case 'matrix':
+          let index = this.objects.length
+          if (this.freeObjectIndices.length > 0) {
+            index = this.objects.length
+          }
+          
           this.objects.push({
-            id:`matrix-${this.objects.length}`,
-            position: [event.x, event.y],
-            entries: [[5,5,5],[4,4,4],[3,2,1]]
+            id: index,
+            type: 'math-matrix',
+            data: {
+              position: [event.x, event.y],
+              entries: [[5,5,5],[4,4,4],[3,2,1]]
+            }
+            
           })
           break;
         default:
-          console.log("default case when creating obj.")
+          // default is to say that what the user entered wasn't an object that can be created
+          alert("Sorry, not sure what you were wanting to create.")
           break;
       }
       // we're assuming the function was called from a context menu
@@ -39,26 +49,32 @@ const TheMatrix = new Vue({
     },
     deleteObj: function (event) {
       // We can assume that selectedObj has the obj id we want to delete
-      console.log("delete function");
-      var indexToDel = -1
-      for (let i = 0; i < this.objects.length; i++) {
-        if (this.objects[i].id === this.selectedObj) {
-          indexToDel = i
+      // Also the while loop was just the first way I thought of doing it.
+      // Using a for loop is also an option.
+      //console.log("delete function");
+      let newObjs = []
+      while (this.objects.length > 0) {
+        let x = this.objects.pop()
+        if (x.id != this.selectedObj) {
+          newObjs.push(x)
+        } else {
+          // because we've found the obj that we want to del
+          // we must add its index to free indices.
+          // this is so we can guarantee that all object ids are unquie
+          //console.log(x.id);
+          this.freeObjectIndices.push(x.id)
         }
       }
-      if (indexToDel != -1) {
-        this.objects.splice(indexToDel, 1)
-      } else {
-        console.log("Didn't delete anything");
-      }
+      this.objects = newObjs
+      this.objects.slice()
       // and we must close the context menu once the operation finishes
       this.showContext = false
     },
     selectObj: function (event, id) {
       // if we just selected an obj, make sure we close the context menu
       this.showContext = false
-      //console.log("select obj function called");
-      //console.log(this);
+      console.log("select obj function called");
+      console.log(id);
       let oldObj = this.selectedObj
       this.selectedObj = id
       for (let i = 0; i < this.$children.length; i++) {
@@ -97,7 +113,8 @@ const TheMatrix = new Vue({
         }
       }
       if (!found) {
-        console.log(`Did not find the following pair to update: (id:${id}, key${key}`);
+        console.log(`Did not find the following pair to update: (id:${id}, key:${key}) trying to update it with:`);
+        console.log(value);
       }
     },
     toJSON: function () {
@@ -140,19 +157,19 @@ const TheMatrix = new Vue({
 v-on:click.self="selectObj($event, 'none')"
 v-on:contextmenu.self.prevent="onContextMenu($event, 'main')"
 v-bind:style="styleObj">
-<math-matrix v-for="(matrix, index) in objects"
-  v-bind:key="index"
-  v-bind:id="matrix.id"
-  v-bind:initEntries="matrix.entries"
-  v-bind:initPosition="matrix.position"
-  v-bind:selected="matrix.id === selectedObj">
-  </math-matrix>
+<scene-object v-for="(obj, key) in objects"
+  v-bind:key="obj.id"
+  v-bind:id="obj.id"
+  v-bind:data="obj.data"
+  v-bind:type="obj.type"
+  v-bind:selected="obj.id === selectedObj">
+  </scene-object>
   <ol v-on:contextmenu.prevent="0"
   v-bind:class="{menu: true}"
   v-show="showContext && contextType == 'main'"
   v-bind:style="contextMenuStyle">
     <li v-on:click="deleteObj" v-bind:class="{menu: true}">Load</li>
-    <li v-on:click="createObj($event, 'matrix')" v-bind:class="{menu: true}">Create</li>
+    <li v-on:click="createObj" v-bind:class="{menu: true}">Create</li>
   </ol>
   <ol v-on:contextmenu.prevent="0"
   v-bind:class="{menu: true}"
