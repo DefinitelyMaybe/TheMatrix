@@ -20,13 +20,15 @@ const TheMatrix = new Vue({
   },
   methods: {
     createObj: function (event) {
-      let obj = prompt("What would you like to create?\nmatrix\n...", '')
+      let obj = prompt("What would you like to create? Type one of the following...\nmatrix\nfunction", '')
+      
       switch (obj) {
         case 'matrix':
-          let index = this.objects.length
-          if (this.freeObjectIndices.length > 0) {
+        {
+          let index = this.freeObjectIndices.pop()
+          if (index == undefined) {
             index = this.objects.length
-          }
+          } 
           let rows = prompt("how many rows?", "1")
           let cols = prompt("how many columns?", "1")
 
@@ -55,9 +57,25 @@ const TheMatrix = new Vue({
               position: [event.x, event.y],
               entries: defaultEntries
             }
-            
           })
           break;
+        }
+        case 'function':
+        {
+          let index = this.freeObjectIndices.pop()
+          if (index == undefined) {
+            index = this.objects.length
+          }
+          this.objects.push({
+            id: index.toString(),
+            type: 'math-function',
+            data: {
+              position: [event.x, event.y],
+              expressionTree: {}
+            }
+          })
+          break;
+        }
         default:
           // default is to say that what the user entered wasn't an object that can be created
           alert("Sorry, not sure what you were wanting to create.")
@@ -94,6 +112,8 @@ const TheMatrix = new Vue({
       this.showContext = false
       //console.log("select obj function called");
       //console.log(id);
+      // here we need to change what we do depending on what we're selecting
+      // if its a matrix, its fine but if its a function we'll need to select/deselect more.
       let oldObj = this.selectedObj
       this.selectedObj = id
       for (let i = 0; i < this.$children.length; i++) {
@@ -170,6 +190,9 @@ const TheMatrix = new Vue({
         console.log("there were no objects");
       }
       return "Something may have happened"
+    },
+    saveMainData: function () {
+      alert(`Copy the following into the Load function:\n${this.toJSON()}`)
     }
   },
   template: `<div ondragover="event.preventDefault()"
@@ -187,7 +210,8 @@ v-bind:style="styleObj">
   v-bind:class="{menu: true}"
   v-show="showContext && contextType == 'main'"
   v-bind:style="contextMenuStyle">
-    <li v-on:click="deleteObj" v-bind:class="{menu: true}">Load</li>
+    <li v-on:click="getUserInputForMainData" v-bind:class="{menu: true}">Load</li>
+    <li v-on:click="saveMainData" v-bind:class="{menu: true}">Save</li>
     <li v-on:click="createObj" v-bind:class="{menu: true}">Create</li>
   </ol>
   <ol v-on:contextmenu.prevent="0"
@@ -196,9 +220,9 @@ v-bind:style="styleObj">
   v-bind:style="contextMenuStyle">
     <li v-on:click="deleteObj" v-bind:class="{menu: true}">Delete</li>
     <li v-bind:class="{menu: false}">-----</li>
-    <li v-on:click="deleteObj" v-bind:class="{menu: true}">Add</li>
-    <li v-on:click="deleteObj" v-bind:class="{menu: true}">Subtract</li>
-    <li v-on:click="deleteObj" v-bind:class="{menu: true}">Multiply</li>
+    <li v-on:click="createObj($event, 'function')" v-bind:class="{menu: true}">Add</li>
+    <li v-on:click="createObj($event, 'function')" v-bind:class="{menu: true}">Subtract</li>
+    <li v-on:click="createObj($event, 'function')" v-bind:class="{menu: true}">Multiply</li>
   </ol>
 </div>`
 })

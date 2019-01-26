@@ -15,7 +15,9 @@ body {
 td {
   text-align: center;
 }
-
+.function {
+  background: rgb(103, 237, 255);
+}
 .matrix {
   border-radius: 10px;
   border-left: 2px solid rgb(0, 0, 0);
