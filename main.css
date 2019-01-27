@@ -15,9 +15,25 @@ body {
 td {
   text-align: center;
 }
+
 .function {
   background: rgb(103, 237, 255);
 }
+
+/*.function:hover {
+  transition: transform .1s ease-in-out;
+  transform: scale(1.2);
+}
+
+.function.selected {
+  transition: transform .1s ease-in-out;
+  transform: scale(1.2);
+}*/
+
+.function .matrix {
+  background: rgba(103, 237, 255, 0.5);
+}
+
 .matrix {
   border-radius: 10px;
   border-left: 2px solid rgb(0, 0, 0);

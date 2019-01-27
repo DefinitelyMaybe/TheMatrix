@@ -141,14 +141,18 @@ const TheMatrix = new Vue({
       }
     },
     updateData: function (id, key, value) {
+      //console.log("Update function called.");
       let found = false
       // first look for id
       for (let i = 0; i < this.objects.length; i++) {
         if (this.objects[i].id === id) {
           found = true
+          //console.log("found the following match:");
+          //console.log(this.objects[i]);
+          //console.log(`with the following id and key: (id:${id}, key:${key})`);
           // then for the key
           // then update the value
-          this.objects[i][key] = value
+          this.objects[i].data[key] = value
         }
       }
       if (!found) {
@@ -158,19 +162,6 @@ const TheMatrix = new Vue({
     },
     toJSON: function () {
       return JSON.stringify(this.$data)
-    },
-    getUserInputForMainData: function () {
-      let x = prompt("paste all of the JSON data here:")
-      try {
-        x = JSON.parse(x)
-      } catch (error) {
-        console.log("couldn't manage to parse the data, are you sure it was json formatted?");
-        console.log(error);
-      }
-      if (x) {
-        console.log(x);
-        //this.$data = x
-      }
     },
     loadMainData: function (data) {
       // question replace all of main data
@@ -191,7 +182,32 @@ const TheMatrix = new Vue({
       }
       return "Something may have happened"
     },
-    saveMainData: function () {
+    LoadObject: function () {
+      let x = prompt("what would you like to load in?\ntype on of the following:\nscene\nobject")
+      switch (x) {
+        case 'scene':
+          {
+            let y = prompt("paste all of the JSON data here:")
+            try {
+              y = JSON.parse(y)
+              loadMainData(y)
+            } catch (error) {
+              console.log("couldn't manage to parse the data, are you sure it was json formatted?");
+              console.log(error);
+            }
+          }
+          break;
+        case 'object':
+          {
+            
+          }
+          break;
+        default:
+          
+          break;
+      }
+    },
+    saveObjects: function () {
       alert(`Copy the following into the Load function:\n${this.toJSON()}`)
     }
   },
@@ -199,19 +215,19 @@ const TheMatrix = new Vue({
 v-on:click.self="selectObj($event, 'none')"
 v-on:contextmenu.self.prevent="onContextMenu($event, 'main')"
 v-bind:style="styleObj">
-<scene-object v-for="(obj, key) in objects"
+<component v-for="(obj, key) in objects"
   v-bind:key="obj.id"
   v-bind:id="obj.id"
-  v-bind:data="obj.data"
-  v-bind:type="obj.type"
+  v-bind:initData="obj.data"
+  v-bind:is="obj.type"
   v-bind:selected="obj.id === selectedObj">
-  </scene-object>
+  </component>
   <ol v-on:contextmenu.prevent="0"
   v-bind:class="{menu: true}"
   v-show="showContext && contextType == 'main'"
   v-bind:style="contextMenuStyle">
-    <li v-on:click="getUserInputForMainData" v-bind:class="{menu: true}">Load</li>
-    <li v-on:click="saveMainData" v-bind:class="{menu: true}">Save</li>
+    <li v-on:click="LoadObject" v-bind:class="{menu: true}">Load</li>
+    <li v-on:click="saveObjects" v-bind:class="{menu: true}">Save</li>
     <li v-on:click="createObj" v-bind:class="{menu: true}">Create</li>
   </ol>
   <ol v-on:contextmenu.prevent="0"

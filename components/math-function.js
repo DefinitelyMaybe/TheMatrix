@@ -5,7 +5,7 @@ Vue.component("math-function", {
   },
   data: function () {
     return {
-      expressionTree: {},
+      expressionTree: [],
       dragOffsetX: 0,
       dragOffsetY: 0,
       styleObj: {
@@ -18,17 +18,22 @@ Vue.component("math-function", {
   created: function () {
     if (this.initData) {
       // assuming there is both a position and entires
-      this.entries = this.initData.expressionTree
+      this.expressionTree = this.initData.expressionTree
+      this.expressionTree.slice()
       this.styleObj.left = `${this.initData.position[0]}px`
       this.styleObj.top   = `${this.initData.position[1]}px`
     }
   },
   methods: {
     newOperator: function (operator) {
-      console.log("WIP");
+      console.log("New Operator function called");
     },
     newOperand: function (operand) {
-      console.log("WIP");
+      console.log("New Operand function called.");
+    },
+    onDrop: function (event) {
+      console.log("OnDrop function called.");
+      // Data is going to be moved from the mains objects and nested within the function object
     },
     onDragEnd: function (event) {
       //console.log("onDragEnd function says...");
@@ -56,10 +61,18 @@ Vue.component("math-function", {
   },
   template: `<div draggable="true"
 v-on:dragend="onDragEnd"
+v-on:drop="onDrop"
 v-on:dragstart="onDragStart"
 v-bind:style="styleObj"
 v-bind:class="{ function: true, selected: selected}"
 v-on:click.self="onClick"
-v-on:contextmenu.prevent="onRightClick($event, 'function')">hello world
+v-on:contextmenu.prevent="onRightClick($event, 'function')">
+  <component v-for="(value, index) in expressionTree"
+  v-bind:id="value.id"
+  v-bind:key="value.id"
+  v-bind:is="value.type"
+  v-bind:initData="value.data"
+  v-bind:selected="selected">
+  </component>
 </div>`,
 })
