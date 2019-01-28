@@ -220,7 +220,8 @@ v-bind:style="styleObj">
   v-bind:id="obj.id"
   v-bind:initData="obj.data"
   v-bind:is="obj.type"
-  v-bind:selected="obj.id === selectedObj">
+  v-bind:selected="obj.id === selectedObj"
+  v-bind:style="{ position: 'absolute', left: obj.data.position[0], top: obj.data.position[1]}">
   </component>
   <ol v-on:contextmenu.prevent="0"
   v-bind:class="{menu: true}"

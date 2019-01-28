@@ -8,11 +8,6 @@ Vue.component("math-function", {
       expressionTree: [],
       dragOffsetX: 0,
       dragOffsetY: 0,
-      styleObj: {
-        position: 'absolute',
-        left: '0px',
-        top: '0px'
-      }
     }
   },
   created: function () {
@@ -20,8 +15,6 @@ Vue.component("math-function", {
       // assuming there is both a position and entires
       this.expressionTree = this.initData.expressionTree
       this.expressionTree.slice()
-      this.styleObj.left = `${this.initData.position[0]}px`
-      this.styleObj.top   = `${this.initData.position[1]}px`
     }
   },
   methods: {
@@ -40,9 +33,7 @@ Vue.component("math-function", {
       //console.log(event);
       let x = event.x - this.dragOffsetX
       let y = event.y - this.dragOffsetY
-      this.styleObj.left = `${x}px`
-      this.styleObj.top   = `${y}px`
-      this.$root.updateData(this.$attrs.id, 'position', [x, y])
+      this.$root.updateData(this.$attrs.id, 'position', [`${x}px`, `${y}px`])
     },
     onDragStart: function (event) {
       //console.log("onDragStart function says...");
@@ -63,7 +54,6 @@ Vue.component("math-function", {
 v-on:dragend="onDragEnd"
 v-on:drop="onDrop"
 v-on:dragstart="onDragStart"
-v-bind:style="styleObj"
 v-bind:class="{ function: true, selected: selected}"
 v-on:click.self="onClick"
 v-on:contextmenu.prevent="onRightClick($event, 'function')">

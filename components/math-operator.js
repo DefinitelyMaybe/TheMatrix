@@ -10,8 +10,8 @@ Vue.component("math-operator", {
     }
   },
   created: function () {
-    console.log("created function called");
-    console.log(this.initData);
+    //console.log("created function called");
+    //console.log(this.initData);
     if (this.initData) {
       this.operator = this.initData.operator
       this.operands = this.initData.operands

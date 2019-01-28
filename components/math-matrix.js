@@ -7,20 +7,13 @@ Vue.component("math-matrix", {
     return {
       entries: [[1,0,0],[0,1,0],[0,0,1]],
       dragOffsetX: 0,
-      dragOffsetY: 0,
-      styleObj: {
-        position: 'absolute',
-        left: '0px',
-        top: '0px'
-      }
+      dragOffsetY: 0
     }
   },
   created: function () {
     if (this.initData) {
       // assuming there is both a position and entires
       this.entries = this.initData.entries
-      this.styleObj.left = `${this.initData.position[0]}px`
-      this.styleObj.top   = `${this.initData.position[1]}px`
       this.entries.slice()
     }
   },
@@ -59,9 +52,7 @@ Vue.component("math-matrix", {
       //console.log(event);
       let x = event.x - this.dragOffsetX
       let y = event.y - this.dragOffsetY
-      this.styleObj.left = `${x}px`
-      this.styleObj.top   = `${y}px`
-      this.$root.updateData(this.$attrs.id, 'position', [x, y])
+      this.$root.updateData(this.$attrs.id, 'position', [`${x}px`, `${y}px`])
     },
     onDragStart: function (event) {
       //console.log("onDragStart function says...");
@@ -81,7 +72,6 @@ Vue.component("math-matrix", {
   template: `<table draggable="true"
 v-on:dragend="onDragEnd"
 v-on:dragstart="onDragStart"
-v-bind:style="styleObj"
 v-bind:class="{ matrix: true, selected: selected}"
 v-on:click.self="onClick"
 v-on:contextmenu.prevent="onRightClick($event, 'matrix')">
