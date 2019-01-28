@@ -54,7 +54,7 @@ const TheMatrix = new Vue({
             id: index.toString(),
             type: 'math-matrix',
             data: {
-              position: [event.x, event.y],
+              position: [`${event.x}px`, `${event.y}px`],
               entries: defaultEntries
             }
           })
@@ -70,8 +70,8 @@ const TheMatrix = new Vue({
             id: index.toString(),
             type: 'math-function',
             data: {
-              position: [event.x, event.y],
-              expressionTree: {}
+              position: [`${event.x}px`, `${event.y}px`],
+              expressionTree: []
             }
           })
           break;

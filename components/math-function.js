@@ -13,6 +13,7 @@ Vue.component("math-function", {
   created: function () {
     if (this.initData) {
       // assuming there is both a position and entires
+      //console.log(this.initData);
       this.expressionTree = this.initData.expressionTree
       this.expressionTree.slice()
     }
