@@ -5,17 +5,22 @@ Vue.component("math-function", {
   },
   data: function () {
     return {
-      expressionTree: [],
+      // Is what's used for rendering and evaluation
+      expression: [],
+      // when the expression is evaluated, the operators will be pointers to the functions to be used.
+      operators: {},
+      // a simple list of all operands
+      operands: {},
       dragOffsetX: 0,
       dragOffsetY: 0,
     }
   },
   created: function () {
     if (this.initData) {
-      // assuming there is both a position and entires
       //console.log(this.initData);
-      this.expressionTree = this.initData.expressionTree
-      this.expressionTree.slice()
+      this.expression = this.initData.expression
+      this.operands = this.initData.operands
+      this.operators = this.initData.operators
     }
   },
   methods: {
@@ -51,6 +56,28 @@ Vue.component("math-function", {
       this.$root.onContextMenu(event, 'function')
     }
   },
+  computed: {
+    evaluate: function () {
+      // we're assuming that the expression stack is built up in reverse polish notation
+      // because each operator may have more than one operand we'll make a list of operands
+      let result
+      let stack = []
+      for (let i = 0; i < this.expression.length; i++) {
+        // we need to get all of the references within the expression
+        let x = this.expression[i]
+        // and then figure out if its an operator or an operand
+        if (this.operator[x]) {
+          // i.e. the above statement is not undefined
+          result = this.operator[x](stack)
+          stack = [result]
+        } else {
+          // we know x must be an operand so we put it on the stack
+          stack.push(this.operands[x])
+        }
+      }
+      return stack.pop()
+    }
+  },
   template: `<div draggable="true"
 v-on:dragend="onDragEnd"
 v-on:drop="onDrop"
@@ -58,7 +85,7 @@ v-on:dragstart="onDragStart"
 v-bind:class="{ function: true, selected: selected}"
 v-on:click.self="onClick"
 v-on:contextmenu.prevent="onRightClick($event, 'function')">
-  <component v-for="(value, index) in expressionTree"
+  <component v-for="(value, index) in expression"
   v-bind:id="value.id"
   v-bind:key="value.id"
   v-bind:is="value.type"

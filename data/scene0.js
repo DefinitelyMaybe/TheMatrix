@@ -58,33 +58,16 @@ DATA_objects = [{
   "type": "math-function",
   "data": {
     "position": ["475px", "171px"],
-    "expressionTree": [{
-      "id": "6",
-      "type": "math-operator",
-      "data": {
-        "operator": "add",
-        "operands": [{
-          "id": "7",
-          "type": "math-matrix",
-          "data": {
-            "position": [0, 0],
-            "entries": [
-              [0, 1],
-              [1, 0]
-            ]
-          }
-        }, {
-          "id": "8",
-          "type": "math-matrix",
-          "data": {
-            "position": [100, 0],
-            "entries": [
-              [1, 1],
-              [1, 1]
-            ]
-          }
-        }]
+    "expression": "x + y",
+    "operands": {
+      "x": 10,
+      "y": 20
+    },
+    "operators": {
+      "add": function (x,y) {
+        return x + y
       }
-    }]
+    }
+
   }
 }]
