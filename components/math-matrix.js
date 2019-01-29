@@ -73,7 +73,7 @@ Vue.component("math-matrix", {
 v-on:dragend="onDragEnd"
 v-on:dragstart="onDragStart"
 v-bind:class="{ matrix: true, selected: selected}"
-v-on:click.self="onClick"
+v-on:click.prevent="onClick"
 v-on:contextmenu.prevent="onRightClick($event, 'matrix')">
   <tr v-for="(row, i) in entries">
     <td v-for="(item, j) in row" 

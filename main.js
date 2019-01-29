@@ -2,33 +2,47 @@ const TheMatrix = new Vue({
   el: '#TheMatrix',
   data: {
     name: 'The Matrix',
-    selectedObj: null,
+    
     showContext: false,
     contextType: 'main',
+    
+    // The next ID to be used if there are no freeobjectIDs left
+    nextID: 0,
+    // if an object is ever removed. its id is added here
+    freeObjectID: [],
+    // The id of the currently selected object
+    selectedObj: null,
+    // An array of objects which describe the scene
+    objects: DATA_objects,
+    styleObj: {
+      width: '100%',
+      height: '100%'
+    },
     contextMenuStyle: {
       position: 'absolute',
       left: '0px',
       top: '0px'
     },
-    // An array of objects which describe the scene
-    freeObjectIndices: [], // if a matrix is ever removed. add its number here
-    objects: DATA_objects,
-    styleObj: {
-      width: '100%',
-      height: '100%'
-    }
+  },
+  created: function () {
+    // for the moment we're going to manually bring our scene ids up to speed with the loaded scene
+    this.nextID = 6
   },
   methods: {
+    getNewObjectID: function () {
+      let id = this.freeObjectID.pop()
+      if (id == undefined) {
+        id = this.nextID
+        this.nextID += 1
+      }
+      return id.toString()
+    },
     createObj: function (event) {
-      let obj = prompt("What would you like to create? Type one of the following...\nmatrix\nfunction", '')
+      let obj = prompt("What would you like to create? Type one of the following...\nmatrix\nfunction\nvariable", '')
       
       switch (obj) {
         case 'matrix':
         {
-          let index = this.freeObjectIndices.pop()
-          if (index == undefined) {
-            index = this.objects.length
-          } 
           let rows = prompt("how many rows?", "1")
           let cols = prompt("how many columns?", "1")
 
@@ -51,7 +65,7 @@ const TheMatrix = new Vue({
           }
 
           this.objects.push({
-            id: index.toString(),
+            id: this.getNewObjectID(),
             type: 'math-matrix',
             data: {
               position: [`${event.x}px`, `${event.y}px`],
@@ -62,16 +76,26 @@ const TheMatrix = new Vue({
         }
         case 'function':
         {
-          let index = this.freeObjectIndices.pop()
-          if (index == undefined) {
-            index = this.objects.length
-          }
           this.objects.push({
-            id: index.toString(),
+            id: this.getNewObjectID(),
             type: 'math-function',
             data: {
               position: [`${event.x}px`, `${event.y}px`],
               expressionTree: []
+            }
+          })
+          break;
+        }
+        case 'variable':
+        {
+          this.objects.push({
+            id: this.getNewObjectID(),
+            type: 'math-variable',
+            data: {
+              position: [`${event.x}px`, `${event.y}px`],
+              name: 'x',
+              type: 'number',
+              value: 0
             }
           })
           break;
@@ -99,7 +123,7 @@ const TheMatrix = new Vue({
           // we must add its index to free indices.
           // this is so we can guarantee that all object ids are unquie
           //console.log(x.id);
-          this.freeObjectIndices.push(x.id)
+          this.freeObjectID.push(x.id)
         }
       }
       this.objects = newObjs
@@ -215,7 +239,7 @@ const TheMatrix = new Vue({
 v-on:click.self="selectObj($event, 'none')"
 v-on:contextmenu.self.prevent="onContextMenu($event, 'main')"
 v-bind:style="styleObj">
-<component v-for="(obj, key) in objects"
+  <component v-for="(obj, key) in objects"
   v-bind:key="obj.id"
   v-bind:id="obj.id"
   v-bind:initData="obj.data"
