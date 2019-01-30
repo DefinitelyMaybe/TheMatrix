@@ -12,7 +12,9 @@ Vue.component("math-matrix", {
   },
   created: function () {
     if (this.initData) {
-      // assuming there is both a position and entires
+      // assuming there is entires
+      console.log("matrix created method");
+      console.log(this.initData);
       this.entries = this.initData.entries
       this.entries.slice()
     }

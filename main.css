@@ -30,6 +30,20 @@ p {
   transform: scale(1.2);
 }
 
+.variable.objHover {
+  background: rgba(103, 237, 255, 0.5);
+}
+
+.variable.selected .matrix.selected {
+  transition: transform .1s ease-in-out;
+  transform: scale(1);
+}
+
+.variable .matrix:hover {
+  transition: transform .1s ease-in-out;
+  transform: scale(1);
+}
+
 .function {
   background: rgba(103, 237, 255, 0.5);
   display: flex;

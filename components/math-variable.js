@@ -9,10 +9,12 @@ Vue.component("math-variable", {
       name: 'x',
       type: 'number',
       value: 0,
+      dummyArray: [],
       styleObj: {
         'display': 'flex',
         'flex-direction': 'row'
       },
+      objHover: false,
       dragOffsetX: 0,
       dragOffsetY: 0
     }
@@ -31,6 +33,7 @@ Vue.component("math-variable", {
         let x = prompt(`What would you like to rename ${this.name} to?`, this.name)
         if (x) {
           this.name = x
+          this.$root.updateData(this.$attrs.id, 'name', x)
         } 
       } else {
         this.onClick()
@@ -40,7 +43,8 @@ Vue.component("math-variable", {
       if (this.selected) {
         let x = prompt(`What would you like to change the value to?`, this.value)
         if (x) {
-          this.value = x 
+          this.value = x
+          this.$root.updateData(this.$attrs.id, 'value', x)
         } 
       } else {
         this.onClick()
@@ -48,7 +52,27 @@ Vue.component("math-variable", {
     },
     onDrop: function (event) {
       console.log("OnDrop function called.");
-      // Data is going to be moved from the mains objects and nested within the function object
+      //console.log(event);
+      // get the data about the currently selected item
+      let x = this.$root.getCurrentObjData()
+      if (x) {
+        //console.log(x);
+        if (x.type == 'math-matrix') {
+          // create a new object with the new values at this exact same location
+          
+          // sigh, not liking do it this way.
+          let y = this.$root.getObjectByID(this.$attrs.id)
+
+          // Data is going to be moved from the mains objects and nested within this object
+          this.$root.dropData(this.$attrs.id, {
+            type: "math-variable",
+            position: y[0].data.position,
+            name: this.name,
+            valueType: x.type,
+            value: x.data.entries
+          })
+        } 
+      }
     },
     onDragEnd: function (event) {
       //console.log("onDragEnd function says...");
@@ -56,6 +80,8 @@ Vue.component("math-variable", {
       let x = event.x - this.dragOffsetX
       let y = event.y - this.dragOffsetY
       this.$root.updateData(this.$attrs.id, 'position', [`${x}px`, `${y}px`])
+      // updating the class appropriately
+      this.objHover = false
     },
     onDragStart: function (event) {
       //console.log("onDragStart function says...");
@@ -75,12 +101,23 @@ Vue.component("math-variable", {
   template: `<div draggable="true"
 v-on:dragend="onDragEnd"
 v-on:dragstart="onDragStart"
+v-on:drop="onDrop"
+v-on:dragenter="objHover = true"
+v-on:dragleave="objHover = false"
+
 v-bind:style="styleObj"
-v-bind:class="{variable:true, selected:selected}"
+v-bind:class="{variable:true, selected:selected, objHover:objHover}"
 v-on:click.prevent="onClick"
 v-on:contextmenu.prevent="onRightClick($event, 'matrix')">
   <p v-on:click="changeName">{{name}}</p>
   <p>=</p>
-  <p v-on:click="changeValue">{{value}}</p>
+  <p v-if="this.type == 'number'"
+  v-on:click="changeValue">{{value}}</p>
+  <component
+  v-if="this.type == 'math-matrix'"
+  v-bind:is="'math-matrix'"
+  v-bind:selected="selected"
+  v-bind:initData="{'entries':value}">
+  </component>
 </div>`,
 })

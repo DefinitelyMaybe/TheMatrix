@@ -26,7 +26,7 @@ const TheMatrix = new Vue({
   },
   created: function () {
     // for the moment we're going to manually bring our scene ids up to speed with the loaded scene
-    this.nextID = 6
+    this.nextID = 7
   },
   methods: {
     getNewObjectID: function () {
@@ -37,7 +37,69 @@ const TheMatrix = new Vue({
       }
       return id.toString()
     },
-    createObj: function (event) {
+    getCurrentObjData: function () {
+      for (let i = 0; i < this.objects.length; i++) {
+        if (this.objects[i].id == this.selectedObj) {
+          return this.objects[i]
+        }
+      }
+    },
+    getObjectByID: function (id) {
+      for (let i = 0; i < this.objects.length; i++) {
+        if (this.objects[i].id == id) {
+          return [this.objects[i], i]
+        }
+      }
+    },
+    createObj: function (options) {
+      //console.log("creating an object");
+      //console.log(options);
+      switch (options.type) {
+        case 'math-matrix':
+        {
+          this.objects.push({
+            id: this.getNewObjectID(),
+            type: options.type,
+            data: {
+              position: options.position,
+              entries: options.entries
+            }
+          })
+          break;
+        }
+        case 'math-function':
+        {
+          this.objects.push({
+            id: this.getNewObjectID(),
+            type: options.type,
+            data: {
+              position: options.position,
+              expressionTree: options.expressionTree || []
+            }
+          })
+          break;
+        }
+        case 'math-variable':
+        {
+          this.objects.push({
+            id: this.getNewObjectID(),
+            type: options.type,
+            data: {
+              position: options.position,
+              name: options.name || 'x',
+              type: options.valueType || 'number',
+              value: options.value || 0
+            }
+          })
+          break;
+        }
+        default:
+          console.warn("The default creation case hasn't created anything with:");
+          console.log(options);
+          break;
+      }
+    },
+    userCreateObj: function (event) {
       let obj = prompt("What would you like to create? Type one of the following...\nmatrix\nfunction\nvariable", '')
       
       switch (obj) {
@@ -63,52 +125,44 @@ const TheMatrix = new Vue({
             }
             defaultEntries.push(row)
           }
-
-          this.objects.push({
-            id: this.getNewObjectID(),
+          this.createObj({
             type: 'math-matrix',
-            data: {
-              position: [`${event.x}px`, `${event.y}px`],
-              entries: defaultEntries
-            }
+            position:[`${event.x}px`, `${event.y}px`],
+            entries: defaultEntries
           })
           break;
         }
         case 'function':
         {
-          this.objects.push({
-            id: this.getNewObjectID(),
+          this.createObj({
             type: 'math-function',
-            data: {
-              position: [`${event.x}px`, `${event.y}px`],
-              expressionTree: []
-            }
+            position:[`${event.x}px`, `${event.y}px`],
+            expressionTree: []
           })
           break;
         }
         case 'variable':
         {
-          this.objects.push({
-            id: this.getNewObjectID(),
+          this.createObj({
             type: 'math-variable',
-            data: {
-              position: [`${event.x}px`, `${event.y}px`],
-              name: 'x',
-              type: 'number',
-              value: 0
-            }
+            position:[`${event.x}px`, `${event.y}px`],
+            name: 'x',
+            valueType: 'number',
+            value: 0
           })
           break;
         }
         default:
+        {
           // default is to say that what the user entered wasn't an object that can be created
           alert("Sorry, not sure what you were wanting to create.")
-          break;
+          break
+        }
       }
       // we're assuming the function was called from a context menu
       this.showContext = false
     },
-    deleteObj: function (event) {
+    deleteCurrentObj: function () {
       // We can assume that selectedObj has the obj id we want to delete
       // Also the while loop was just the first way I thought of doing it.
       // Using a for loop is also an option.
@@ -131,25 +185,30 @@ const TheMatrix = new Vue({
       // and we must close the context menu once the operation finishes
       this.showContext = false
     },
+    deleteObjByID: function (id) {
+      let newObjs = []
+      while (this.objects.length > 0) {
+        let x = this.objects.pop()
+        if (x.id != id) {
+          newObjs.push(x)
+        } else {
+          // because we've found the obj that we want to del
+          // we must add its index to free indices.
+          // this is so we can guarantee that all object ids are unquie
+          this.freeObjectID.push(x.id)
+        }
+      }
+      this.objects = newObjs
+      this.objects.slice()
+      // and we must close the context menu once the operation finishes
+      this.showContext = false
+    },
     selectObj: function (event, id) {
       // if we just selected an obj, make sure we close the context menu
       this.showContext = false
       //console.log("select obj function called");
       //console.log(id);
-      // here we need to change what we do depending on what we're selecting
-      // if its a matrix, its fine but if its a function we'll need to select/deselect more.
-      let oldObj = this.selectedObj
       this.selectedObj = id
-      for (let i = 0; i < this.$children.length; i++) {
-        const child = this.$children[i];
-        if (child.$attrs.id === oldObj) {
-          //child.selected = false
-        }
-        if (child.$attrs.id === id) {
-          //child.selected = true
-          this.selectedObj = id
-        } 
-      }
     },
     onContextMenu: function (event, type) {
       //console.log("onContextMenu change");
@@ -166,23 +225,27 @@ const TheMatrix = new Vue({
     },
     updateData: function (id, key, value) {
       //console.log("Update function called.");
-      let found = false
-      // first look for id
-      for (let i = 0; i < this.objects.length; i++) {
-        if (this.objects[i].id === id) {
-          found = true
-          //console.log("found the following match:");
-          //console.log(this.objects[i]);
-          //console.log(`with the following id and key: (id:${id}, key:${key})`);
-          // then for the key
-          // then update the value
-          this.objects[i].data[key] = value
-        }
-      }
-      if (!found) {
-        console.log(`Did not find the following pair to update: (id:${id}, key:${key}) trying to update it with:`);
+      let obj = this.getObjectByID(id)
+      if (obj) {
+        // the second item in the array is the index of the object
+        this.objects[obj[1]].data[key] = value
+      } else {
+        console.warn(`Did not find the following pair to update: (id:${id}, key:${key}) trying to update it with:`);
         console.log(value);
+        console.log(obj);
       }
+    },
+    dropData: function (id, updateObj) {
+      //console.log("dropData called.");
+      //console.log(id, updateObj);
+      // creating the new one first so it has a different ID
+      this.createObj(updateObj)
+
+      this.deleteCurrentObj()
+      this.selectedObj = null
+
+      // first update the object that was just dropped on
+      this.deleteObjByID(id)
     },
     toJSON: function () {
       return JSON.stringify(this.$data)
@@ -236,7 +299,7 @@ const TheMatrix = new Vue({
     }
   },
   template: `<div ondragover="event.preventDefault()"
-v-on:click.self="selectObj($event, 'none')"
+v-on:click.self="selectObj($event, null)"
 v-on:contextmenu.self.prevent="onContextMenu($event, 'main')"
 v-bind:style="styleObj">
   <component v-for="(obj, key) in objects"
@@ -253,17 +316,29 @@ v-bind:style="styleObj">
   v-bind:style="contextMenuStyle">
     <li v-on:click="LoadObject" v-bind:class="{menu: true}">Load</li>
     <li v-on:click="saveObjects" v-bind:class="{menu: true}">Save</li>
-    <li v-on:click="createObj" v-bind:class="{menu: true}">Create</li>
+    <li v-on:click="userCreateObj" v-bind:class="{menu: true}">Create</li>
   </ol>
   <ol v-on:contextmenu.prevent="0"
   v-bind:class="{menu: true}"
   v-show="showContext && contextType == 'matrix'"
   v-bind:style="contextMenuStyle">
-    <li v-on:click="deleteObj" v-bind:class="{menu: true}">Delete</li>
+    <li v-on:click="deleteCurrentObj" v-bind:class="{menu: true}">Delete</li>
     <li v-bind:class="{menu: false}">-----</li>
-    <li v-on:click="createObj($event, 'function')" v-bind:class="{menu: true}">Add</li>
-    <li v-on:click="createObj($event, 'function')" v-bind:class="{menu: true}">Subtract</li>
-    <li v-on:click="createObj($event, 'function')" v-bind:class="{menu: true}">Multiply</li>
+    <li v-bind:class="{menu: true}">Add</li>
+    <li v-bind:class="{menu: true}">Subtract</li>
+    <li v-bind:class="{menu: true}">Multiply</li>
+  </ol>
+  <ol v-on:contextmenu.prevent="0"
+  v-bind:class="{menu: true}"
+  v-show="showContext && contextType == 'variable'"
+  v-bind:style="contextMenuStyle">
+    <li v-on:click="deleteCurrentObj" v-bind:class="{menu: true}">Delete</li>
+  </ol>
+  <ol v-on:contextmenu.prevent="0"
+  v-bind:class="{menu: true}"
+  v-show="showContext && contextType == 'function'"
+  v-bind:style="contextMenuStyle">
+    <li v-on:click="deleteCurrentObj" v-bind:class="{menu: true}">Delete</li>
   </ol>
 </div>`
 })

@@ -32,6 +32,7 @@ Vue.component("math-function", {
     onDrop: function (event) {
       console.log("OnDrop function called.");
       // Data is going to be moved from the mains objects and nested within the function object
+      // The object being dropped must have been selected so we'll start there.
     },
     onDragEnd: function (event) {
       //console.log("onDragEnd function says...");
