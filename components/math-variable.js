@@ -51,7 +51,7 @@ Vue.component("math-variable", {
       }
     },
     onDrop: function (event) {
-      console.log("OnDrop function called.");
+      //console.log("OnDrop function called.");
       //console.log(event);
       // get the data about the currently selected item
       let x = this.$root.getCurrentObjData()
@@ -71,7 +71,11 @@ Vue.component("math-variable", {
             valueType: x.type,
             value: x.data.entries
           })
-        } 
+        } else if (x.type == 'math-vector') {
+
+        } else {
+          alert("Sorry, variables can only be numbers, vectors or matrices")
+        }
       }
     },
     onDragEnd: function (event) {

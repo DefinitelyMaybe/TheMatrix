@@ -230,9 +230,8 @@ const TheMatrix = new Vue({
         // the second item in the array is the index of the object
         this.objects[obj[1]].data[key] = value
       } else {
-        console.warn(`Did not find the following pair to update: (id:${id}, key:${key}) trying to update it with:`);
+        console.log(`Did not find the following pair to update: (id:${id}, key:${key}) trying to update it with:`);
         console.log(value);
-        console.log(obj);
       }
     },
     dropData: function (id, updateObj) {

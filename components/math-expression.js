@@ -1,4 +1,4 @@
-Vue.component("math-function", {
+Vue.component("math-expression", {
   props: {
     initData: Object,
     selected: Boolean
@@ -7,9 +7,9 @@ Vue.component("math-function", {
     return {
       // the default function name
       // used as a referrence for other functions
-      name: "function?",
+      name: "expression?",
       variables: [],
-      result: "?",
+      expression: "...",
 
       // For moving around on the scene
       dragOffsetX: 0,
@@ -24,8 +24,10 @@ Vue.component("math-function", {
   created: function () {
     if (this.initData) {
       //console.log(this.initData);
-      //this.initData = this.initData.result
-      //this.operands = this.initData.operands
+      this.result = this.initData.result
+      this.variables = this.initData.variables
+      this.name = this.initData.name
+      this.expression = this.initData.expression
     }
   },
   methods: {
@@ -56,11 +58,6 @@ Vue.component("math-function", {
       this.$root.onContextMenu(event, 'function')
     }
   },
-  computed: {
-    evaluate: function () {
-      return null
-    }
-  },
   template: `<div draggable="true"
 v-on:dragend="onDragEnd"
 v-on:drop="onDrop"
@@ -71,8 +68,8 @@ v-bind:class="{ function: true, selected: selected}"
 v-on:click.prevent="onClick"
 v-on:contextmenu.prevent="onRightClick($event, 'function')">
   <p>{{name}}</p>
-  <p>(variables?)</p>
+  <p v-if="variables.length != 0">(...)</p>
   <p>=</p>
-  <p>?</p>
+  <p>{{expression}}</p>
 </div>`,
 })

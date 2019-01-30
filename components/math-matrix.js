@@ -13,8 +13,8 @@ Vue.component("math-matrix", {
   created: function () {
     if (this.initData) {
       // assuming there is entires
-      console.log("matrix created method");
-      console.log(this.initData);
+      //console.log("matrix created method");
+      //console.log(this.initData);
       this.entries = this.initData.entries
       this.entries.slice()
     }
@@ -54,6 +54,7 @@ Vue.component("math-matrix", {
       //console.log(event);
       let x = event.x - this.dragOffsetX
       let y = event.y - this.dragOffsetY
+      // its possible to get here and for this object to be deleted first.
       this.$root.updateData(this.$attrs.id, 'position', [`${x}px`, `${y}px`])
     },
     onDragStart: function (event) {
