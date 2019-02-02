@@ -4,6 +4,7 @@
 
 // possibles
 // mathjax - for making it look pretty
+// http://docs.mathjax.org/en/latest/advanced/typeset.html
 
 // global varibles
 // Have a look at whats in the html file and then in the data folder.
@@ -247,6 +248,9 @@ const TheMatrix = new Vue({
       if (obj) {
         // the second item in the array is the index of the object
         this.objects[obj[1]].data[key] = value
+        if (Array.isArray(this.objects[obj[1]].data[key])) {
+          console.log('there was an array updated');
+        }
       } else {
         console.log(`Did not find the following pair to update: (id:${id}, key:${key}) trying to update it with:`);
         console.log(value);

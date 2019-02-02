@@ -121,12 +121,6 @@ li.menu:hover {
   background: rgba(103, 237, 255, 0.5);
 }
 
-.matrix {
-  border-radius: 10px;
-  border-left: 2px solid rgb(0, 0, 0);
-  border-right: 2px solid rgb(0, 0, 0);
-}
-
 .matrix.selected {
   transition: transform .1s ease-in-out;
   transform: scale(1.2);

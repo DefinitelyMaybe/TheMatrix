@@ -72,17 +72,20 @@ Vue.component("math-matrix", {
       this.$root.onContextMenu(event, 'matrix')
     }
   },
-  template: `<table draggable="true"
+  template: `<div draggable="true"
 v-on:dragend="onDragEnd"
 v-on:dragstart="onDragStart"
 v-bind:class="{ matrix: true, selected: selected}"
 v-on:click.prevent="onClick"
-v-on:contextmenu.prevent="onRightClick($event, 'matrix')">
-  <tr v-for="(row, i) in entries">
+v-on:contextmenu.prevent="onRightClick($event, 'matrix')">{{entries}}
+</div>`,
+})
+
+/*
+<tr v-for="(row, i) in entries">
     <td v-for="(item, j) in row" 
     v-bind:row="i"
     v-bind:col="j"
     v-on:click="getInputForEntry">{{ entries[i][j] }}</td>
   </tr>
-</table>`,
-})
+*/

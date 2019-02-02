@@ -53,13 +53,10 @@ Vue.component("math-table", {
     changeHeader: function (index) {
       // select the table before getting tableInput from user
       if (this.selected) {
-        let currentNumber = event.target.innerText
-        let newNumber = prompt("Change the number?", currentNumber)
-        if (newNumber && currentNumber != newNumber) {
-          let row = parseInt(event.target.attributes["row"].value)
-          let col = parseInt(event.target.attributes["col"].value)
-          
-          this.newEntry(row, col, newNumber)
+        let newHeader = prompt("Change the number?", this.headers[index])
+        if (newHeader && this.headers[index] != newHeader) {
+          this.headers[index] = newHeader
+          this.$root.updateData(this.$attrs.id, 'headers', this.headers)
         } 
       } else {
         this.onClick(event)
