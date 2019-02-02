@@ -20,6 +20,63 @@ p {
   margin: 0px;
 }
 
+ol.menu {
+  border: 1px rgb(103, 237, 255) solid;
+  list-style: none;
+  padding-left: 0px;
+  margin-top: 0px;
+  margin-bottom: 0px;
+}
+li {
+  background: rgb(255, 255, 255);
+}
+
+li.menu {
+  background: rgb(255, 255, 255);
+  font-size: 18px;
+  height: 100%;
+}
+
+li.menu:hover {
+  background: rgb(227, 252, 255)
+}
+
+.table {
+  border: 1px dashed black;
+  border-collapse: collapse;
+}
+
+.table td {
+  border: 1px dashed black;
+}
+
+.table th {
+  background: rgba(103, 237, 255, 0.2);
+  border: 1px dashed black;
+}
+
+.table:hover {
+  transition: transform .1s ease-in-out;
+  transform: scale(1.2);
+}
+
+.table.selected {
+  transition: transform .1s ease-in-out;
+  transform: scale(1.2);
+}
+
+.text {
+  background: none;
+  font-size: 17px;
+  border: none;
+  resize: none;
+  border: 1px dashed black;
+}
+
+.text.selected {
+  resize: both;
+}
+
 .variable:hover {
   transition: transform .1s ease-in-out;
   transform: scale(1.2);
@@ -77,25 +134,4 @@ p {
 
 .matrix:hover {
   transform: scale(1.2);
-}
-
-ol.menu {
-  border: 1px rgb(103, 237, 255) solid;
-  list-style: none;
-  padding-left: 0px;
-  margin-top: 0px;
-  margin-bottom: 0px;
-}
-li {
-  background: rgb(255, 255, 255);
-}
-
-li.menu {
-  background: rgb(255, 255, 255);
-  font-size: 18px;
-  height: 100%;
-}
-
-li.menu:hover {
-  background: rgb(227, 252, 255)
 }

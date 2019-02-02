@@ -31,7 +31,7 @@ const TheMatrix = new Vue({
     // The id of the currently selected object
     selectedObj: null,
     // An array of objects which describe the scene
-    objects: [],
+    objects: DATA_objects,
     styleObj: {
       width: '100%',
       height: '100%'
@@ -44,7 +44,7 @@ const TheMatrix = new Vue({
   },
   created: function () {
     // for the moment we're going to manually bring our scene ids up to speed with the loaded scene
-    this.nextID = 7
+    this.nextID = 9
   },
   methods: {
     getNewObjectID: function () {
@@ -357,13 +357,12 @@ v-bind:style="styleObj">
   v-bind:style="contextMenuStyle">
     <li v-on:click="deleteCurrentObj" v-bind:class="{menu: true}">Delete</li>
   </ol>
-  <!-- base-text></base-text -->
 </div>`
 })
 
 window.onload = function () {
   //console.log(TheMatrix);
-  let f = math.parse('2x^2+x')
+  /*let f = math.parse('2x^2+x')
   console.log(f)
   let g = math.compile('2x^2+x')
   console.log(g);
@@ -387,7 +386,7 @@ window.onload = function () {
   let parser = math.parser()
   parser.set('x', 3)
   console.log(parser);
-  console.log(parser.eval("x+2"));
+  console.log(parser.eval("x+2"));*/
 }
 
 // Got a library library from the internet.

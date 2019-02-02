@@ -71,4 +71,20 @@ DATA_objects = [{
     "type": "number",
     "value": 0
   }
+}, {
+  "id": "7",
+  "type": "base-text",
+  "data": {
+    "position": ["363px", "375px"],
+    "value": 'some text'
+  }
+}, {
+  "id": "8",
+  "type": "math-table",
+  "data": {
+    "position": ["363px", "475px"],
+    "headers": ["y", "g()"],
+    "tableInput": [1,2,3,4,5],
+    "tableOutput": ['a', 'b', 'c', 'd', 'e']
+  }
 }]

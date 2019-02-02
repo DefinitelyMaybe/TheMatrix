@@ -13,7 +13,8 @@ Vue.component("base-text", {
   },
   created: function () {
     if (this.initData) {
-      console.log(this.initData);
+      //console.log(this.initData);
+      this.value = this.initData.value
     }
   },
   methods: {
@@ -55,9 +56,9 @@ Vue.component("base-text", {
   template: `<textarea draggable="true"
 v-on:dragend="onDragEnd"
 v-on:dragstart="onDragStart"
-
-v-bind:class="{text:true, selected:selected}"
 v-on:click.prevent="onClick"
-v-on:contextmenu.prevent="onRightClick($event, 'matrix')">
+v-on:contextmenu.prevent="onRightClick($event, 'matrix')"
+v-bind:class="{text:true, selected:selected}"
+v-model:value=value>
 </textarea>`,
 })

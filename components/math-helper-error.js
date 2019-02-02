@@ -1,1 +1,0 @@
-// Could create a helper element for if an equation becomes erroneous
