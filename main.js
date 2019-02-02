@@ -1,3 +1,21 @@
+// Global Scripts
+// mathjs - http://mathjs.org/
+// plotly - https://plot.ly/javascript/
+
+// possibles
+// mathjax - for making it look pretty
+
+// global varibles
+// Have a look at whats in the html file and then in the data folder.
+// This variable will be moved later
+
+// functions
+function define(obj) {
+  console.log(obj);
+  // Here we're going to let the parser know about a new thing we've defined
+  // i.e. have a scope object for the page
+}
+
 const TheMatrix = new Vue({
   el: '#TheMatrix',
   data: {
@@ -13,7 +31,7 @@ const TheMatrix = new Vue({
     // The id of the currently selected object
     selectedObj: null,
     // An array of objects which describe the scene
-    objects: DATA_objects,
+    objects: [],
     styleObj: {
       width: '100%',
       height: '100%'
@@ -339,11 +357,37 @@ v-bind:style="styleObj">
   v-bind:style="contextMenuStyle">
     <li v-on:click="deleteCurrentObj" v-bind:class="{menu: true}">Delete</li>
   </ol>
+  <!-- base-text></base-text -->
 </div>`
 })
 
 window.onload = function () {
   //console.log(TheMatrix);
+  let f = math.parse('2x^2+x')
+  console.log(f)
+  let g = math.compile('2x^2+x')
+  console.log(g);
+  let x = g.eval({x:2})
+  console.log(x);
+
+  console.log("-------------");
+  console.log(JSON.stringify(f)); // can stringify an expression tree
+  console.log(JSON.stringify(g)); // cannot stringify a function
+
+  console.log("-------------");
+  console.log(JSON.parse('{"mathjs":"OperatorNode","op":"+","fn":"add","args":[{"mathjs":"OperatorNode","op":"*","fn":"multiply","args":[{"mathjs":"ConstantNode","value":2},{"mathjs":"OperatorNode","op":"^","fn":"pow","args":[{"mathjs":"SymbolNode","name":"x"},{"mathjs":"ConstantNode","value":2}],"implicit":false}],"implicit":true},{"mathjs":"SymbolNode","name":"x"}],"implicit":false}', math.json.reviver));
+  // bringing an expression tree back in is easy
+
+  console.log("-------------");
+  let h = f._compile(math) // expression trees must be compiled using the math library
+  console.log(h({x:2})) // before they can be called with a scope obj
+
+  console.log("-------------");
+  // question can we define a variable == anotherVaraible
+  let parser = math.parser()
+  parser.set('x', 3)
+  console.log(parser);
+  console.log(parser.eval("x+2"));
 }
 
 // Got a library library from the internet.
