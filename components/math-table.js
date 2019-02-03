@@ -22,41 +22,27 @@ Vue.component("math-table", {
     }
   },
   methods: {
-    newEntry: function (row, col, value) {
-      try {
-        let newRow = this.entries[row]
-        newRow[col] = value
-        this.entries.splice(row, 1, newRow)
-        // Only works if root has this function
-        this.$root.updateData(this.$attrs.id, 'entries', this.entries)
-      } catch (error) {
-        console.log('New entry error:');
-        console.log(error);
-      }
-    },
-    getInputForEntry: function (event) {
-      //console.log(event);
-      // select the matrix before getting tableInput from user
+    changeHeader: function (index) {
+      // select the table before getting tableInput from user
       if (this.selected) {
-        let currentNumber = event.target.innerText
-        let newNumber = prompt("Change the number?", currentNumber)
-        if (newNumber && currentNumber != newNumber) {
-          let row = parseInt(event.target.attributes["row"].value)
-          let col = parseInt(event.target.attributes["col"].value)
-          
-          this.newEntry(row, col, newNumber)
+        let newHeader = prompt("Change the header?", this.headers[index])
+        if (newHeader && this.headers[index] != newHeader) {
+          this.headers[index] = newHeader
+          this.headers.slice()
+          this.$root.updateData(this.$attrs.id, 'headers', this.headers)
         } 
       } else {
         this.onClick(event)
       }
     },
-    changeHeader: function (index) {
+    changeInput: function (index) {
       // select the table before getting tableInput from user
       if (this.selected) {
-        let newHeader = prompt("Change the number?", this.headers[index])
-        if (newHeader && this.headers[index] != newHeader) {
-          this.headers[index] = newHeader
-          this.$root.updateData(this.$attrs.id, 'headers', this.headers)
+        let newInput = prompt("Change the input?", this.tableInput[index])
+        if (newInput && this.tableInput[index] != newInput) {
+          this.tableInput[index] = newInput
+          this.tableInput.slice()
+          this.$root.updateData(this.$attrs.id, 'tableInput', this.tableInput)
         } 
       } else {
         this.onClick(event)

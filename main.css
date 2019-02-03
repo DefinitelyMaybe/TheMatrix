@@ -48,13 +48,14 @@ li.menu:hover {
 
 .table td {
   border: 1px dashed black;
+  padding: 5px;
 }
 
 .table th {
   background: rgba(103, 237, 255, 0.2);
   border: 1px dashed black;
 }
-
+/*
 .table:hover {
   transition: transform .1s ease-in-out;
   transform: scale(1.2);
@@ -64,6 +65,7 @@ li.menu:hover {
   transition: transform .1s ease-in-out;
   transform: scale(1.2);
 }
+*/
 
 .text {
   background: none;
@@ -77,6 +79,7 @@ li.menu:hover {
   resize: both;
 }
 
+/*
 .variable:hover {
   transition: transform .1s ease-in-out;
   transform: scale(1.2);
@@ -86,11 +89,13 @@ li.menu:hover {
   transition: transform .1s ease-in-out;
   transform: scale(1.2);
 }
+*/
 
 .variable.objHover {
   background: rgba(103, 237, 255, 0.5);
 }
 
+/*
 .variable.selected .matrix.selected {
   transition: transform .1s ease-in-out;
   transform: scale(1);
@@ -100,6 +105,7 @@ li.menu:hover {
   transition: transform .1s ease-in-out;
   transform: scale(1);
 }
+*/
 
 .function {
   background: rgba(103, 237, 255, 0.5);
@@ -107,6 +113,7 @@ li.menu:hover {
   flex-direction: row;
 }
 
+/*
 .function:hover {
   transition: transform .1s ease-in-out;
   transform: scale(1.2);
@@ -116,11 +123,12 @@ li.menu:hover {
   transition: transform .1s ease-in-out;
   transform: scale(1.2);
 }
-
+*/
 .function .matrix {
   background: rgba(103, 237, 255, 0.5);
 }
 
+/*
 .matrix.selected {
   transition: transform .1s ease-in-out;
   transform: scale(1.2);
@@ -129,3 +137,4 @@ li.menu:hover {
 .matrix:hover {
   transform: scale(1.2);
 }
+*/

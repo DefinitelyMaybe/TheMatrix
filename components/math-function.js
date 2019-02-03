@@ -1,4 +1,4 @@
-Vue.component("math-expression", {
+Vue.component("math-function", {
   props: {
     initData: Object,
     selected: Boolean
@@ -7,8 +7,7 @@ Vue.component("math-expression", {
     return {
       // the default function name
       // used as a referrence for other functions
-      name: "expression?",
-      variables: [],
+      name: "function?",
       expression: "...",
 
       // For moving around on the scene
@@ -24,13 +23,33 @@ Vue.component("math-expression", {
   created: function () {
     if (this.initData) {
       //console.log(this.initData);
-      this.result = this.initData.result
-      this.variables = this.initData.variables
       this.name = this.initData.name
       this.expression = this.initData.expression
     }
   },
   methods: {
+    changeName: function () {
+      if (this.selected) {
+        let newName = prompt("what would you like to change the name to?", this.name)
+        if (newName && this.name != newName) {
+          this.name = newName
+          this.$root.updateData(this.$attrs.id, 'name', this.name)
+        } 
+      } else {
+        this.onClick(event)
+      }
+    },
+    changeExpression: function () {
+      if (this.selected) {
+        let newExpression = prompt("what would you like to change the name to?", this.expression)
+        if (newExpression && this.expression != newExpression) {
+          this.expression = newExpression
+          this.$root.updateData(this.$attrs.id, 'expression', this.expression)
+        } 
+      } else {
+        this.onClick(event)
+      }
+    },
     onDrop: function (event) {
       console.log("OnDrop function called.");
       // Data is going to be moved from the mains objects and nested within the function object
@@ -67,9 +86,8 @@ v-bind:class="{ function: true, selected: selected}"
 
 v-on:click.prevent="onClick"
 v-on:contextmenu.prevent="onRightClick($event, 'function')">
-  <p>{{name}}</p>
-  <p v-if="variables.length != 0">(...)</p>
+  <p v-on:click.prevent="changeName">{{name}}</p>
   <p>=</p>
-  <p>{{expression}}</p>
+  <p v-on:click.prevent="changeExpression">{{expression}}</p>
 </div>`,
 })

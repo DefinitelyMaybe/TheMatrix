@@ -55,12 +55,11 @@ DATA_objects = [{
 }
 }, {
 "id": "5",
-"type": "math-expression",
+"type": "math-function",
 "data": {
   "position": ["146px", "320px"],
   "name": "f",
-  "expression": "2 + 10 - 15",
-  "variables": []
+  "expression": "2 + 10 - 15"
 }
 }, {
 "id": "6",

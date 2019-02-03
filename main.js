@@ -93,7 +93,10 @@ const TheMatrix = new Vue({
             type: options.type,
             data: {
               position: options.position,
-              expressionTree: options.expressionTree || []
+              result: options.result,
+              variables: options.variables,
+              name: options.name,
+              expression: options.expression
             }
           })
           break;
@@ -108,6 +111,18 @@ const TheMatrix = new Vue({
               name: options.name || 'x',
               type: options.valueType || 'number',
               value: options.value || 0
+            }
+          })
+          break;
+        }
+        case 'base-text':
+        {
+          this.objects.push({
+            id: this.getNewObjectID(),
+            type: options.type,
+            data: {
+              position: options.position,
+              value: ''
             }
           })
           break;
@@ -156,7 +171,10 @@ const TheMatrix = new Vue({
           this.createObj({
             type: 'math-function',
             position:[`${event.x}px`, `${event.y}px`],
-            expressionTree: []
+            name: "function?",
+            variables: {},
+            expression: "...",
+            result: ''
           })
           break;
         }
@@ -250,6 +268,7 @@ const TheMatrix = new Vue({
         this.objects[obj[1]].data[key] = value
         if (Array.isArray(this.objects[obj[1]].data[key])) {
           console.log('there was an array updated');
+          this.objects[obj[1]].data[key].slice()
         }
       } else {
         console.log(`Did not find the following pair to update: (id:${id}, key:${key}) trying to update it with:`);
