@@ -36,7 +36,6 @@ Vue.component("base-text", {
       let y = event.y - this.dragOffsetY
       this.$root.updateData(this.$attrs.id, 'position', [`${x}px`, `${y}px`])
       // updating the class appropriately
-      this.objHover = false
     },
     onDragStart: function (event) {
       //console.log("onDragStart function says...");

@@ -80,8 +80,8 @@ const TheMatrix = new Vue({
             id: this.getNewObjectID(),
             type: options.type,
             data: {
-              position: options.position,
-              entries: options.entries
+              position: options.data.position,
+              entries: options.data.entries
             }
           })
           break;
@@ -92,11 +92,11 @@ const TheMatrix = new Vue({
             id: this.getNewObjectID(),
             type: options.type,
             data: {
-              position: options.position,
-              result: options.result,
-              variables: options.variables,
-              name: options.name,
-              expression: options.expression
+              position: options.data.position,
+              result: options.data.result,
+              variables: options.data.variables,
+              name: options.data.name,
+              expression: options.data.expression
             }
           })
           break;
@@ -107,10 +107,10 @@ const TheMatrix = new Vue({
             id: this.getNewObjectID(),
             type: options.type,
             data: {
-              position: options.position,
-              name: options.name || 'x',
-              type: options.valueType || 'number',
-              value: options.value || 0
+              position: options.data.position,
+              name: options.data.name || 'x',
+              type: options.data.valueType || 'number',
+              value: options.data.value || 0
             }
           })
           break;
@@ -121,8 +121,22 @@ const TheMatrix = new Vue({
             id: this.getNewObjectID(),
             type: options.type,
             data: {
-              position: options.position,
-              value: ''
+              position: options.data.position,
+              value: options.data.value || ''
+            }
+          })
+          break;
+        }
+        case 'math-table':
+        {
+          this.objects.push({
+            id: this.getNewObjectID(),
+            type: options.type,
+            data: {
+              position: options.data.position,
+              headers: options.data.headers || ['?', '?'],
+              tableInput: options.data.tableInput || [1,2,3,4,5],
+              tableOutput: options.data.tableOutput || ['', '', '', '', ''],
             }
           })
           break;
@@ -134,7 +148,7 @@ const TheMatrix = new Vue({
       }
     },
     userCreateObj: function (event) {
-      let obj = prompt("What would you like to create? Type one of the following...\nmatrix\nfunction\nvariable", '')
+      let obj = prompt("What would you like to create? Type one of the following...\nmatrix\nfunction\nvariable\ntext\ntable", '')
       
       switch (obj) {
         case 'matrix':
@@ -161,8 +175,10 @@ const TheMatrix = new Vue({
           }
           this.createObj({
             type: 'math-matrix',
-            position:[`${event.x}px`, `${event.y}px`],
-            entries: defaultEntries
+            data: {
+              position:[`${event.x}px`, `${event.y}px`],
+              entries: defaultEntries
+            }
           })
           break;
         }
@@ -170,11 +186,13 @@ const TheMatrix = new Vue({
         {
           this.createObj({
             type: 'math-function',
-            position:[`${event.x}px`, `${event.y}px`],
-            name: "function?",
-            variables: {},
-            expression: "...",
-            result: ''
+            data: {
+              position:[`${event.x}px`, `${event.y}px`],
+              name: "function?",
+              variables: {},
+              expression: "...",
+              result: ''
+            }
           })
           break;
         }
@@ -182,10 +200,36 @@ const TheMatrix = new Vue({
         {
           this.createObj({
             type: 'math-variable',
-            position:[`${event.x}px`, `${event.y}px`],
-            name: 'x',
-            valueType: 'number',
-            value: 0
+            data: {
+              position:[`${event.x}px`, `${event.y}px`],
+              name: 'x',
+              valueType: 'number',
+              value: 0
+            }
+          })
+          break;
+        }
+        case 'text':
+        {
+          this.createObj({
+            type: 'base-text',
+            data: {
+              position:[`${event.x}px`, `${event.y}px`],
+              value: ''
+            }
+          })
+          break;
+        }
+        case 'table':
+        {
+          this.createObj({
+            type: 'math-table',
+            data: {
+              position:[`${event.x}px`, `${event.y}px`],
+              headers: ['x', '?'],
+              tableInput: [1,2,3,4,5],
+              tableOutput: ['', '', '', '', '']
+            }
           })
           break;
         }
@@ -240,6 +284,12 @@ const TheMatrix = new Vue({
       // and we must close the context menu once the operation finishes
       this.showContext = false
     },
+    deleteAllObjects: function () {
+      // if all objects are being deleted we can reset the unique ids
+      this.objects = []
+      this.nextID = 0
+      this.freeObjectID = []
+    },
     selectObj: function (event, id) {
       // if we just selected an obj, make sure we close the context menu
       this.showContext = false
@@ -266,10 +316,10 @@ const TheMatrix = new Vue({
       if (obj) {
         // the second item in the array is the index of the object
         this.objects[obj[1]].data[key] = value
-        if (Array.isArray(this.objects[obj[1]].data[key])) {
+        /*if (Array.isArray(this.objects[obj[1]].data[key])) {
           console.log('there was an array updated');
           this.objects[obj[1]].data[key].slice()
-        }
+        }*/
       } else {
         console.log(`Did not find the following pair to update: (id:${id}, key:${key}) trying to update it with:`);
         console.log(value);
@@ -288,54 +338,39 @@ const TheMatrix = new Vue({
       this.deleteObjByID(id)
     },
     toJSON: function () {
-      return JSON.stringify(this.$data)
+      return JSON.stringify(this.objects)
     },
-    loadMainData: function (data) {
-      // question replace all of main data
-      // or just load the objects/objects?
-      // For now, just load the objects
-      // Expects a JSON string
-      let x = JSON.parse(data)
-      if (x.objects) {
-        console.log("the input objects:", x.objects);
-        console.log("the current objects:", this.objects);
-        this.objects = []
-        for (let i = 0; i < x.objects.length; i++) {
-          this.objects.push(x.objects[i]);
-        }
-        console.log("the current objects:", this.objects);
-      } else {
-        console.log("there were no objects");
-      }
-      return "Something may have happened"
-    },
-    LoadObject: function () {
-      let x = prompt("what would you like to load in?\ntype on of the following:\nscene\nobject")
+    onLoad: function () {
+      this.showContext = false
+      let x = prompt("what would you like to load in? Type on of the following:\nscene\nobject")
+      let y = prompt("paste all of the JSON data here:")
       switch (x) {
         case 'scene':
           {
-            let y = prompt("paste all of the JSON data here:")
             try {
-              y = JSON.parse(y)
-              loadMainData(y)
+              let z = JSON.parse(y)
+              this.deleteAllObjects()
+              for (let i = 0; i < z.length; i++) {
+                this.createObj(z[i]);
+              }
             } catch (error) {
-              console.log("couldn't manage to parse the data, are you sure it was json formatted?");
+              console.log("couldn't manage to parse the data because:");
               console.log(error);
             }
           }
           break;
         case 'object':
           {
-            
+            console.log('WIP');
           }
           break;
         default:
-          
+          console.log("Sorry, wasn't sure what you wanted to load in.");
           break;
       }
     },
     saveObjects: function () {
-      alert(`Copy the following into the Load function:\n${this.toJSON()}`)
+      console.log(`Copy the following into the Load function:\n${this.toJSON()}`)
     }
   },
   template: `<div ondragover="event.preventDefault()"
@@ -354,7 +389,7 @@ v-bind:style="styleObj">
   v-bind:class="{menu: true}"
   v-show="showContext && contextType == 'main'"
   v-bind:style="contextMenuStyle">
-    <li v-on:click="LoadObject" v-bind:class="{menu: true}">Load</li>
+    <li v-on:click="onLoad" v-bind:class="{menu: true}">Load</li>
     <li v-on:click="saveObjects" v-bind:class="{menu: true}">Save</li>
     <li v-on:click="userCreateObj" v-bind:class="{menu: true}">Create</li>
   </ol>

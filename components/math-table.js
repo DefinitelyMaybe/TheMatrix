@@ -27,8 +27,7 @@ Vue.component("math-table", {
       if (this.selected) {
         let newHeader = prompt("Change the header?", this.headers[index])
         if (newHeader && this.headers[index] != newHeader) {
-          this.headers[index] = newHeader
-          this.headers.slice()
+          this.headers.splice(index, 1, newHeader)
           this.$root.updateData(this.$attrs.id, 'headers', this.headers)
         } 
       } else {
@@ -40,8 +39,7 @@ Vue.component("math-table", {
       if (this.selected) {
         let newInput = prompt("Change the input?", this.tableInput[index])
         if (newInput && this.tableInput[index] != newInput) {
-          this.tableInput[index] = newInput
-          this.tableInput.slice()
+          this.tableInput.splice(index, 1, newInput)
           this.$root.updateData(this.$attrs.id, 'tableInput', this.tableInput)
         } 
       } else {
