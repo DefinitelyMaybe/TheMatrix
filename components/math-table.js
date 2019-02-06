@@ -9,6 +9,7 @@ Vue.component("math-table", {
       headers: ['x', '?'],
       tableInput: [1,2,3,4,5],
       tableOutput: ['', '', '', '', ''],
+      // another idea would be connected functions on a separate table?
       dragOffsetX: 0,
       dragOffsetY: 0
     }
@@ -38,10 +39,20 @@ Vue.component("math-table", {
       // select the table before getting tableInput from user
       if (this.selected) {
         let newInput = prompt("Change the input?", this.tableInput[index])
-        if (newInput && this.tableInput[index] != newInput) {
-          this.tableInput.splice(index, 1, newInput)
-          this.$root.updateData(this.$attrs.id, 'tableInput', this.tableInput)
-        } 
+        try {
+          newInput = parseFloat(newInput)
+          if (newInput && this.tableInput[index] != newInput) {
+            this.tableInput.splice(index, 1, newInput)
+            // this is the weirdest looking piece of code ever but...
+            // this is how you invoke the setter function of the computed property
+            this.outputTable = index
+            this.$root.updateData(this.$attrs.id, 'tableInput', this.tableInput)
+          }
+        } catch (error) {
+          // check back here later. this output didn't seem to ever be invoked.
+          console.warn("For the moment, inputs must be numbers.");
+          console.warn(error);
+        }
       } else {
         this.onClick(event)
       }
@@ -70,6 +81,30 @@ Vue.component("math-table", {
       this.$root.onContextMenu(event, 'variable')
     }
   },
+  computed: {
+    outputTable: {
+      get: function () {
+        return this.tableOutput
+      },
+      set: function (index) {
+        //console.log(index);
+        // now with this index, create the variable scope object for the eval call
+        let scope = {}
+        // going to hard code just for a moment
+        scope[this.headers[0]] = this.tableInput[index]
+        //console.log(scope);
+        // next we need the output function string
+        // more hard coding
+        let func = this.$root.getFunctionString(this.headers[1])
+        //console.log(func);
+        let g = math.compile(func)
+        let outputValue = g.eval(scope)
+
+        this.tableOutput.splice(index, 1, outputValue)
+        this.$root.updateData(this.$attrs.id, 'tableOutput', this.tableOutput)
+      }
+    }
+  },
   template: `<table draggable="true"
   v-on:dragend="onDragEnd"
   v-on:dragstart="onDragStart"
@@ -84,7 +119,7 @@ Vue.component("math-table", {
     <tr v-for="(value, index) in tableInput"
     v-bind:key="index">
       <td v-on:click="changeInput(index)">{{value}}</td>
-      <td>{{tableOutput[index]}}</td>
+      <td>{{outputTable[index]}}</td>
     </tr>
   </table>`,
 })

@@ -83,9 +83,9 @@ DATA_objects = [{
   "id": "8",
   "type": "math-table",
   "data": {
-    "position": ["148px", "508px"],
+    "position": ["260px", "373px"],
     "headers": ["x", "f"],
     "tableInput": [1, 2, 3, 4, 5],
-    "tableOutput": ["a", "b", "c", "d", "e"]
+    "tableOutput": [139, 163, 187, 211, 235]
   }
 }]

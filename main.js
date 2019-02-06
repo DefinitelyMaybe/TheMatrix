@@ -70,6 +70,25 @@ const TheMatrix = new Vue({
         }
       }
     },
+    getAllFunctions: function () {
+      let x = []
+      for (let i = 0; i < this.objects.length; i++) {
+        if (this.objects[i].type == "math-function") {
+          x.push(this.objects[i])
+        }
+      }
+      return x
+    },
+    getFunctionString: function (symbol) {
+      //console.log(symbol);
+      // the idea here is to match the symbol to a function and return the function string
+      let x = this.getAllFunctions()
+      for (let i = 0; i < x.length; i++) {
+        if (x[i].data.name == symbol) {
+          return x[i].data.expression
+        }
+      }
+    },
     createObj: function (options) {
       //console.log("creating an object");
       //console.log(options);
