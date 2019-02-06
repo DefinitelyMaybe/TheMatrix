@@ -22,15 +22,13 @@ Vue.component("base-text", {
     }
   },
   methods: {
-    changeValue: function () {
+    updateValue: function (event) {
       if (this.selected) {
-        let x = prompt(`What would you like to change the value to?`, this.value)
-        if (x) {
-          this.value = x
-          this.$root.updateData(this.$attrs.id, 'value', x)
-        } 
-      } else {
-        this.onClick()
+        // find the element and 
+        if (this.value != event.srcElement.value) {
+          this.value = event.srcElement.value
+          this.$root.updateData(this.$attrs.id, 'value', this.value)
+        }
       }
     },
     onDragEnd: function (event) {
@@ -74,8 +72,8 @@ v-on:dragstart="onDragStart"
 v-on:click.prevent="onClick"
 v-on:contextmenu.prevent="onRightClick($event, 'matrix')"
 v-on:mouseup="onResizeTextBox"
+v-on:keyup="updateValue"
 v-bind:class="{text:true, selected:selected}"
-v-bind:style="{width:width, height:height}"
-v-model:value=value>
+v-bind:style="{width:width, height:height}">{{value}}
 </textarea>`,
 })

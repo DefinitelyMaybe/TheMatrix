@@ -74,10 +74,10 @@ DATA_objects = [{
   "id": "7",
   "type": "base-text",
   "data": {
-    "position": ["363px", "375px"],
-    "value": "some text, needs more text\nand more\nand more",
-    "width": "256px",
-    "height": "414px"
+    "position": ["394px", "398px"],
+    "value": "some text, needs more text\nand more\nand more\n\nasdas\ns\ns\ns\nsasdasfcdgzxdfgsafg\nas",
+    "width": "327px",
+    "height": "226px"
   }
 }, {
   "id": "8",
