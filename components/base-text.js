@@ -7,6 +7,8 @@ Vue.component("base-text", {
     return {
       // some default settings
       value: '',
+      width: "300px",
+      height: "150px",
       dragOffsetX: 0,
       dragOffsetY: 0
     }
@@ -15,6 +17,8 @@ Vue.component("base-text", {
     if (this.initData) {
       //console.log(this.initData);
       this.value = this.initData.value
+      this.width = this.initData.width
+      this.height = this.initData.height
     }
   },
   methods: {
@@ -50,6 +54,18 @@ Vue.component("base-text", {
     onRightClick: function (event) {
       this.$root.selectObj(event, this.$attrs.id)
       this.$root.onContextMenu(event, 'variable')
+    },
+    onResizeTextBox: function (event) {
+      // check whether the text box size changed
+      // and if it did update the root object and the local object
+      let w = event.srcElement.style.width
+      let h = event.srcElement.style.height
+      if (w != this.width || h != this.height) {
+        this.width = w
+        this.height = h
+        this.$root.updateData(this.$attrs.id, 'width', w)
+        this.$root.updateData(this.$attrs.id, 'height', h)
+      }
     }
   },
   template: `<textarea draggable="true"
@@ -57,7 +73,9 @@ v-on:dragend="onDragEnd"
 v-on:dragstart="onDragStart"
 v-on:click.prevent="onClick"
 v-on:contextmenu.prevent="onRightClick($event, 'matrix')"
+v-on:mouseup="onResizeTextBox"
 v-bind:class="{text:true, selected:selected}"
+v-bind:style="{width:width, height:height}"
 v-model:value=value>
 </textarea>`,
 })
