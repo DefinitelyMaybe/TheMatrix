@@ -5,6 +5,8 @@
 // possibles
 // mathjax - for making it look pretty
 // http://docs.mathjax.org/en/latest/advanced/typeset.html
+// http://mathquill.com/ - for typing maths into the browser
+// requires JQuery
 
 // global varibles
 // Have a look at whats in the html file and then in the data folder.
