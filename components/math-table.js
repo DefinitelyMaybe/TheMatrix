@@ -6,9 +6,11 @@ Vue.component("math-table", {
   data: function () {
     return {
       // some default settings
-      headers: ['x', '?'],
-      tableInput: [1,2,3,4,5],
-      tableOutput: ['', '', '', '', ''],
+      inputHeaders: ['x'],
+      inputTable: [[1], [2], [3], [4], [5]],
+
+      outputHeaders: ['?'],
+      outputTable: [[''], [''], [''], [''], ['']],
       // another idea would be connected functions on a separate table?
       dragOffsetX: 0,
       dragOffsetY: 0
@@ -17,37 +19,59 @@ Vue.component("math-table", {
   created: function () {
     if (this.initData) {
       //console.log(this.initData);
-      this.headers = this.initData.headers
-      this.tableInput = this.initData.tableInput
-      this.tableOutput = this.initData.tableOutput
+      this.inputHeaders = this.initData.inputHeaders
+      this.outputHeaders = this.initData.outputHeaders
+      this.inputTable = this.initData.inputTable
+      this.outputTable = this.initData.outputTable
     }
   },
   methods: {
-    changeHeader: function (index) {
+    changeHeader: function (index, type) {
       // select the table before getting tableInput from user
       if (this.selected) {
-        let newHeader = prompt("Change the header?", this.headers[index])
-        if (newHeader && this.headers[index] != newHeader) {
-          this.headers.splice(index, 1, newHeader)
-          this.$root.updateData(this.$attrs.id, 'headers', this.headers)
+        switch (type) {
+          case 'input':
+            {
+              let newHeader = prompt("Change the header?", this.inputHeaders[index])
+              this.inputHeaders.splice(index, 1, newHeader)
+              this.$root.updateData(this.$attrs.id, 'inputHeaders', this.inputHeaders)
+            }
+            break;
+          case 'output':
+            {
+              let newHeader = prompt("Change the header?", this.outputHeaders[index])
+              this.outputHeaders.splice(index, 1, newHeader)
+              this.$root.updateData(this.$attrs.id, 'outputHeaders', this.outputHeaders)
+            }
+            break;
+          default:
+            {
+              console.log("Default case of changeHeader method");
+            }
+            break;
         } 
       } else {
         this.onClick(event)
       }
     },
-    changeInput: function (index) {
-      // select the table before getting tableInput from user
+    changeInput: function (pos) {
+      //console.log("trying to change an input");
+      // select the table before getting input from user
       if (this.selected) {
-        let newInput = prompt("Change the input?", this.tableInput[index])
+        //console.log(pos);
+        let row = pos[0]
+        let col = pos[1]
+        let userInput = prompt("Change the input?", this.inputTable[row][col])
         try {
-          newInput = parseFloat(newInput)
-          if (newInput && this.tableInput[index] != newInput) {
-            this.tableInput.splice(index, 1, newInput)
-            // this is the weirdest looking piece of code ever but...
-            // this is how you invoke the setter function of the computed property
-            this.outputTable = index
-            this.$root.updateData(this.$attrs.id, 'tableInput', this.tableInput)
-          }
+          let newValue = parseFloat(userInput)
+          // update the array
+          let newRow = this.inputTable[row]
+          newRow.splice(col, 1, newValue)
+          this.inputTable.splice(row, 1, newRow)
+          // this is the weirdest looking piece of code ever but...
+          // this is how you invoke the setter function of the computed property
+          this.functionsOutput = row // this throws an error
+          this.$root.updateData(this.$attrs.id, 'inputTable', this.inputTable)
         } catch (error) {
           // check back here later. this output didn't seem to ever be invoked.
           console.warn("For the moment, inputs must be numbers.");
@@ -82,44 +106,71 @@ Vue.component("math-table", {
     }
   },
   computed: {
-    outputTable: {
+    functionsOutput: {
       get: function () {
-        return this.tableOutput
+        return this.outputTable
       },
-      set: function (index) {
-        //console.log(index);
+      set: function (row) {
+        //console.log(typeof row);
         // now with this index, create the variable scope object for the eval call
         let scope = {}
-        // going to hard code just for a moment
-        scope[this.headers[0]] = this.tableInput[index]
-        //console.log(scope);
-        // next we need the output function string
-        // more hard coding
-        let func = this.$root.getFunctionString(this.headers[1])
-        //console.log(func);
-        let g = math.compile(func)
-        let outputValue = g.eval(scope)
 
-        this.tableOutput.splice(index, 1, outputValue)
-        this.$root.updateData(this.$attrs.id, 'tableOutput', this.tableOutput)
+        for (let i = 0; i < this.inputHeaders.length; i++) {
+          scope[this.inputHeaders[i]] = this.inputTable[row][i]
+        }
+        console.log(scope);
+        // next we need the output function string
+        for (let i = 0; i < this.outputHeaders.length; i++) {
+          console.log(i);
+          let func = this.$root.getFunctionString(this.outputHeaders[i])
+          if (func) {
+            let g = math.compile(func)
+            let outputValue = g.eval(scope)
+            //console.log(outputValue);
+            let newRow = this.outputTable[row]
+            newRow.splice(i, 1, outputValue)
+            this.outputTable.splice(row, 1, newRow)
+          } else {
+            let newRow = this.outputTable[row]
+            newRow.splice(i, 1, '')
+            this.outputTable.splice(row, 1, newRow)
+          }
+        }
+        this.$root.updateData(this.$attrs.id, 'outputTable', this.outputTable)
       }
     }
   },
-  template: `<table draggable="true"
+  template: `<div draggable="true"
   v-on:dragend="onDragEnd"
   v-on:dragstart="onDragStart"
   v-on:click.prevent="onClick"
   v-on:contextmenu.prevent="onRightClick($event, 'matrix')"
-  v-bind:class="{ table: true, selected: selected}">
+  v-bind:class="{ tableContainer: true, selected: selected}">
+    <table v-bind:class="{ table: true}">
+      <tr>
+        <th v-for="(value, index) in inputHeaders"
+        v-bind:key="index"
+        v-on:click="changeHeader(index, 'input')">{{ value }}</th>
+      </tr>
+      <tr v-for="(value, row) in inputTable"
+      v-bind:key="row">
+        <td v-for="(item, col) in value"
+        v-bind:key="col"
+        v-on:click="changeInput([row, col])">{{item}}</td>
+      </tr>
+    </table>
+    <p>:</p>
+    <table v-bind:class="{ table: true}">
     <tr>
-      <th v-for="(value, index) in headers"
+      <th v-for="(value, index) in outputHeaders"
       v-bind:key="index"
-      v-on:click="changeHeader(index)">{{ value }}</th>
+      v-on:click="changeHeader(index, 'output')">{{ value }}</th>
     </tr>
-    <tr v-for="(value, index) in tableInput"
-    v-bind:key="index">
-      <td v-on:click="changeInput(index)">{{value}}</td>
-      <td>{{outputTable[index]}}</td>
+    <tr v-for="(value, row) in functionsOutput"
+    v-bind:key="row">
+      <td v-for="(item, col) in value"
+      v-bind:key="col">{{item}}</td>
     </tr>
-  </table>`,
+    </table>
+  </div>`,
 })

@@ -41,6 +41,21 @@ li.menu:hover {
   background: rgb(227, 252, 255)
 }
 
+.tableContainer {
+  display: flex;
+  flex-direction: row;
+}
+
+.tableContainer:hover {
+  transition: transform .1s ease-in-out;
+  transform: scale(1.2);
+}
+
+.tableContainer.selected {
+  transition: transform .1s ease-in-out;
+  transform: scale(1.2);
+}
+
 .table {
   border: 1px dashed black;
   border-collapse: collapse;
@@ -54,16 +69,6 @@ li.menu:hover {
 .table th {
   background: rgba(103, 237, 255, 0.2);
   border: 1px dashed black;
-}
-
-.table:hover {
-  transition: transform .1s ease-in-out;
-  transform: scale(1.2);
-}
-
-.table.selected {
-  transition: transform .1s ease-in-out;
-  transform: scale(1.2);
 }
 
 .text {

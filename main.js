@@ -155,9 +155,10 @@ const TheMatrix = new Vue({
             type: options.type,
             data: {
               position: options.data.position,
-              headers: options.data.headers || ['?', '?'],
-              tableInput: options.data.tableInput || [1,2,3,4,5],
-              tableOutput: options.data.tableOutput || ['', '', '', '', ''],
+              inputHeaders: options.data.inputHeaders || ['x'],
+              inputTable: options.data.inputTable || [[1],[2],[3],[4],[5]],
+              outputHeaders: options.data.outputHeaders || ['f'],
+              outputTable: options.data.outputTable || [[1],[2],[3],[4],[5]],
             }
           })
           break;
