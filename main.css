@@ -47,13 +47,11 @@ li.menu:hover {
 }
 
 .tableContainer:hover {
-  transition: transform .1s ease-in-out;
-  transform: scale(1.2);
+  background: rgba(103, 237, 255, 0.2);
 }
 
 .tableContainer.selected {
-  transition: transform .1s ease-in-out;
-  transform: scale(1.2);
+  background: rgba(103, 237, 255, 0.2);
 }
 
 .table {
@@ -84,13 +82,11 @@ li.menu:hover {
 }
 
 .variable:hover {
-  transition: transform .1s ease-in-out;
-  transform: scale(1.2);
+  background: rgba(103, 237, 255, 0.2);
 }
 
 .variable.selected {
-  transition: transform .1s ease-in-out;
-  transform: scale(1.2);
+  background: rgba(103, 237, 255, 0.2);
 }
 
 .variable.objHover {
@@ -98,40 +94,30 @@ li.menu:hover {
 }
 
 .variable.selected .matrix.selected {
-  transition: transform .1s ease-in-out;
-  transform: scale(1);
+  background: rgba(103, 237, 255, 0.2);
 }
 
 .variable .matrix:hover {
-  transition: transform .1s ease-in-out;
-  transform: scale(1);
+  background: rgba(103, 237, 255, 0.2);
 }
 
 .function {
-  background: rgba(103, 237, 255, 0.5);
   display: flex;
   flex-direction: row;
 }
 
 .function:hover {
-  transition: transform .1s ease-in-out;
-  transform: scale(1.2);
+  background: rgba(103, 237, 255, 0.2);
 }
 
 .function.selected {
-  transition: transform .1s ease-in-out;
-  transform: scale(1.2);
-}
-
-.function .matrix {
-  background: rgba(103, 237, 255, 0.5);
+  background: rgba(103, 237, 255, 0.2);
 }
 
 .matrix.selected {
-  transition: transform .1s ease-in-out;
-  transform: scale(1.2);
+  background: rgba(103, 237, 255, 0.2);
 }
 
 .matrix:hover {
-  transform: scale(1.2);
+  background: rgba(103, 237, 255, 0.2);
 }

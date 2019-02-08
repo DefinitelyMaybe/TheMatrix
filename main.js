@@ -166,7 +166,7 @@ const TheMatrix = new Vue({
               position: options.data.position,
               inputHeaders: options.data.inputHeaders || ['x'],
               inputTable: options.data.inputTable || [[1],[2],[3],[4],[5]],
-              outputHeaders: options.data.outputHeaders || ['f'],
+              outputHeaders: options.data.outputHeaders || ['?'],
               outputTable: options.data.outputTable || [['?'], ['?'], ['?'], ['?'], ['?']]
             }
           })
@@ -218,11 +218,7 @@ const TheMatrix = new Vue({
           this.createObj({
             type: 'math-function',
             data: {
-              position:[`${event.x}px`, `${event.y}px`],
-              name: "function?",
-              variables: {},
-              expression: "...",
-              result: ''
+              position:[`${event.x}px`, `${event.y}px`]
             }
           })
           break;
@@ -232,10 +228,7 @@ const TheMatrix = new Vue({
           this.createObj({
             type: 'math-variable',
             data: {
-              position:[`${event.x}px`, `${event.y}px`],
-              name: 'x',
-              valueType: 'number',
-              value: 0
+              position:[`${event.x}px`, `${event.y}px`]
             }
           })
           break;
@@ -245,8 +238,7 @@ const TheMatrix = new Vue({
           this.createObj({
             type: 'base-text',
             data: {
-              position:[`${event.x}px`, `${event.y}px`],
-              value: ''
+              position:[`${event.x}px`, `${event.y}px`]
             }
           })
           break;
@@ -256,10 +248,7 @@ const TheMatrix = new Vue({
           this.createObj({
             type: 'math-table',
             data: {
-              position:[`${event.x}px`, `${event.y}px`],
-              headers: ['x', '?'],
-              tableInput: [1,2,3,4,5],
-              tableOutput: ['', '', '', '', '']
+              position:[`${event.x}px`, `${event.y}px`]
             }
           })
           break;
@@ -470,7 +459,13 @@ v-bind:style="styleObj">
   v-bind:style="contextMenuStyle">
     <li v-on:click="evaluteTableWithID(selectedObj)" v-bind:class="{menu:true}">Evaluate All</li>
     <li v-bind:class="{menu: false}">-----</li>
-    <li v-on:click="deleteCurrentObj" v-bind:class="{menu: true}">Delete</li>
+    <li v-bind:class="{menu:true}">Add Input Column</li>
+    <li v-bind:class="{menu:true}">Add Output Column</li>
+    <li v-bind:class="{menu:true}">Add Row</li>
+    <li v-bind:class="{menu: false}">-----</li>
+    <li v-on:click="deleteTable" v-bind:class="{menu: true}">Delete Table</li>
+    <li v-on:click="0" v-bind:class="{menu: true}">Delete Row</li>
+    <li v-on:click="0" v-bind:class="{menu: true}">Delete Column</li>
   </ol>
 </div>`
 })

@@ -42,16 +42,12 @@ DATA_objects = [{
   }
 }, {
   "id": "4",
-  "type": "math-matrix",
+  "type": "math-variable",
   "data": {
     "position": ["434px", "373px"],
-    "entries": [
-      [0, 0],
-      [0, 0],
-      [0, 0],
-      [0, 0],
-      [0, 0]
-    ]
+    "name": "z",
+    "type": "number",
+    "value": 0
   }
 }, {
   "id": "5",
@@ -63,12 +59,11 @@ DATA_objects = [{
   }
 }, {
   "id": "6",
-  "type": "math-variable",
+  "type": "math-function",
   "data": {
     "position": ["72px", "199px"],
-    "name": "x",
-    "type": "number",
-    "value": 156
+    "name": "g",
+    "expression": "3x^2 + y"
   }
 }, {
   "id": "7",
