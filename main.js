@@ -58,13 +58,6 @@ const TheMatrix = new Vue({
       }
       return id.toString()
     },
-    getCurrentObjData: function () {
-      for (let i = 0; i < this.objects.length; i++) {
-        if (this.objects[i].id == this.selectedObj) {
-          return this.objects[i]
-        }
-      }
-    },
     getObjectByID: function (id) {
       for (let i = 0; i < this.objects.length; i++) {
         if (this.objects[i].id == id) {
@@ -72,10 +65,17 @@ const TheMatrix = new Vue({
         }
       }
     },
-    getAllFunctions: function () {
+    getVueObjectbyID: function (id) {
+      for (let i = 0; i < this.$children.length; i++) {
+        if (this.$children[i].$attrs.id == id) {
+          return this.$children[i]
+        }
+      }
+    },
+    getAllDataOfType: function (type) {
       let x = []
       for (let i = 0; i < this.objects.length; i++) {
-        if (this.objects[i].type == "math-function") {
+        if (this.objects[i].type == type) {
           x.push(this.objects[i])
         }
       }
@@ -84,12 +84,21 @@ const TheMatrix = new Vue({
     getFunctionString: function (symbol) {
       //console.log(symbol);
       // the idea here is to match the symbol to a function and return the function string
-      let x = this.getAllFunctions()
+      let x = this.getAllDataOfType('math-function')
       for (let i = 0; i < x.length; i++) {
         if (x[i].data.name == symbol) {
           return x[i].data.expression
         }
       }
+    },
+    evaluteTableWithID: function (id) {
+      // we assume that a table is already selected in order to get to this piece of code
+      let vueObj = this.getVueObjectbyID(id)
+      if (vueObj) {
+        //console.log(vueObj);
+        vueObj.evaluateAllRows()
+      }
+      this.showContext = false
     },
     createObj: function (options) {
       //console.log("creating an object");
@@ -158,7 +167,7 @@ const TheMatrix = new Vue({
               inputHeaders: options.data.inputHeaders || ['x'],
               inputTable: options.data.inputTable || [[1],[2],[3],[4],[5]],
               outputHeaders: options.data.outputHeaders || ['f'],
-              outputTable: options.data.outputTable || [[1],[2],[3],[4],[5]],
+              outputTable: options.data.outputTable || [['?'], ['?'], ['?'], ['?'], ['?']]
             }
           })
           break;
@@ -342,9 +351,31 @@ const TheMatrix = new Vue({
           console.log('there was an array updated');
           this.objects[obj[1]].data[key].slice()
         }*/
+        // Lots of objects called the updateData method
+        // so we need to be specific about what flow on effects might happen
+        //console.log(obj);
+        if (obj[0].type == "math-function") {
+          this.updateTablesWithSymbol(obj[0].data.name)
+        }
       } else {
-        console.log(`Did not find the following pair to update: (id:${id}, key:${key}) trying to update it with:`);
-        console.log(value);
+        console.warn(`Did not find the following pair to update: (id:${id}, key:${key}) trying to update it with:`);
+        console.warn(value);
+      }
+    },
+    updateTablesWithSymbol: function (symbol) {
+      //console.log(`updating tables with: ${symbol}`);
+      let tables = this.getAllDataOfType("math-table")
+      for (let i = 0; i < tables.length; i++) {
+        // first does the table have the symbol
+        if (tables[i].data.outputHeaders.includes(symbol)) {
+          //console.log("Yes we found our symbol");
+          // the need the vue object
+          let vueObj = this.getVueObjectbyID(tables[i].id)
+          if (vueObj) {
+            // if we did find it then we can call evaluate
+            vueObj.evaluateAllRows()
+          }
+        }
       }
     },
     dropData: function (id, updateObj) {
@@ -420,10 +451,6 @@ v-bind:style="styleObj">
   v-show="showContext && contextType == 'matrix'"
   v-bind:style="contextMenuStyle">
     <li v-on:click="deleteCurrentObj" v-bind:class="{menu: true}">Delete</li>
-    <li v-bind:class="{menu: false}">-----</li>
-    <li v-bind:class="{menu: true}">Add</li>
-    <li v-bind:class="{menu: true}">Subtract</li>
-    <li v-bind:class="{menu: true}">Multiply</li>
   </ol>
   <ol v-on:contextmenu.prevent="0"
   v-bind:class="{menu: true}"
@@ -435,6 +462,14 @@ v-bind:style="styleObj">
   v-bind:class="{menu: true}"
   v-show="showContext && contextType == 'function'"
   v-bind:style="contextMenuStyle">
+    <li v-on:click="deleteCurrentObj" v-bind:class="{menu: true}">Delete</li>
+  </ol>
+  <ol v-on:contextmenu.prevent="0"
+  v-bind:class="{menu: true}"
+  v-show="showContext && contextType == 'table'"
+  v-bind:style="contextMenuStyle">
+    <li v-on:click="evaluteTableWithID(selectedObj)" v-bind:class="{menu:true}">Evaluate All</li>
+    <li v-bind:class="{menu: false}">-----</li>
     <li v-on:click="deleteCurrentObj" v-bind:class="{menu: true}">Delete</li>
   </ol>
 </div>`

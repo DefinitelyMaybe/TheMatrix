@@ -77,7 +77,7 @@ v-on:dragend="onDragEnd"
 v-on:dragstart="onDragStart"
 v-bind:class="{ matrix: true, selected: selected}"
 v-on:click.prevent="onClick"
-v-on:contextmenu.prevent="onRightClick($event, 'matrix')">{{entries}}
+v-on:contextmenu.prevent="onRightClick($event)">{{entries}}
 </div>`,
 })
 

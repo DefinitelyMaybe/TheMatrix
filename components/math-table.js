@@ -10,7 +10,7 @@ Vue.component("math-table", {
       inputTable: [[1], [2], [3], [4], [5]],
 
       outputHeaders: ['?'],
-      outputTable: [[''], [''], [''], [''], ['']],
+      outputTable: [['?'], ['?'], ['?'], ['?'], ['?']],
       // another idea would be connected functions on a separate table?
       dragOffsetX: 0,
       dragOffsetY: 0
@@ -102,7 +102,14 @@ Vue.component("math-table", {
     },
     onRightClick: function (event) {
       this.$root.selectObj(event, this.$attrs.id)
-      this.$root.onContextMenu(event, 'variable')
+      this.$root.onContextMenu(event, 'table')
+    },
+    evaluateAllRows: function () {
+      //console.log("Evaluating...");
+      for (let i = 0; i < this.inputTable.length; i++) {
+        // I know this line looks strange but its what invokes the set method for the computed property.
+        this.functionsOutput = i
+      }
     }
   },
   computed: {
@@ -118,14 +125,21 @@ Vue.component("math-table", {
         for (let i = 0; i < this.inputHeaders.length; i++) {
           scope[this.inputHeaders[i]] = this.inputTable[row][i]
         }
-        console.log(scope);
+        //console.log(scope);
         // next we need the output function string
         for (let i = 0; i < this.outputHeaders.length; i++) {
-          console.log(i);
+          //console.log(i);
           let func = this.$root.getFunctionString(this.outputHeaders[i])
           if (func) {
             let g = math.compile(func)
-            let outputValue = g.eval(scope)
+            let outputValue
+            try {
+              outputValue = g.eval(scope) 
+            } catch (error) {
+              console.warn("outputValue is not undefined because...");
+              console.warn(error);
+              outputValue = '?'
+            }
             //console.log(outputValue);
             let newRow = this.outputTable[row]
             newRow.splice(i, 1, outputValue)
@@ -144,7 +158,7 @@ Vue.component("math-table", {
   v-on:dragend="onDragEnd"
   v-on:dragstart="onDragStart"
   v-on:click.prevent="onClick"
-  v-on:contextmenu.prevent="onRightClick($event, 'matrix')"
+  v-on:contextmenu.prevent="onRightClick($event)"
   v-bind:class="{ tableContainer: true, selected: selected}">
     <table v-bind:class="{ table: true}">
       <tr>
