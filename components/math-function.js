@@ -70,10 +70,10 @@ Vue.component("math-function", {
       this.dragOffsetY = event.offsetY
     },
     onClick: function (event) {
-      this.$root.selectObj(event, this.$attrs.id)
+      this.$root.selectObj(this.$attrs.id)
     },
     onRightClick: function (event) {
-      this.$root.selectObj(event, this.$attrs.id)
+      this.$root.selectObj(this.$attrs.id)
       this.$root.onContextMenu(event, 'function')
     }
   },

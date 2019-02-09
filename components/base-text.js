@@ -46,11 +46,11 @@ Vue.component("base-text", {
       this.dragOffsetX = event.offsetX
       this.dragOffsetY = event.offsetY
     },
-    onClick: function (event) {
-      this.$root.selectObj(event, this.$attrs.id)
+    onClick: function () {
+      this.$root.selectObj(this.$attrs.id)
     },
     onRightClick: function (event) {
-      this.$root.selectObj(event, this.$attrs.id)
+      this.$root.selectObj(this.$attrs.id)
       this.$root.onContextMenu(event, 'variable')
     },
     onResizeTextBox: function (event) {

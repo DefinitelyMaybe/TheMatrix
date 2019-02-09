@@ -313,7 +313,44 @@ const TheMatrix = new Vue({
     deleteTable: function () {
       console.log("delete what?");
     },
-    selectObj: function (event, id) {
+    addToTable: function (arg) {
+      switch (arg) {
+        case 'input':
+          {
+            console.log("Add input column");
+          }
+          break;
+        case 'output':
+          {
+            console.log("Add output column");
+          }
+          break;
+        default:
+          break;
+      }
+    },
+    removeFromTable: function (arg) {
+      switch (arg) {
+        case 'table':
+          {
+            console.log("Remove table");
+          }
+          break;
+        case 'row':
+          {
+            console.log("Remove row from table");
+          }
+          break;
+        case 'column':
+          {
+            console.log("Remove column from table");
+          }
+          break;
+        default:
+          break;
+      }
+    },
+    selectObj: function (id) {
       // if we just selected an obj, make sure we close the context menu
       this.showContext = false
       //console.log("select obj function called");
@@ -328,7 +365,7 @@ const TheMatrix = new Vue({
       this.contextMenuStyle.top = `${event.y}px`
       if (this.contextType === 'main') {
         // we right clicked someonewhere else so we need to make sure a selected object is de-selected
-        this.selectObj(event, '')
+        this.selectObj('')
         // because at the moment, selecting an obj hides the context, we need to turn it back on
         this.showContext = true
       }
@@ -419,7 +456,7 @@ const TheMatrix = new Vue({
     }
   },
   template: `<div ondragover="event.preventDefault()"
-v-on:click.self="selectObj($event, null)"
+v-on:click.self="selectObj('')"
 v-on:contextmenu.self.prevent="onContextMenu($event, 'main')"
 v-bind:style="styleObj">
   <component v-for="(obj, key) in objects"
@@ -460,13 +497,13 @@ v-bind:style="styleObj">
   v-bind:class="{menu: true}"
   v-show="showContext && contextType == 'table'"
   v-bind:style="contextMenuStyle">
-    <li v-bind:class="{menu:true}">Add Input Column</li>
-    <li v-bind:class="{menu:true}">Add Output Column</li>
-    <li v-bind:class="{menu:true}">Add Row</li>
+    <li v-on:click="addToTable('input')" v-bind:class="{menu:true}">Add Input Column</li>
+    <li v-on:click="addToTable('output')" v-bind:class="{menu:true}">Add Output Column</li>
+    <li v-on:click="addToTable('row')" v-bind:class="{menu:true}">Add Row</li>
     <li v-bind:class="{menu: false}">-----</li>
-    <li v-on:click="deleteTable" v-bind:class="{menu: true}">Delete Table</li>
-    <li v-on:click="0" v-bind:class="{menu: true}">Delete Row</li>
-    <li v-on:click="0" v-bind:class="{menu: true}">Delete Column</li>
+    <li v-on:click="removeFromTable('table')" v-bind:class="{menu: true}">Delete Table</li>
+    <li v-on:click="removeFromTable('row')" v-bind:class="{menu: true}">Delete Row</li>
+    <li v-on:click="removeFromTable('column')" v-bind:class="{menu: true}">Delete Column</li>
   </ol>
 </div>`
 })
