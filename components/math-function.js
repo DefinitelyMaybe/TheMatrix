@@ -10,6 +10,8 @@ Vue.component("math-function", {
       name: "function?",
       expression: "...",
 
+      position: ['0px', '0px'],
+
       // For moving around on the scene
       dragOffsetX: 0,
       dragOffsetY: 0,
@@ -25,6 +27,7 @@ Vue.component("math-function", {
       //console.log(this.initData);
       this.name = this.initData.name
       this.expression = this.initData.expression
+      this.position.splice(0, 2, this.initData.position)
     }
   },
   methods: {
@@ -50,10 +53,12 @@ Vue.component("math-function", {
         this.onClick(event)
       }
     },
-    onDrop: function (event) {
-      console.log("OnDrop function called.");
-      // Data is going to be moved from the mains objects and nested within the function object
-      // The object being dropped must have been selected so we'll start there.
+    toObject: function () {
+      return {
+        "name": this.name,
+        "expression": this.expression,
+        "position": this.position
+      }
     },
     onDragEnd: function (event) {
       //console.log("onDragEnd function says...");

@@ -5,18 +5,15 @@
 // possibles
 // mathjax - for making it look pretty
 // http://docs.mathjax.org/en/latest/advanced/typeset.html
-// http://mathquill.com/ - for typing maths into the browser
-// requires JQuery
+// http://mathquill.com/ - for typing maths into the browser (requires JQuery)
 
 // global varibles
 // Have a look at whats in the html file and then in the data folder.
 // This variable will be moved later
 
 // functions
-function define(obj) {
-  console.log(obj);
-  // Here we're going to let the parser know about a new thing we've defined
-  // i.e. have a scope object for the page
+function sayHi(name) {
+  console.log(`Hey ${name}`);
 }
 
 const TheMatrix = new Vue({
@@ -318,11 +315,36 @@ const TheMatrix = new Vue({
         case 'input':
           {
             console.log("Add input column");
+            // get the data for the currently selected table
+            let x = this.getObjectByID(this.selectedObj)
+            if (x) {
+              console.log(x);
+              // add a new column to input tables
+              console.log(this.objects[x[1]].data);
+              // we make a new header and give it a default value
+              this.objects[x[1]].data.inputHeaders.push('x')
+              // then we'll add in some default values to the table
+              for (let i = 0; i < this.objects[x[1]].data.inputTable.length; i++) {
+                this.objects[x[1]].data.inputTable[i].push(i);
+              }
+              // update the vue component with new column
+            }
+            // At the end of all this, close the context menu
+            this.showContext = false
           }
           break;
         case 'output':
           {
             console.log("Add output column");
+            // At the end of all this, close the context menu
+            this.showContext = false
+          }
+          break;
+        case 'row':
+          {
+            console.log("Add row to tables");
+            // At the end of all this, close the context menu
+            this.showContext = false
           }
           break;
         default:
@@ -333,17 +355,24 @@ const TheMatrix = new Vue({
       switch (arg) {
         case 'table':
           {
-            console.log("Remove table");
+            //console.log("Remove table");
+            this.deleteCurrentObj()
+            // At the end of all this, close the context menu
+            this.showContext = false
           }
           break;
         case 'row':
           {
             console.log("Remove row from table");
+            // At the end of all this, close the context menu
+            this.showContext = false
           }
           break;
         case 'column':
           {
             console.log("Remove column from table");
+            // At the end of all this, close the context menu
+            this.showContext = false
           }
           break;
         default:
@@ -420,7 +449,13 @@ const TheMatrix = new Vue({
       this.deleteObjByID(id)
     },
     toJSON: function () {
-      return JSON.stringify(this.objects)
+      let output = []
+      for (let i = 0; i < this.$children.length; i++) {
+        let x = this.$children[i].toObject()
+        x["position"] = ['100px', '100px']
+        output.push(x)
+      }
+      return JSON.stringify(output)
     },
     onLoad: function () {
       this.showContext = false
@@ -464,8 +499,7 @@ v-bind:style="styleObj">
   v-bind:id="obj.id"
   v-bind:initData="obj.data"
   v-bind:is="obj.type"
-  v-bind:selected="obj.id === selectedObj"
-  v-bind:style="{ position: 'absolute', left: obj.data.position[0], top: obj.data.position[1]}">
+  v-bind:selected="obj.id === selectedObj">
   </component>
   <ol v-on:contextmenu.prevent="0"
   v-bind:class="{menu: true}"
