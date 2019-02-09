@@ -8,12 +8,15 @@ Vue.component("math-table", {
       // some default settings
       inputHeaders: ['x'],
       inputTable: [[1], [2], [3], [4], [5]],
-
       outputHeaders: ['?'],
       outputTable: [['?'], ['?'], ['?'], ['?'], ['?']],
-
-      position: ['0px', '0px'],
-      // another idea would be connected functions on a separate table?
+      
+      // styling and misc data
+      styleObj: {
+        'position': 'absolute',
+        'left': '0px',
+        'top': '0px'
+      },
       dragOffsetX: 0,
       dragOffsetY: 0
     }
@@ -21,11 +24,12 @@ Vue.component("math-table", {
   created: function () {
     if (this.initData) {
       //console.log(this.initData);
-      this.inputHeaders.splice(0, this.inputHeaders.length, this.initData.inputHeaders)
-      this.outputHeaders.splice(0, this.outputHeaders.length, this.initData.outputHeaders)
-      this.inputTable.splice(0, this.inputTable.length, this.initData.inputTable)
-      this.outputTable.splice(0, this.outputTable.length, this.initData.outputTable)
-      this.position.splice(0, 2, this.initData.position)
+      this.inputHeaders = this.initData.inputHeaders
+      this.outputHeaders = this.initData.outputHeaders
+      this.inputTable = this.initData.inputTable
+      this.outputTable = this.initData.outputTable
+      this.styleObj.left = this.initData.position[0]
+      this.styleObj.top = this.initData.position[1]
     }
   },
   methods: {
@@ -102,17 +106,14 @@ Vue.component("math-table", {
         "inputTable": this.inputTable,
         "outputHeaders": this.outputHeaders,
         "outputTable": this.outputTable,
-        "position": this.position
+        "position": [this.styleObj.left, this.styleObj.top]
       }
     },
     onDragEnd: function (event) {
-      //console.log("onDragEnd function says...");
-      //console.log(event);
       let x = event.x - this.dragOffsetX
       let y = event.y - this.dragOffsetY
-      this.position.splice(0, 2, [`${x}px`, `${y}px`])
-      // updating the class appropriately
-      this.objHover = false
+      this.styleObj.left = `${x}px`
+      this.styleObj.top = `${y}px`
     },
     onDragStart: function (event) {
       //console.log("onDragStart function says...");
@@ -184,7 +185,7 @@ Vue.component("math-table", {
   v-on:click.prevent="onClick"
   v-on:contextmenu.prevent="onRightClick($event)"
   v-bind:class="{ tableContainer: true, selected: selected}"
-  v-bind:style="{ position: 'absolute', left: position[0], top: position[1]}">
+  v-bind:style="styleObj">
     <table v-bind:class="{ table: true}">
       <tr>
         <th v-for="(value, index) in inputHeaders"

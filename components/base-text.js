@@ -7,18 +7,27 @@ Vue.component("base-text", {
     return {
       // some default settings
       value: '',
-      width: "300px",
-      height: "150px",
+
+      // styling and misc data
+      styleObj: {
+        'position': 'absolute',
+        'left': '0px',
+        'top': '0px',
+        'width': "300px",
+        'height': "150px"
+      },
       dragOffsetX: 0,
       dragOffsetY: 0
     }
   },
   created: function () {
     if (this.initData) {
-      //console.log(this.initData);
+      console.log(this.initData);
       this.value = this.initData.value
-      this.width = this.initData.width
-      this.height = this.initData.height
+      this.styleObj.width = this.initData.width
+      this.styleObj.height = this.initData.height
+      this.styleObj.left = this.initData.position[0]
+      this.styleObj.top = this.initData.position[1]
     }
   },
   methods: {
@@ -31,18 +40,22 @@ Vue.component("base-text", {
         }
       }
     },
+    toObject: function () {
+      return {
+        "value": this.value,
+        "width": this.styleObj.width,
+        "height": this.styleObj.height,
+        "position": [this.styleObj.left, this.styleObj.top]
+      }
+    },
     onDragEnd: function (event) {
-      //console.log("onDragEnd function says...");
-      //console.log(event);
       let x = event.x - this.dragOffsetX
       let y = event.y - this.dragOffsetY
-      this.$root.updateData(this.$attrs.id, 'position', [`${x}px`, `${y}px`])
-      // updating the class appropriately
+      this.styleObj.left = `${x}px`
+      this.styleObj.top = `${y}px`
     },
     onDragStart: function (event) {
-      //console.log("onDragStart function says...");
-      //console.log(event);
-      this.onClick(event)
+      this.onClick()
       this.dragOffsetX = event.offsetX
       this.dragOffsetY = event.offsetY
     },
@@ -59,10 +72,8 @@ Vue.component("base-text", {
       let w = event.srcElement.style.width
       let h = event.srcElement.style.height
       if (w != this.width || h != this.height) {
-        this.width = w
-        this.height = h
-        this.$root.updateData(this.$attrs.id, 'width', w)
-        this.$root.updateData(this.$attrs.id, 'height', h)
+        this.styleObj.width = w
+        this.styleObj.height = h
       }
     }
   },
@@ -72,8 +83,9 @@ v-on:dragstart="onDragStart"
 v-on:click.prevent="onClick"
 v-on:contextmenu.prevent="onRightClick($event, 'matrix')"
 v-on:mouseup="onResizeTextBox"
-v-on:keyup="updateValue"
+
 v-bind:class="{text:true, selected:selected}"
-v-bind:style="{width:width, height:height}">{{value}}
+v-bind:style="styleObj"
+v-model:value="value">
 </textarea>`,
 })

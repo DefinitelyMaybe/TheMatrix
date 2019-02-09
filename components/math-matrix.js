@@ -6,7 +6,13 @@ Vue.component("math-matrix", {
   data: function () {
     return {
       entries: [[1,0,0],[0,1,0],[0,0,1]],
-      position: ['0px', '0px'],
+
+      // styling and misc data
+      styleObj: {
+        'position': 'absolute',
+        'left': '0px',
+        'top': '0px'
+      },
       dragOffsetX: 0,
       dragOffsetY: 0
     }
@@ -15,7 +21,8 @@ Vue.component("math-matrix", {
     if (this.initData) {
       //console.log(this.initData);
       this.entries.splice(0, this.entries.length, this.initData.entries)
-      this.position.splice(0, 2, this.initData.position)
+      this.styleObj.left = this.initData.position[0]
+      this.styleObj.top = this.initData.position[1]
     }
   },
   methods: {
@@ -51,20 +58,16 @@ Vue.component("math-matrix", {
     toObject: function () {
       return {
         "entries": this.entries,
-        "position": this.position
+        "position": [this.styleObj.left, this.styleObj.top]
       }
     },
     onDragEnd: function (event) {
-      //console.log("onDragEnd function says...");
-      //console.log(event);
       let x = event.x - this.dragOffsetX
       let y = event.y - this.dragOffsetY
-      // its possible to get here and for this object to be deleted first.
-      this.position.splice(0, 2, [`${x}px`, `${y}px`])
+      this.styleObj.left = `${x}px`
+      this.styleObj.top = `${y}px`
     },
     onDragStart: function (event) {
-      //console.log("onDragStart function says...");
-      //console.log(event);
       this.onClick()
       this.dragOffsetX = event.offsetX
       this.dragOffsetY = event.offsetY
@@ -81,7 +84,7 @@ Vue.component("math-matrix", {
 v-on:dragend="onDragEnd"
 v-on:dragstart="onDragStart"
 v-bind:class="{ matrix: true, selected: selected}"
-v-bind:style="{ position: 'absolute', left: position[0], top: position[1]}"
+v-bind:style="styleObj"
 v-on:click.prevent="onClick"
 v-on:contextmenu.prevent="onRightClick($event)">{{entries}}
 </div>`,

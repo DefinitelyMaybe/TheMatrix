@@ -7,19 +7,20 @@ Vue.component("math-function", {
     return {
       // the default function name
       // used as a referrence for other functions
-      name: "function?",
-      expression: "...",
-
-      position: ['0px', '0px'],
-
+      name: "f",
+      expression: "x + 1",
+      
+      // styling and misc data
+      styleObj: {
+        'position': 'absolute',
+        'left': '0px',
+        'top': '0px',
+        'display': 'flex',
+        'flex-direction': 'row'
+      },
       // For moving around on the scene
       dragOffsetX: 0,
       dragOffsetY: 0,
-
-      styleObj: {
-        'display': 'flex',
-        'flex-direction': 'row'
-      }
     }
   },
   created: function () {
@@ -27,7 +28,8 @@ Vue.component("math-function", {
       //console.log(this.initData);
       this.name = this.initData.name
       this.expression = this.initData.expression
-      this.position.splice(0, 2, this.initData.position)
+      this.styleObj.left = this.initData.position[0]
+      this.styleObj.top = this.initData.position[1]
     }
   },
   methods: {
@@ -57,24 +59,21 @@ Vue.component("math-function", {
       return {
         "name": this.name,
         "expression": this.expression,
-        "position": this.position
+        "position": [this.styleObj.left, this.styleObj.top]
       }
     },
     onDragEnd: function (event) {
-      //console.log("onDragEnd function says...");
-      //console.log(event);
       let x = event.x - this.dragOffsetX
       let y = event.y - this.dragOffsetY
-      this.$root.updateData(this.$attrs.id, 'position', [`${x}px`, `${y}px`])
+      this.styleObj.left = `${x}px`
+      this.styleObj.top = `${y}px`
     },
     onDragStart: function (event) {
-      //console.log("onDragStart function says...");
-      //console.log(event);
-      this.onClick(event)
+      this.onClick()
       this.dragOffsetX = event.offsetX
       this.dragOffsetY = event.offsetY
     },
-    onClick: function (event) {
+    onClick: function () {
       this.$root.selectObj(this.$attrs.id)
     },
     onRightClick: function (event) {
@@ -84,7 +83,6 @@ Vue.component("math-function", {
   },
   template: `<div draggable="true"
 v-on:dragend="onDragEnd"
-v-on:drop="onDrop"
 v-on:dragstart="onDragStart"
 v-bind:style="styleObj"
 v-bind:class="{ function: true, selected: selected}"

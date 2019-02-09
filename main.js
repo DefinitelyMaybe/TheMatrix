@@ -22,6 +22,7 @@ const TheMatrix = new Vue({
     name: 'The Matrix',
     
     showContext: false,
+    // TODO: remove context type and add context menu code to the vue components
     contextType: 'main',
     
     // The next ID to be used if there are no freeobjectIDs left
@@ -452,7 +453,8 @@ const TheMatrix = new Vue({
       let output = []
       for (let i = 0; i < this.$children.length; i++) {
         let x = this.$children[i].toObject()
-        x["position"] = ['100px', '100px']
+        x["id"] = '0'
+        x["type"] = 'type'
         output.push(x)
       }
       return JSON.stringify(output)
