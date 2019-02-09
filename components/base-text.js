@@ -1,7 +1,8 @@
 Vue.component("base-text", {
   props: {
     initData: Object,
-    selected: Boolean
+    selected: Boolean,
+    showContectMenu: Boolean
   },
   data: function () {
     return {
@@ -22,7 +23,7 @@ Vue.component("base-text", {
   },
   created: function () {
     if (this.initData) {
-      console.log(this.initData);
+      //console.log(this.initData);
       this.value = this.initData.value
       this.styleObj.width = this.initData.width
       this.styleObj.height = this.initData.height

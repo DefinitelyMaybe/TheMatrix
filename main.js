@@ -21,18 +21,13 @@ const TheMatrix = new Vue({
   data: {
     name: 'The Matrix',
     
-    showContext: false,
-    // TODO: remove context type and add context menu code to the vue components
-    contextType: 'main',
-    
-    // The next ID to be used if there are no freeobjectIDs left
-    nextID: 0,
-    // if an object is ever removed. its id is added here
-    freeObjectID: [],
-    // The id of the currently selected object
-    selectedObj: null,
-    // An array of objects which describe the scene
-    objects: DATA_objects,
+    nextID: 0, // The next ID to be used if there are no freeobjectIDs left
+    freeObjectID: [], // if an object is ever removed. its id is added here
+    selectedObj: null, // The id of the currently selected object
+    objects: DATA_objects, // An array of objects which describe the scene
+
+    // Style and misc data
+    showContextMenu: false,
     styleObj: {
       width: '100%',
       height: '100%'
@@ -70,7 +65,7 @@ const TheMatrix = new Vue({
         }
       }
     },
-    getAllDataOfType: function (type) {
+    getAllObjectsOfType: function (type) {
       let x = []
       for (let i = 0; i < this.objects.length; i++) {
         if (this.objects[i].type == type) {
@@ -82,7 +77,7 @@ const TheMatrix = new Vue({
     getFunctionString: function (symbol) {
       //console.log(symbol);
       // the idea here is to match the symbol to a function and return the function string
-      let x = this.getAllDataOfType('math-function')
+      let x = this.getAllObjectsOfType('math-function')
       for (let i = 0; i < x.length; i++) {
         if (x[i].data.name == symbol) {
           return x[i].data.expression
@@ -96,7 +91,7 @@ const TheMatrix = new Vue({
         //console.log(vueObj);
         vueObj.evaluateAllRows()
       }
-      this.showContext = false
+      this.showContextMenu = false
     },
     createObj: function (options) {
       //console.log("creating an object");
@@ -259,7 +254,7 @@ const TheMatrix = new Vue({
         }
       }
       // we're assuming the function was called from a context menu
-      this.showContext = false
+      this.showContextMenu = false
     },
     deleteCurrentObj: function () {
       // We can assume that selectedObj has the obj id we want to delete
@@ -282,7 +277,7 @@ const TheMatrix = new Vue({
       this.objects = newObjs
       this.objects.slice()
       // and we must close the context menu once the operation finishes
-      this.showContext = false
+      this.showContextMenu = false
     },
     deleteObjByID: function (id) {
       let newObjs = []
@@ -300,7 +295,7 @@ const TheMatrix = new Vue({
       this.objects = newObjs
       this.objects.slice()
       // and we must close the context menu once the operation finishes
-      this.showContext = false
+      this.showContextMenu = false
     },
     deleteAllObjects: function () {
       // if all objects are being deleted we can reset the unique ids
@@ -331,26 +326,25 @@ const TheMatrix = new Vue({
               // update the vue component with new column
             }
             // At the end of all this, close the context menu
-            this.showContext = false
           }
           break;
         case 'output':
           {
             console.log("Add output column");
             // At the end of all this, close the context menu
-            this.showContext = false
           }
           break;
         case 'row':
           {
             console.log("Add row to tables");
             // At the end of all this, close the context menu
-            this.showContext = false
           }
           break;
         default:
           break;
       }
+      // in all cases close the context menu
+      this.showContextMenu = false
     },
     removeFromTable: function (arg) {
       switch (arg) {
@@ -359,21 +353,21 @@ const TheMatrix = new Vue({
             //console.log("Remove table");
             this.deleteCurrentObj()
             // At the end of all this, close the context menu
-            this.showContext = false
+            this.showContextMenu = false
           }
           break;
         case 'row':
           {
             console.log("Remove row from table");
             // At the end of all this, close the context menu
-            this.showContext = false
+            this.showContextMenu = false
           }
           break;
         case 'column':
           {
             console.log("Remove column from table");
             // At the end of all this, close the context menu
-            this.showContext = false
+            this.showContextMenu = false
           }
           break;
         default:
@@ -382,23 +376,18 @@ const TheMatrix = new Vue({
     },
     selectObj: function (id) {
       // if we just selected an obj, make sure we close the context menu
-      this.showContext = false
+      this.showContextMenu = false
       //console.log("select obj function called");
       //console.log(id);
       this.selectedObj = id
     },
-    onContextMenu: function (event, type) {
+    onRightClick: function (event) {
       //console.log("onContextMenu change");
-      this.showContext = true
-      this.contextType = type
+      this.showContextMenu = true
       this.contextMenuStyle.left = `${event.x}px`
       this.contextMenuStyle.top = `${event.y}px`
-      if (this.contextType === 'main') {
-        // we right clicked someonewhere else so we need to make sure a selected object is de-selected
-        this.selectObj('')
-        // because at the moment, selecting an obj hides the context, we need to turn it back on
-        this.showContext = true
-      }
+      // we right clicked someonewhere else so we need to make sure a selected object is de-selected
+      this.selectObj('')
     },
     updateData: function (id, key, value) {
       //console.log("Update function called.");
@@ -423,7 +412,7 @@ const TheMatrix = new Vue({
     },
     updateTablesWithSymbol: function (symbol) {
       //console.log(`updating tables with: ${symbol}`);
-      let tables = this.getAllDataOfType("math-table")
+      let tables = this.getAllObjectsOfType("math-table")
       for (let i = 0; i < tables.length; i++) {
         // first does the table have the symbol
         if (tables[i].data.outputHeaders.includes(symbol)) {
@@ -460,7 +449,7 @@ const TheMatrix = new Vue({
       return JSON.stringify(output)
     },
     onLoad: function () {
-      this.showContext = false
+      this.showContextMenu = false
       let x = prompt("what would you like to load in? Type on of the following:\nscene\nobject")
       let y = prompt("paste all of the JSON data here:")
       switch (x) {
@@ -490,11 +479,12 @@ const TheMatrix = new Vue({
     },
     saveObjects: function () {
       console.log(`Copy the following into the Load function:\n${this.toJSON()}`)
+      this.showContextMenu = false
     }
   },
   template: `<div ondragover="event.preventDefault()"
-v-on:click.self="selectObj('')"
-v-on:contextmenu.self.prevent="onContextMenu($event, 'main')"
+v-on:click.self.prevent="selectObj('')"
+v-on:contextmenu.self.prevent="onRightClick"
 v-bind:style="styleObj">
   <component v-for="(obj, key) in objects"
   v-bind:key="obj.id"
@@ -503,79 +493,13 @@ v-bind:style="styleObj">
   v-bind:is="obj.type"
   v-bind:selected="obj.id === selectedObj">
   </component>
-  <ol v-on:contextmenu.prevent="0"
-  v-bind:class="{menu: true}"
-  v-show="showContext && contextType == 'main'"
-  v-bind:style="contextMenuStyle">
+  <ol v-on:contextmenu.prevent="onRightClick"
+  v-show="showContextMenu"
+  v-bind:style="contextMenuStyle"
+  v-bind:class="{menu: true}">
     <li v-on:click="onLoad" v-bind:class="{menu: true}">Load</li>
     <li v-on:click="saveObjects" v-bind:class="{menu: true}">Save</li>
     <li v-on:click="userCreateObj" v-bind:class="{menu: true}">Create</li>
   </ol>
-  <ol v-on:contextmenu.prevent="0"
-  v-bind:class="{menu: true}"
-  v-show="showContext && contextType == 'matrix'"
-  v-bind:style="contextMenuStyle">
-    <li v-on:click="deleteCurrentObj" v-bind:class="{menu: true}">Delete</li>
-  </ol>
-  <ol v-on:contextmenu.prevent="0"
-  v-bind:class="{menu: true}"
-  v-show="showContext && contextType == 'variable'"
-  v-bind:style="contextMenuStyle">
-    <li v-on:click="deleteCurrentObj" v-bind:class="{menu: true}">Delete</li>
-  </ol>
-  <ol v-on:contextmenu.prevent="0"
-  v-bind:class="{menu: true}"
-  v-show="showContext && contextType == 'function'"
-  v-bind:style="contextMenuStyle">
-    <li v-on:click="deleteCurrentObj" v-bind:class="{menu: true}">Delete</li>
-  </ol>
-  <ol v-on:contextmenu.prevent="0"
-  v-bind:class="{menu: true}"
-  v-show="showContext && contextType == 'table'"
-  v-bind:style="contextMenuStyle">
-    <li v-on:click="addToTable('input')" v-bind:class="{menu:true}">Add Input Column</li>
-    <li v-on:click="addToTable('output')" v-bind:class="{menu:true}">Add Output Column</li>
-    <li v-on:click="addToTable('row')" v-bind:class="{menu:true}">Add Row</li>
-    <li v-bind:class="{menu: false}">-----</li>
-    <li v-on:click="removeFromTable('table')" v-bind:class="{menu: true}">Delete Table</li>
-    <li v-on:click="removeFromTable('row')" v-bind:class="{menu: true}">Delete Row</li>
-    <li v-on:click="removeFromTable('column')" v-bind:class="{menu: true}">Delete Column</li>
-  </ol>
 </div>`
 })
-
-window.onload = function () {
-  //console.log(TheMatrix);
-  /*let f = math.parse('2x^2+x')
-  console.log(f)
-  let g = math.compile('2x^2+x')
-  console.log(g);
-  let x = g.eval({x:2})
-  console.log(x);
-
-  console.log("-------------");
-  console.log(JSON.stringify(f)); // can stringify an expression tree
-  console.log(JSON.stringify(g)); // cannot stringify a function
-
-  console.log("-------------");
-  console.log(JSON.parse('{"mathjs":"OperatorNode","op":"+","fn":"add","args":[{"mathjs":"OperatorNode","op":"*","fn":"multiply","args":[{"mathjs":"ConstantNode","value":2},{"mathjs":"OperatorNode","op":"^","fn":"pow","args":[{"mathjs":"SymbolNode","name":"x"},{"mathjs":"ConstantNode","value":2}],"implicit":false}],"implicit":true},{"mathjs":"SymbolNode","name":"x"}],"implicit":false}', math.json.reviver));
-  // bringing an expression tree back in is easy
-
-  console.log("-------------");
-  let h = f._compile(math) // expression trees must be compiled using the math library
-  console.log(h({x:2})) // before they can be called with a scope obj
-
-  console.log("-------------");
-  // question can we define a variable == anotherVaraible
-  let parser = math.parser()
-  parser.set('x', 3)
-  console.log(parser);
-  console.log(parser.eval("x+2"));*/
-}
-
-// Got a library library from the internet.
-// console.log(math);
-// vs
-// console.log(Math);
-// i.e.
-//let x = math.matrix([[1,0],[0,1]])

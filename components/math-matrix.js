@@ -1,7 +1,8 @@
 Vue.component("math-matrix", {
   props: {
     initData: Object,
-    selected: Boolean
+    selected: Boolean,
+    showContextMenu: Boolean
   },
   data: function () {
     return {
@@ -9,6 +10,11 @@ Vue.component("math-matrix", {
 
       // styling and misc data
       styleObj: {
+        'position': 'absolute',
+        'left': '0px',
+        'top': '0px'
+      },
+      contextMenuStyle: {
         'position': 'absolute',
         'left': '0px',
         'top': '0px'
@@ -77,7 +83,9 @@ Vue.component("math-matrix", {
     },
     onRightClick: function (event) {
       this.$root.selectObj(this.$attrs.id)
-      this.$root.onContextMenu(event, 'matrix')
+      this.showContextMenu = true
+      this.contextMenuStyle.left = `${event.x}px`
+      this.contextMenuStyle.top = `${event.y}px`
     }
   },
   template: `<div draggable="true"
@@ -85,8 +93,16 @@ v-on:dragend="onDragEnd"
 v-on:dragstart="onDragStart"
 v-bind:class="{ matrix: true, selected: selected}"
 v-bind:style="styleObj"
+
 v-on:click.prevent="onClick"
-v-on:contextmenu.prevent="onRightClick($event)">{{entries}}
+v-on:contextmenu.prevent="onRightClick">
+  <p>{{entries}}</p>
+  <ol v-on:contextmenu.prevent="0"
+    v-bind:class="{menu: true}"
+    v-show="showContextMenu"
+    v-bind:style="contextMenuStyle">
+      <li v-on:click="deleteCurrentObj" v-bind:class="{menu: true}">Delete</li>
+  </ol>
 </div>`,
 })
 

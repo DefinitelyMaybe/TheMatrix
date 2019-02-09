@@ -1,7 +1,8 @@
 Vue.component("math-function", {
   props: {
     initData: Object,
-    selected: Boolean
+    selected: Boolean,
+    showContectMenu: Boolean
   },
   data: function () {
     return {
@@ -18,6 +19,7 @@ Vue.component("math-function", {
         'display': 'flex',
         'flex-direction': 'row'
       },
+      
       // For moving around on the scene
       dragOffsetX: 0,
       dragOffsetY: 0,
@@ -92,5 +94,11 @@ v-on:contextmenu.prevent="onRightClick($event, 'function')">
   <p v-on:click.prevent="changeName">{{name}}</p>
   <p>=</p>
   <p v-on:click.prevent="changeExpression">{{expression}}</p>
+  <ol v-on:contextmenu.prevent="0"
+  v-bind:class="{menu: true}"
+  v-show="showContextMenu"
+  v-bind:style="contextMenuStyle">
+    <li v-on:click="deleteCurrentObj" v-bind:class="{menu: true}">Delete</li>
+  </ol>
 </div>`,
 })

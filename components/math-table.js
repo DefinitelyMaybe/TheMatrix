@@ -1,7 +1,8 @@
 Vue.component("math-table", {
   props: {
     initData: Object,
-    selected: Boolean
+    selected: Boolean,
+    showContectMenu: Boolean
   },
   data: function () {
     return {
@@ -13,6 +14,11 @@ Vue.component("math-table", {
       
       // styling and misc data
       styleObj: {
+        'position': 'absolute',
+        'left': '0px',
+        'top': '0px'
+      },
+      contextMenuStyle: {
         'position': 'absolute',
         'left': '0px',
         'top': '0px'
@@ -212,5 +218,17 @@ Vue.component("math-table", {
       v-bind:key="col">{{item}}</td>
     </tr>
     </table>
+    <ol v-on:contextmenu.prevent="0"
+    v-bind:class="{menu: true}"
+    v-show="showContextMenu"
+    v-bind:style="contextMenuStyle">
+      <li v-on:click="addToTable('input')" v-bind:class="{menu:true}">Add Input Column</li>
+      <li v-on:click="addToTable('output')" v-bind:class="{menu:true}">Add Output Column</li>
+      <li v-on:click="addToTable('row')" v-bind:class="{menu:true}">Add Row</li>
+      <li v-bind:class="{menu: false}">-----</li>
+      <li v-on:click="removeFromTable('table')" v-bind:class="{menu: true}">Delete Table</li>
+      <li v-on:click="removeFromTable('row')" v-bind:class="{menu: true}">Delete Row</li>
+      <li v-on:click="removeFromTable('column')" v-bind:class="{menu: true}">Delete Column</li>
+    </ol>
   </div>`,
 })

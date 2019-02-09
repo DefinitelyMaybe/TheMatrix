@@ -1,7 +1,8 @@
 Vue.component("math-variable", {
   props: {
     initData: Object,
-    selected: Boolean
+    selected: Boolean,
+    showContectMenu: Boolean
   },
   data: function () {
     return {
@@ -105,5 +106,11 @@ v-bind:class="{variable:true, selected:selected, objHover:objHover}">
   v-bind:selected="selected"
   v-bind:initData="{'entries':value}">
   </component>
+  <ol v-on:contextmenu.prevent="0"
+  v-bind:class="{menu: true}"
+  v-show="showContextMenu &&  == 'variable'"
+  v-bind:style="contextMenuStyle">
+    <li v-on:click="deleteCurrentObj" v-bind:class="{menu: true}">Delete</li>
+  </ol>
 </div>`,
 })
