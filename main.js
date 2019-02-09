@@ -311,7 +311,7 @@ const TheMatrix = new Vue({
       this.freeObjectID = []
     },
     deleteTable: function () {
-      
+      console.log("delete what?");
     },
     selectObj: function (event, id) {
       // if we just selected an obj, make sure we close the context menu
@@ -460,8 +460,6 @@ v-bind:style="styleObj">
   v-bind:class="{menu: true}"
   v-show="showContext && contextType == 'table'"
   v-bind:style="contextMenuStyle">
-    <li v-on:click="evaluteTableWithID(selectedObj)" v-bind:class="{menu:true}">Evaluate All</li>
-    <li v-bind:class="{menu: false}">-----</li>
     <li v-bind:class="{menu:true}">Add Input Column</li>
     <li v-bind:class="{menu:true}">Add Output Column</li>
     <li v-bind:class="{menu:true}">Add Row</li>
