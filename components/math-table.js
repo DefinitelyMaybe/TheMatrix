@@ -40,8 +40,20 @@ Vue.component("math-table", {
           case 'output':
             {
               let newHeader = prompt("Change the header?", this.outputHeaders[index])
-              this.outputHeaders.splice(index, 1, newHeader)
-              this.$root.updateData(this.$attrs.id, 'outputHeaders', this.outputHeaders)
+              if (newHeader) {
+                this.outputHeaders.splice(index, 1, newHeader)
+                this.$root.updateData(this.$attrs.id, 'outputHeaders', this.outputHeaders)
+                this.$root.updateTablesWithSymbol(newHeader) 
+              } else {
+                this.outputHeaders.splice(index, 1, '?')
+                this.$root.updateData(this.$attrs.id, 'outputHeaders', this.outputHeaders)
+                for (let i = 0; i < this.outputTable.length; i++) {
+                  let newArray = this.outputTable[i]
+                  newArray.splice(index, 1, '?')
+                  this.outputTable.splice(i, 1, newArray)
+                }
+                this.$root.updateData(this.$attrs.id, 'outputTable', this.outputTable)
+              }
             }
             break;
           default:

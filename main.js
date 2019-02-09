@@ -310,6 +310,9 @@ const TheMatrix = new Vue({
       this.nextID = 0
       this.freeObjectID = []
     },
+    deleteTable: function () {
+      
+    },
     selectObj: function (event, id) {
       // if we just selected an obj, make sure we close the context menu
       this.showContext = false
