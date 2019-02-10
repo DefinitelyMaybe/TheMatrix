@@ -37,15 +37,6 @@ Vue.component("base-text", {
     }
   },
   methods: {
-    updateValue: function (event) {
-      if (this.selected) {
-        // find the element and 
-        if (this.value != event.srcElement.value) {
-          this.value = event.srcElement.value
-          this.$root.updateData(this.$attrs.id, 'value', this.value)
-        }
-      }
-    },
     toObject: function () {
       return {
         "value": this.value,
@@ -97,7 +88,7 @@ Vue.component("base-text", {
   v-on:dragend="onDragEnd"
   v-on:dragstart="onDragStart"
   v-on:click.prevent="onClick"
-  v-on:contextmenu.prevent="onRightClick($event, 'matrix')"
+  v-on:contextmenu.prevent="onRightClick"
   v-on:mouseup="onResizeTextBox"
 
   v-bind:class="{text:true, selected:selected}"

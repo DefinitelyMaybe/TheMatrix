@@ -23,6 +23,7 @@ Vue.component("math-table", {
         'left': '0px',
         'top': '0px'
       },
+      addedWidth: 0,
       dragOffsetX: 0,
       dragOffsetY: 0
     }
@@ -39,6 +40,13 @@ Vue.component("math-table", {
     }
   },
   methods: {
+    evaluateAllRows: function () {
+      //console.log("Evaluating...");
+      for (let i = 0; i < this.inputTable.length; i++) {
+        // I know this line looks strange but its what invokes the set method for the computed property.
+        this.functionsOutput = i
+      }
+    },
     changeHeader: function (index, type) {
       // select the table before getting tableInput from user
       if (this.selected) {
@@ -47,7 +55,6 @@ Vue.component("math-table", {
             {
               let newHeader = prompt("Change the header?", this.inputHeaders[index])
               this.inputHeaders.splice(index, 1, newHeader)
-              this.$root.updateData(this.$attrs.id, 'inputHeaders', this.inputHeaders)
             }
             break;
           case 'output':
@@ -55,17 +62,7 @@ Vue.component("math-table", {
               let newHeader = prompt("Change the header?", this.outputHeaders[index])
               if (newHeader) {
                 this.outputHeaders.splice(index, 1, newHeader)
-                this.$root.updateData(this.$attrs.id, 'outputHeaders', this.outputHeaders)
                 this.$root.updateTablesWithSymbol(newHeader) 
-              } else {
-                this.outputHeaders.splice(index, 1, '?')
-                this.$root.updateData(this.$attrs.id, 'outputHeaders', this.outputHeaders)
-                for (let i = 0; i < this.outputTable.length; i++) {
-                  let newArray = this.outputTable[i]
-                  newArray.splice(index, 1, '?')
-                  this.outputTable.splice(i, 1, newArray)
-                }
-                this.$root.updateData(this.$attrs.id, 'outputTable', this.outputTable)
               }
             }
             break;
@@ -96,7 +93,6 @@ Vue.component("math-table", {
           // this is the weirdest looking piece of code ever but...
           // this is how you invoke the setter function of the computed property
           this.functionsOutput = row // this throws an error
-          this.$root.updateData(this.$attrs.id, 'inputTable', this.inputTable)
         } catch (error) {
           // check back here later. this output didn't seem to ever be invoked.
           console.warn("For the moment, inputs must be numbers.");
@@ -104,48 +100,6 @@ Vue.component("math-table", {
         }
       } else {
         this.onClick(event)
-      }
-    },
-    toObject: function () {
-      return {
-        "inputHeaders": this.inputHeaders,
-        "inputTable": this.inputTable,
-        "outputHeaders": this.outputHeaders,
-        "outputTable": this.outputTable,
-        "position": [this.styleObj.left, this.styleObj.top],
-        "type": 'math-table',
-        "id": this.$attrs.id
-      }
-    },
-    onDragEnd: function (event) {
-      let x = event.x - this.dragOffsetX
-      let y = event.y - this.dragOffsetY
-      this.styleObj.left = `${x}px`
-      this.styleObj.top = `${y}px`
-    },
-    onDragStart: function (event) {
-      //console.log("onDragStart function says...");
-      //console.log(event);
-      this.onClick()
-      this.dragOffsetX = event.offsetX
-      this.dragOffsetY = event.offsetY
-    },
-    onClick: function () {
-      this.$root.selectObj(this.$attrs.id)
-      this.showContextMenu = false
-    },
-    onRightClick: function (event) {
-      this.$root.selectObj(this.$attrs.id)
-      //console.log(event);
-      this.contextMenuStyle.left = `${event.layerX}px`
-      this.contextMenuStyle.top = `${event.layerY}px`
-      this.showContextMenu = true
-    },
-    evaluateAllRows: function () {
-      //console.log("Evaluating...");
-      for (let i = 0; i < this.inputTable.length; i++) {
-        // I know this line looks strange but its what invokes the set method for the computed property.
-        this.functionsOutput = i
       }
     },
     addToTable: function (arg) {
@@ -209,6 +163,42 @@ Vue.component("math-table", {
     },
     deleteTable: function () {
       console.log("delete what?");
+    },
+    toObject: function () {
+      return {
+        "inputHeaders": this.inputHeaders,
+        "inputTable": this.inputTable,
+        "outputHeaders": this.outputHeaders,
+        "outputTable": this.outputTable,
+        "position": [this.styleObj.left, this.styleObj.top],
+        "type": 'math-table',
+        "id": this.$attrs.id
+      }
+    },
+    onDragEnd: function (event) {
+      let x = event.x - this.dragOffsetX
+      let y = event.y - this.dragOffsetY
+      this.styleObj.left = `${x}px`
+      this.styleObj.top = `${y}px`
+    },
+    onDragStart: function (event) {
+      //console.log("onDragStart function says...");
+      //console.log(event);
+      this.onClick()
+      this.dragOffsetX = event.offsetX
+      this.dragOffsetY = event.offsetY
+    },
+    onClick: function () {
+      this.$root.selectObj(this.$attrs.id)
+      this.showContextMenu = false
+    },
+    onRightClick: function (event) {
+      this.$root.selectObj(this.$attrs.id)
+      //console.log(event);
+      this.contextMenuStyle.left = `${event.layerX}px`
+      this.contextMenuStyle.top = `${event.layerY}px`
+      this.addedWidth = event.layerX
+      this.showContextMenu = true
     }
   },
   computed: {
@@ -233,7 +223,14 @@ Vue.component("math-table", {
             let g = math.compile(func)
             let outputValue
             try {
-              outputValue = g.eval(scope) 
+              outputValue = g.eval(scope)
+              // a simple check for strange values
+              if (outputValue == "Infinity") {
+                outputValue = "?"
+              } else {
+                // formating so that the table doesn't fill up with reoccuring values
+                outputValue = math.format(outputValue, {precision: 4})
+              }
             } catch (error) {
               console.warn("outputValue is not undefined because...");
               console.warn(error);
@@ -249,7 +246,6 @@ Vue.component("math-table", {
             this.outputTable.splice(row, 1, newRow)
           }
         }
-        this.$root.updateData(this.$attrs.id, 'outputTable', this.outputTable)
       }
     }
   },

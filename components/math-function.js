@@ -44,7 +44,7 @@ Vue.component("math-function", {
         let newName = prompt("what would you like to change the name to?", this.name)
         if (newName && this.name != newName) {
           this.name = newName
-          this.$root.updateData(this.$attrs.id, 'name', this.name)
+          this.$root.updateTablesWithSymbol(this.name)
         } 
       } else {
         this.onClick(event)
@@ -55,7 +55,7 @@ Vue.component("math-function", {
         let newExpression = prompt("what would you like to change the name to?", this.expression)
         if (newExpression && this.expression != newExpression) {
           this.expression = newExpression
-          this.$root.updateData(this.$attrs.id, 'expression', this.expression)
+          this.$root.updateTablesWithSymbol(this.name)
         } 
       } else {
         this.onClick(event)
@@ -103,7 +103,7 @@ v-bind:style="styleObj"
 v-bind:class="{ function: true, selected: selected}"
 
 v-on:click.prevent="onClick"
-v-on:contextmenu.prevent="onRightClick($event, 'function')">
+v-on:contextmenu.prevent="onRightClick">
   <p v-on:click.prevent="changeName">{{name}}</p>
   <p>=</p>
   <p v-on:click.prevent="changeExpression">{{expression}}</p>

@@ -107,7 +107,7 @@ v-on:dragstart="onDragStart"
 v-on:dragenter="objHover = true"
 v-on:dragleave="objHover = false"
 v-on:click.prevent="onClick"
-v-on:contextmenu.prevent="onRightClick($event, 'matrix')"
+v-on:contextmenu.prevent="onRightClick"
 
 v-bind:style="styleObj"
 v-bind:class="{variable:true, selected:selected, objHover:objHover}">

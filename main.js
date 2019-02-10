@@ -72,9 +72,10 @@ const TheMatrix = new Vue({
     },
     getAllObjectsOfType: function (type) {
       let x = []
-      for (let i = 0; i < this.initObjects.length; i++) {
-        if (this.initObjects[i].type == type) {
-          x.push(this.initObjects[i])
+      for (let i = 0; i < this.$children.length; i++) {
+        //console.log(this.$children[i]);
+        if (this.$children[i].$attrs.type == type) {
+          x.push(this.$children[i])
         }
       }
       return x
@@ -84,8 +85,8 @@ const TheMatrix = new Vue({
       // the idea here is to match the symbol to a function and return the function string
       let x = this.getAllObjectsOfType('math-function')
       for (let i = 0; i < x.length; i++) {
-        if (x[i].data.name == symbol) {
-          return x[i].data.expression
+        if (x[i].name == symbol) {
+          return x[i].expression
         }
       }
     },
@@ -323,39 +324,14 @@ const TheMatrix = new Vue({
       this.contextMenuStyle.top = `${event.layerY}px`
       this.showContextMenu = true
     },
-    updateData: function (id, key, value) {
-      //console.log("Update function called.");
-      let obj = this.getObjectByID(id)
-      if (obj) {
-        // the second item in the array is the index of the object
-        this.initObjects[obj[1]].data[key] = value
-        /*if (Array.isArray(this.initObjects[obj[1]].data[key])) {
-          console.log('there was an array updated');
-        }*/
-        // Lots of initObjects called the updateData method
-        // so we need to be specific about what flow on effects might happen
-        //console.log(obj);
-        if (obj[0].type == "math-function") {
-          this.updateTablesWithSymbol(obj[0].data.name)
-        }
-      } else {
-        console.warn(`Did not find the following pair to update: (id:${id}, key:${key}) trying to update it with:`);
-        console.warn(value);
-      }
-    },
     updateTablesWithSymbol: function (symbol) {
       //console.log(`updating tables with: ${symbol}`);
       let tables = this.getAllObjectsOfType("math-table")
       for (let i = 0; i < tables.length; i++) {
         // first does the table have the symbol
-        if (tables[i].data.outputHeaders.includes(symbol)) {
-          //console.log("Yes we found our symbol");
-          // the need the vue object
-          let vueObj = this.getVueObjectbyID(tables[i].id)
-          if (vueObj) {
-            // if we did find it then we can call evaluate
-            vueObj.evaluateAllRows()
-          }
+        if (tables[i].outputHeaders.includes(symbol)) {
+          // if we did find it then we can call evaluate
+          tables[i].evaluateAllRows()
         }
       }
     },
@@ -422,6 +398,7 @@ v-bind:style="styleObj">
   v-bind:id="obj.id"
   v-bind:initData="obj"
   v-bind:is="obj.type"
+  v-bind:type="obj.type"
   v-bind:selected="obj.id === selectedObj">
   </component>
   <ol v-on:contextmenu.prevent="onRightClick"
