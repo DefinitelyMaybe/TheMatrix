@@ -1,8 +1,7 @@
 Vue.component("math-table", {
   props: {
     initData: Object,
-    selected: Boolean,
-    showContectMenu: Boolean
+    selected: Boolean
   },
   data: function () {
     return {
@@ -18,6 +17,7 @@ Vue.component("math-table", {
         'left': '0px',
         'top': '0px'
       },
+      showContextMenu: false,
       contextMenuStyle: {
         'position': 'absolute',
         'left': '0px',
@@ -112,7 +112,9 @@ Vue.component("math-table", {
         "inputTable": this.inputTable,
         "outputHeaders": this.outputHeaders,
         "outputTable": this.outputTable,
-        "position": [this.styleObj.left, this.styleObj.top]
+        "position": [this.styleObj.left, this.styleObj.top],
+        "type": 'math-table',
+        "id": this.$attrs.id
       }
     },
     onDragEnd: function (event) {
@@ -130,10 +132,14 @@ Vue.component("math-table", {
     },
     onClick: function () {
       this.$root.selectObj(this.$attrs.id)
+      this.showContextMenu = false
     },
     onRightClick: function (event) {
       this.$root.selectObj(this.$attrs.id)
-      this.$root.onContextMenu(event, 'table')
+      //console.log(event);
+      this.contextMenuStyle.left = `${event.layerX}px`
+      this.contextMenuStyle.top = `${event.layerY}px`
+      this.showContextMenu = true
     },
     evaluateAllRows: function () {
       //console.log("Evaluating...");
@@ -141,6 +147,68 @@ Vue.component("math-table", {
         // I know this line looks strange but its what invokes the set method for the computed property.
         this.functionsOutput = i
       }
+    },
+    addToTable: function (arg) {
+      switch (arg) {
+        case 'input':
+          {
+            console.log("Add input column");
+            // get the data for the currently selected table
+            this.inputHeaders.push('x')
+            // then we'll add in some default values to the table
+            for (let i = 0; i < this.inputTable.length; i++) {
+              this.inputTable[i].push(i);
+            }
+          }
+          break;
+        case 'output':
+          {
+            console.log("Add output column");
+            // At the end of all this, close the context menu
+          }
+          break;
+        case 'row':
+          {
+            console.log("Add row to tables");
+            // At the end of all this, close the context menu
+          }
+          break;
+        default:
+          break;
+      }
+      // in all cases close the context menu
+      this.showContextMenu = false
+    },
+    removeFromTable: function (arg) {
+      switch (arg) {
+        case 'table':
+          {
+            //console.log("Remove table");
+            this.deleteCurrentObj()
+            // At the end of all this, close the context menu
+            this.showContextMenu = false
+          }
+          break;
+        case 'row':
+          {
+            console.log("Remove row from table");
+            // At the end of all this, close the context menu
+            this.showContextMenu = false
+          }
+          break;
+        case 'column':
+          {
+            console.log("Remove column from table");
+            // At the end of all this, close the context menu
+            this.showContextMenu = false
+          }
+          break;
+        default:
+          break;
+      }
+    },
+    deleteTable: function () {
+      console.log("delete what?");
     }
   },
   computed: {
@@ -189,7 +257,7 @@ Vue.component("math-table", {
   v-on:dragend="onDragEnd"
   v-on:dragstart="onDragStart"
   v-on:click.prevent="onClick"
-  v-on:contextmenu.prevent="onRightClick($event)"
+  v-on:contextmenu.prevent="onRightClick"
   v-bind:class="{ tableContainer: true, selected: selected}"
   v-bind:style="styleObj">
     <table v-bind:class="{ table: true}">
@@ -220,13 +288,13 @@ Vue.component("math-table", {
     </table>
     <ol v-on:contextmenu.prevent="0"
     v-bind:class="{menu: true}"
-    v-show="showContextMenu"
+    v-show="showContextMenu && selected"
     v-bind:style="contextMenuStyle">
       <li v-on:click="addToTable('input')" v-bind:class="{menu:true}">Add Input Column</li>
       <li v-on:click="addToTable('output')" v-bind:class="{menu:true}">Add Output Column</li>
       <li v-on:click="addToTable('row')" v-bind:class="{menu:true}">Add Row</li>
       <li v-bind:class="{menu: false}">-----</li>
-      <li v-on:click="removeFromTable('table')" v-bind:class="{menu: true}">Delete Table</li>
+      <li v-on:click="deleteTable" v-bind:class="{menu: true}">Delete Table</li>
       <li v-on:click="removeFromTable('row')" v-bind:class="{menu: true}">Delete Row</li>
       <li v-on:click="removeFromTable('column')" v-bind:class="{menu: true}">Delete Column</li>
     </ol>

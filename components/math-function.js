@@ -1,8 +1,7 @@
 Vue.component("math-function", {
   props: {
     initData: Object,
-    selected: Boolean,
-    showContectMenu: Boolean
+    selected: Boolean
   },
   data: function () {
     return {
@@ -19,7 +18,12 @@ Vue.component("math-function", {
         'display': 'flex',
         'flex-direction': 'row'
       },
-      
+      showContextMenu: false,
+      contextMenuStyle : {
+        'position': 'absolute',
+        'left': '0px',
+        'top': '0px',
+      },
       // For moving around on the scene
       dragOffsetX: 0,
       dragOffsetY: 0,
@@ -61,8 +65,13 @@ Vue.component("math-function", {
       return {
         "name": this.name,
         "expression": this.expression,
-        "position": [this.styleObj.left, this.styleObj.top]
+        "position": [this.styleObj.left, this.styleObj.top],
+        "type": 'math-function',
+        "id": this.$attrs.id
       }
+    },
+    deleteTable: function () {
+      console.log("Need to link up delete function");
     },
     onDragEnd: function (event) {
       let x = event.x - this.dragOffsetX
@@ -77,11 +86,15 @@ Vue.component("math-function", {
     },
     onClick: function () {
       this.$root.selectObj(this.$attrs.id)
+      this.showContextMenu = false
     },
     onRightClick: function (event) {
       this.$root.selectObj(this.$attrs.id)
-      this.$root.onContextMenu(event, 'function')
-    }
+      //console.log(event);
+      this.contextMenuStyle.left = `${event.layerX}px`
+      this.contextMenuStyle.top = `${event.layerY}px`
+      this.showContextMenu = true
+    },
   },
   template: `<div draggable="true"
 v-on:dragend="onDragEnd"
@@ -96,9 +109,9 @@ v-on:contextmenu.prevent="onRightClick($event, 'function')">
   <p v-on:click.prevent="changeExpression">{{expression}}</p>
   <ol v-on:contextmenu.prevent="0"
   v-bind:class="{menu: true}"
-  v-show="showContextMenu"
+  v-show="showContextMenu && selected"
   v-bind:style="contextMenuStyle">
-    <li v-on:click="deleteCurrentObj" v-bind:class="{menu: true}">Delete</li>
+    <li v-on:click="deleteTable" v-bind:class="{menu: true}">Delete</li>
   </ol>
 </div>`,
 })

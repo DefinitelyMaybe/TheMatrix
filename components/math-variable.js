@@ -1,14 +1,13 @@
 Vue.component("math-variable", {
   props: {
     initData: Object,
-    selected: Boolean,
-    showContectMenu: Boolean
+    selected: Boolean
   },
   data: function () {
     return {
       // some default settings
       name: 'x',
-      type: 'number',
+      valueType: 'number',
       value: 0,
 
       // styling and misc data
@@ -19,6 +18,12 @@ Vue.component("math-variable", {
         'display': 'flex',
         'flex-direction': 'row'
       },
+      showContextMenu: false,
+      contextMenuStyle : {
+        'position': 'absolute',
+        'left': '0px',
+        'top': '0px',
+      },
       objHover: false,
       dragOffsetX: 0,
       dragOffsetY: 0
@@ -28,7 +33,7 @@ Vue.component("math-variable", {
     if (this.initData) {
       //console.log(this.initData);
       this.name = this.initData.name
-      this.type = this.initData.type
+      this.valueType = this.initData.valueType
       this.value = this.initData.value
       this.styleObj.left = this.initData.position[0]
       this.styleObj.top = this.initData.position[1]
@@ -58,12 +63,18 @@ Vue.component("math-variable", {
       }
     },
     toObject: function () {
+      console.log(this);
       return {
         "name": this.name,
-        "type": this.type,
+        "valueType": this.type,
         "value": this.value,
-        "position": [this.styleObj.left, this.styleObj.top]
+        "position": [this.styleObj.left, this.styleObj.top],
+        "type": 'math-variable',
+        "id": this.$attrs.id
       }
+    },
+    deleteVariable: function () {
+      console.log("delete variable");
     },
     onDragEnd: function (event) {
       let x = event.x - this.dragOffsetX
@@ -80,11 +91,15 @@ Vue.component("math-variable", {
     },
     onClick: function () {
       this.$root.selectObj(this.$attrs.id)
+      this.showContextMenu = false
     },
     onRightClick: function (event) {
       this.$root.selectObj(this.$attrs.id)
-      this.$root.onContextMenu(event, 'variable')
-    }
+      //console.log(event);
+      this.contextMenuStyle.left = `${event.layerX}px`
+      this.contextMenuStyle.top = `${event.layerY}px`
+      this.showContextMenu = true
+    },
   },
   template: `<div draggable="true"
 v-on:dragend="onDragEnd"
@@ -98,19 +113,19 @@ v-bind:style="styleObj"
 v-bind:class="{variable:true, selected:selected, objHover:objHover}">
   <p v-on:click="changeName">{{name}}</p>
   <p>=</p>
-  <p v-if="this.type == 'number'"
+  <p v-if="valueType == 'number'"
   v-on:click="changeValue">{{value}}</p>
   <component
-  v-if="this.type == 'math-matrix'"
+  v-if="valueType == 'math-matrix'"
   v-bind:is="'math-matrix'"
   v-bind:selected="selected"
   v-bind:initData="{'entries':value}">
   </component>
   <ol v-on:contextmenu.prevent="0"
   v-bind:class="{menu: true}"
-  v-show="showContextMenu &&  == 'variable'"
+  v-show="showContextMenu && selected"
   v-bind:style="contextMenuStyle">
-    <li v-on:click="deleteCurrentObj" v-bind:class="{menu: true}">Delete</li>
+    <li v-on:click="deleteVariable" v-bind:class="{menu: true}">Delete</li>
   </ol>
 </div>`,
 })

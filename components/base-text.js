@@ -1,8 +1,7 @@
 Vue.component("base-text", {
   props: {
     initData: Object,
-    selected: Boolean,
-    showContectMenu: Boolean
+    selected: Boolean
   },
   data: function () {
     return {
@@ -16,6 +15,12 @@ Vue.component("base-text", {
         'top': '0px',
         'width': "300px",
         'height': "150px"
+      },
+      showContextMenu: false,
+      contextMenuStyle : {
+        'position': 'absolute',
+        'left': '0px',
+        'top': '0px',
       },
       dragOffsetX: 0,
       dragOffsetY: 0
@@ -46,8 +51,13 @@ Vue.component("base-text", {
         "value": this.value,
         "width": this.styleObj.width,
         "height": this.styleObj.height,
-        "position": [this.styleObj.left, this.styleObj.top]
+        "position": [this.styleObj.left, this.styleObj.top],
+        "type": 'base-text',
+        "id": this.$attrs.id
       }
+    },
+    deleteText: function () {
+      console.log("Delete text function");
     },
     onDragEnd: function (event) {
       let x = event.x - this.dragOffsetX
@@ -62,10 +72,14 @@ Vue.component("base-text", {
     },
     onClick: function () {
       this.$root.selectObj(this.$attrs.id)
+      this.showContextMenu = false
     },
     onRightClick: function (event) {
       this.$root.selectObj(this.$attrs.id)
-      this.$root.onContextMenu(event, 'variable')
+      //console.log(event);
+      this.contextMenuStyle.left = `${event.x}px`
+      this.contextMenuStyle.top = `${event.y}px`
+      this.showContextMenu = true
     },
     onResizeTextBox: function (event) {
       // check whether the text box size changed
@@ -78,15 +92,23 @@ Vue.component("base-text", {
       }
     }
   },
-  template: `<textarea draggable="true"
-v-on:dragend="onDragEnd"
-v-on:dragstart="onDragStart"
-v-on:click.prevent="onClick"
-v-on:contextmenu.prevent="onRightClick($event, 'matrix')"
-v-on:mouseup="onResizeTextBox"
+  template: `<div>
+  <textarea draggable="true"
+  v-on:dragend="onDragEnd"
+  v-on:dragstart="onDragStart"
+  v-on:click.prevent="onClick"
+  v-on:contextmenu.prevent="onRightClick($event, 'matrix')"
+  v-on:mouseup="onResizeTextBox"
 
-v-bind:class="{text:true, selected:selected}"
-v-bind:style="styleObj"
-v-model:value="value">
-</textarea>`,
+  v-bind:class="{text:true, selected:selected}"
+  v-bind:style="styleObj"
+  v-model:value="value">
+  </textarea>
+  <ol v-on:contextmenu.prevent="0"
+    v-bind:class="{menu: true}"
+    v-show="showContextMenu && selected"
+    v-bind:style="contextMenuStyle">
+      <li v-on:click="deleteText" v-bind:class="{menu: true}">Delete</li>
+  </ol>
+</div>`,
 })

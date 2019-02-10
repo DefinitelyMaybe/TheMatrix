@@ -1,8 +1,7 @@
 Vue.component("math-matrix", {
   props: {
     initData: Object,
-    selected: Boolean,
-    showContextMenu: Boolean
+    selected: Boolean
   },
   data: function () {
     return {
@@ -14,6 +13,7 @@ Vue.component("math-matrix", {
         'left': '0px',
         'top': '0px'
       },
+      showContextMenu: false,
       contextMenuStyle: {
         'position': 'absolute',
         'left': '0px',
@@ -64,8 +64,13 @@ Vue.component("math-matrix", {
     toObject: function () {
       return {
         "entries": this.entries,
-        "position": [this.styleObj.left, this.styleObj.top]
+        "position": [this.styleObj.left, this.styleObj.top],
+        "type": 'math-matrix',
+        "id": this.$attrs.id
       }
+    },
+    deleteMatrix: function () {
+      console.log("Delete matrix");
     },
     onDragEnd: function (event) {
       let x = event.x - this.dragOffsetX
@@ -80,13 +85,15 @@ Vue.component("math-matrix", {
     },
     onClick: function () {
       this.$root.selectObj(this.$attrs.id)
+      this.showContextMenu = false
     },
     onRightClick: function (event) {
       this.$root.selectObj(this.$attrs.id)
+      //console.log(event);
+      this.contextMenuStyle.left = `${event.layerX}px`
+      this.contextMenuStyle.top = `${event.layerY}px`
       this.showContextMenu = true
-      this.contextMenuStyle.left = `${event.x}px`
-      this.contextMenuStyle.top = `${event.y}px`
-    }
+    },
   },
   template: `<div draggable="true"
 v-on:dragend="onDragEnd"
@@ -99,9 +106,9 @@ v-on:contextmenu.prevent="onRightClick">
   <p>{{entries}}</p>
   <ol v-on:contextmenu.prevent="0"
     v-bind:class="{menu: true}"
-    v-show="showContextMenu"
+    v-show="showContextMenu && selected"
     v-bind:style="contextMenuStyle">
-      <li v-on:click="deleteCurrentObj" v-bind:class="{menu: true}">Delete</li>
+      <li v-on:click="deleteMatrix" v-bind:class="{menu: true}">Delete</li>
   </ol>
 </div>`,
 })

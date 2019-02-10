@@ -23,8 +23,8 @@ const TheMatrix = new Vue({
     
     nextID: 0, // The next ID to be used if there are no freeobjectIDs left
     freeObjectID: [], // if an object is ever removed. its id is added here
-    selectedObj: null, // The id of the currently selected object
-    objects: DATA_objects, // An array of objects which describe the scene
+    selectedObj: '', // The id of the currently selected object
+    initObjects: [], // An array of objects which describe initialized objects
 
     // Style and misc data
     showContextMenu: false,
@@ -40,7 +40,12 @@ const TheMatrix = new Vue({
   },
   created: function () {
     // for the moment we're going to manually bring our scene ids up to speed with the loaded scene
-    this.nextID = 9
+    let x = 0
+    for (let i = 0; i < DATA_objects.length; i++) {
+      this.createObj(DATA_objects[i])
+      x += 1
+    }
+    this.nextID = x + 1
   },
   methods: {
     getNewObjectID: function () {
@@ -52,9 +57,9 @@ const TheMatrix = new Vue({
       return id.toString()
     },
     getObjectByID: function (id) {
-      for (let i = 0; i < this.objects.length; i++) {
-        if (this.objects[i].id == id) {
-          return [this.objects[i], i]
+      for (let i = 0; i < this.initObjects.length; i++) {
+        if (this.initObjects[i].id == id) {
+          return [this.initObjects[i], i]
         }
       }
     },
@@ -67,9 +72,9 @@ const TheMatrix = new Vue({
     },
     getAllObjectsOfType: function (type) {
       let x = []
-      for (let i = 0; i < this.objects.length; i++) {
-        if (this.objects[i].type == type) {
-          x.push(this.objects[i])
+      for (let i = 0; i < this.initObjects.length; i++) {
+        if (this.initObjects[i].type == type) {
+          x.push(this.initObjects[i])
         }
       }
       return x
@@ -99,69 +104,61 @@ const TheMatrix = new Vue({
       switch (options.type) {
         case 'math-matrix':
         {
-          this.objects.push({
-            id: this.getNewObjectID(),
+          this.initObjects.push({
+            id: options.id || this.getNewObjectID(),
             type: options.type,
-            data: {
-              position: options.data.position,
-              entries: options.data.entries
-            }
+            position: options.position,
+            entries: options.entries
           })
           break;
         }
         case 'math-function':
         {
-          this.objects.push({
-            id: this.getNewObjectID(),
+          this.initObjects.push({
+            id: options.id || this.getNewObjectID(),
             type: options.type,
-            data: {
-              position: options.data.position,
-              result: options.data.result,
-              variables: options.data.variables,
-              name: options.data.name,
-              expression: options.data.expression
-            }
+            position: options.position,
+            result: options.result,
+            variables: options.variables,
+            name: options.name,
+            expression: options.expression
           })
           break;
         }
         case 'math-variable':
         {
-          this.objects.push({
-            id: this.getNewObjectID(),
+          this.initObjects.push({
+            id: options.id || this.getNewObjectID(),
             type: options.type,
-            data: {
-              position: options.data.position,
-              name: options.data.name || 'x',
-              type: options.data.valueType || 'number',
-              value: options.data.value || 0
-            }
+            position: options.position,
+            name: options.name || 'x',
+            valueType: options.valueType || 'number',
+            value: options.value || 0
           })
           break;
         }
         case 'base-text':
         {
-          this.objects.push({
-            id: this.getNewObjectID(),
+          this.initObjects.push({
+            id: options.id || this.getNewObjectID(),
             type: options.type,
-            data: {
-              position: options.data.position,
-              value: options.data.value || ''
-            }
+            position: options.position,
+            width: options.width,
+            height: options.height,
+            value: options.value || ''
           })
           break;
         }
         case 'math-table':
         {
-          this.objects.push({
-            id: this.getNewObjectID(),
+          this.initObjects.push({
+            id: options.id || this.getNewObjectID(),
             type: options.type,
-            data: {
-              position: options.data.position,
-              inputHeaders: options.data.inputHeaders || ['x'],
-              inputTable: options.data.inputTable || [[1],[2],[3],[4],[5]],
-              outputHeaders: options.data.outputHeaders || ['?'],
-              outputTable: options.data.outputTable || [['?'], ['?'], ['?'], ['?'], ['?']]
-            }
+            position: options.position,
+            inputHeaders: options.inputHeaders || ['x'],
+            inputTable: options.inputTable || [[1],[2],[3],[4],[5]],
+            outputHeaders: options.outputHeaders || ['?'],
+            outputTable: options.outputTable || [['?'], ['?'], ['?'], ['?'], ['?']]
           })
           break;
         }
@@ -262,8 +259,8 @@ const TheMatrix = new Vue({
       // Using a for loop is also an option.
       //console.log("delete function");
       let newObjs = []
-      while (this.objects.length > 0) {
-        let x = this.objects.pop()
+      while (this.initObjects.length > 0) {
+        let x = this.initObjects.pop()
         if (x.id != this.selectedObj) {
           newObjs.push(x)
         } else {
@@ -274,15 +271,19 @@ const TheMatrix = new Vue({
           this.freeObjectID.push(x.id)
         }
       }
-      this.objects = newObjs
-      this.objects.slice()
+      this.initObjects = newObjs
       // and we must close the context menu once the operation finishes
       this.showContextMenu = false
     },
     deleteObjByID: function (id) {
+      let x = this.getObjectByID(id)
+      //this.initObjects.splice()
+      console.log(x);
+
+      // TODO: redo this code block --------
       let newObjs = []
-      while (this.objects.length > 0) {
-        let x = this.objects.pop()
+      while (this.initObjects.length > 0) {
+        x = this.initObjects.pop()
         if (x.id != id) {
           newObjs.push(x)
         } else {
@@ -292,87 +293,17 @@ const TheMatrix = new Vue({
           this.freeObjectID.push(x.id)
         }
       }
-      this.objects = newObjs
-      this.objects.slice()
+      this.initObjects = newObjs
+      // ----------------------------
+
       // and we must close the context menu once the operation finishes
       this.showContextMenu = false
     },
     deleteAllObjects: function () {
-      // if all objects are being deleted we can reset the unique ids
-      this.objects = []
+      // if all initObjects are being deleted we can reset the unique ids
+      this.initObjects.splice(0, this.initObjects.length, [])
       this.nextID = 0
       this.freeObjectID = []
-    },
-    deleteTable: function () {
-      console.log("delete what?");
-    },
-    addToTable: function (arg) {
-      switch (arg) {
-        case 'input':
-          {
-            console.log("Add input column");
-            // get the data for the currently selected table
-            let x = this.getObjectByID(this.selectedObj)
-            if (x) {
-              console.log(x);
-              // add a new column to input tables
-              console.log(this.objects[x[1]].data);
-              // we make a new header and give it a default value
-              this.objects[x[1]].data.inputHeaders.push('x')
-              // then we'll add in some default values to the table
-              for (let i = 0; i < this.objects[x[1]].data.inputTable.length; i++) {
-                this.objects[x[1]].data.inputTable[i].push(i);
-              }
-              // update the vue component with new column
-            }
-            // At the end of all this, close the context menu
-          }
-          break;
-        case 'output':
-          {
-            console.log("Add output column");
-            // At the end of all this, close the context menu
-          }
-          break;
-        case 'row':
-          {
-            console.log("Add row to tables");
-            // At the end of all this, close the context menu
-          }
-          break;
-        default:
-          break;
-      }
-      // in all cases close the context menu
-      this.showContextMenu = false
-    },
-    removeFromTable: function (arg) {
-      switch (arg) {
-        case 'table':
-          {
-            //console.log("Remove table");
-            this.deleteCurrentObj()
-            // At the end of all this, close the context menu
-            this.showContextMenu = false
-          }
-          break;
-        case 'row':
-          {
-            console.log("Remove row from table");
-            // At the end of all this, close the context menu
-            this.showContextMenu = false
-          }
-          break;
-        case 'column':
-          {
-            console.log("Remove column from table");
-            // At the end of all this, close the context menu
-            this.showContextMenu = false
-          }
-          break;
-        default:
-          break;
-      }
     },
     selectObj: function (id) {
       // if we just selected an obj, make sure we close the context menu
@@ -381,25 +312,27 @@ const TheMatrix = new Vue({
       //console.log(id);
       this.selectedObj = id
     },
-    onRightClick: function (event) {
-      //console.log("onContextMenu change");
-      this.showContextMenu = true
-      this.contextMenuStyle.left = `${event.x}px`
-      this.contextMenuStyle.top = `${event.y}px`
-      // we right clicked someonewhere else so we need to make sure a selected object is de-selected
+    onClick: function () {
       this.selectObj('')
+      this.showContextMenu = false
+    },
+    onRightClick: function (event) {
+      this.selectObj('')
+      //console.log(event);
+      this.contextMenuStyle.left = `${event.layerX}px`
+      this.contextMenuStyle.top = `${event.layerY}px`
+      this.showContextMenu = true
     },
     updateData: function (id, key, value) {
       //console.log("Update function called.");
       let obj = this.getObjectByID(id)
       if (obj) {
         // the second item in the array is the index of the object
-        this.objects[obj[1]].data[key] = value
-        /*if (Array.isArray(this.objects[obj[1]].data[key])) {
+        this.initObjects[obj[1]].data[key] = value
+        /*if (Array.isArray(this.initObjects[obj[1]].data[key])) {
           console.log('there was an array updated');
-          this.objects[obj[1]].data[key].slice()
         }*/
-        // Lots of objects called the updateData method
+        // Lots of initObjects called the updateData method
         // so we need to be specific about what flow on effects might happen
         //console.log(obj);
         if (obj[0].type == "math-function") {
@@ -442,8 +375,6 @@ const TheMatrix = new Vue({
       let output = []
       for (let i = 0; i < this.$children.length; i++) {
         let x = this.$children[i].toObject()
-        x["id"] = '0'
-        x["type"] = 'type'
         output.push(x)
       }
       return JSON.stringify(output)
@@ -486,15 +417,15 @@ const TheMatrix = new Vue({
 v-on:click.self.prevent="selectObj('')"
 v-on:contextmenu.self.prevent="onRightClick"
 v-bind:style="styleObj">
-  <component v-for="(obj, key) in objects"
+  <component v-for="(obj, key) in initObjects"
   v-bind:key="obj.id"
   v-bind:id="obj.id"
-  v-bind:initData="obj.data"
+  v-bind:initData="obj"
   v-bind:is="obj.type"
   v-bind:selected="obj.id === selectedObj">
   </component>
   <ol v-on:contextmenu.prevent="onRightClick"
-  v-show="showContextMenu"
+  v-show="showContextMenu && selectedObj == ''"
   v-bind:style="contextMenuStyle"
   v-bind:class="{menu: true}">
     <li v-on:click="onLoad" v-bind:class="{menu: true}">Load</li>
