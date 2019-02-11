@@ -26,6 +26,9 @@ const TheMatrix = new Vue({
     selectedObj: '', // The id of the currently selected object
     initObjects: [], // An array of objects which describe initialized objects
 
+    // maths globals
+    globalScope: {},
+
     // Style and misc data
     showContextMenu: false,
     styleObj: {
@@ -48,6 +51,7 @@ const TheMatrix = new Vue({
     this.nextID = x + 1
   },
   methods: {
+    // Organizing the scene
     getNewObjectID: function () {
       let id = this.freeObjectID.pop()
       if (id == undefined) {
@@ -79,25 +83,6 @@ const TheMatrix = new Vue({
         }
       }
       return x
-    },
-    getFunctionString: function (symbol) {
-      //console.log(symbol);
-      // the idea here is to match the symbol to a function and return the function string
-      let x = this.getAllObjectsOfType('math-function')
-      for (let i = 0; i < x.length; i++) {
-        if (x[i].name == symbol) {
-          return x[i].expression
-        }
-      }
-    },
-    evaluteTableWithID: function (id) {
-      // we assume that a table is already selected in order to get to this piece of code
-      let vueObj = this.getVueObjectbyID(id)
-      if (vueObj) {
-        //console.log(vueObj);
-        vueObj.evaluateAllRows()
-      }
-      this.showContextMenu = false
     },
     createObj: function (options) {
       //console.log("creating an object");
@@ -136,6 +121,15 @@ const TheMatrix = new Vue({
             valueType: options.valueType || 'number',
             value: options.value || 0
           })
+          if (options.name) {
+            if (options.value) {
+              this.updateGlobalScope(options.name, options.value)
+            } else {
+              this.updateGlobalScope(options.name, 0)
+            }
+          } else {
+            this.updateGlobalScope('x', 0)
+          }
           break;
         }
         case 'base-text':
@@ -306,6 +300,16 @@ const TheMatrix = new Vue({
       this.nextID = 0
       this.freeObjectID = []
     },
+    toJSON: function () {
+      let output = []
+      for (let i = 0; i < this.$children.length; i++) {
+        let x = this.$children[i].toObject()
+        output.push(x)
+      }
+      return JSON.stringify(output)
+    },
+
+    // events
     selectObj: function (id) {
       // if we just selected an obj, make sure we close the context menu
       this.showContextMenu = false
@@ -324,17 +328,6 @@ const TheMatrix = new Vue({
       this.contextMenuStyle.top = `${event.layerY}px`
       this.showContextMenu = true
     },
-    updateTablesWithSymbol: function (symbol) {
-      //console.log(`updating tables with: ${symbol}`);
-      let tables = this.getAllObjectsOfType("math-table")
-      for (let i = 0; i < tables.length; i++) {
-        // first does the table have the symbol
-        if (tables[i].outputHeaders.includes(symbol)) {
-          // if we did find it then we can call evaluate
-          tables[i].evaluateAllRows()
-        }
-      }
-    },
     dropData: function (id, updateObj) {
       //console.log("dropData called.");
       //console.log(id, updateObj);
@@ -346,14 +339,6 @@ const TheMatrix = new Vue({
 
       // first update the object that was just dropped on
       this.deleteObjByID(id)
-    },
-    toJSON: function () {
-      let output = []
-      for (let i = 0; i < this.$children.length; i++) {
-        let x = this.$children[i].toObject()
-        output.push(x)
-      }
-      return JSON.stringify(output)
     },
     onLoad: function () {
       this.showContextMenu = false
@@ -387,6 +372,57 @@ const TheMatrix = new Vue({
     saveObjects: function () {
       console.log(`Copy the following into the Load function:\n${this.toJSON()}`)
       this.showContextMenu = false
+    },
+
+    // Helper functions for maths
+    getFunctionString: function (symbol) {
+      //console.log(symbol);
+      // the idea here is to match the symbol to a function and return the function string
+      let x = this.getAllObjectsOfType('math-function')
+      for (let i = 0; i < x.length; i++) {
+        if (x[i].name == symbol) {
+          return x[i].expression
+        }
+      }
+    },
+    evaluteTableWithID: function (id) {
+      // we assume that a table is already selected in order to get to this piece of code
+      let vueObj = this.getVueObjectbyID(id)
+      if (vueObj) {
+        //console.log(vueObj);
+        vueObj.evaluateAllRows()
+      }
+      this.showContextMenu = false
+    },
+    updateAllTables: function () {
+      let tables = this.getAllObjectsOfType("math-table")
+      for (let i = 0; i < tables.length; i++) {
+        tables[i].evaluateAllRows()
+      }
+    },
+    updateTablesWithSymbol: function (symbol) {
+      //console.log(`updating tables with: ${symbol}`);
+      let tables = this.getAllObjectsOfType("math-table")
+      for (let i = 0; i < tables.length; i++) {
+        // first does the table have the symbol
+        if (tables[i].outputHeaders.includes(symbol)) {
+          // if we did find it then we can call evaluate
+          tables[i].evaluateAllRows()
+        }
+      }
+    },
+    removeFromGlobalScope: function (symbol) {
+      delete this.globalScope[symbol]
+    },
+    updateGlobalScope: function (symbol, value) {
+      this.globalScope[symbol] = value
+      // There is a better way to do this
+      // however for the moment, when a symbol is updated
+      // We will update every table
+      this.updateAllTables()
+    },
+    getGlobalScope: function () {
+      return this.globalScope
     }
   },
   template: `<div ondragover="event.preventDefault()"

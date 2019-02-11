@@ -44,8 +44,9 @@ Vue.component("math-variable", {
       if (this.selected) {
         let x = prompt(`What would you like to rename ${this.name} to?`, this.name)
         if (x) {
+          this.$root.removeFromGlobalScope(this.name)
           this.name = x
-          this.$root.updateData(this.$attrs.id, 'name', x)
+          this.$root.updateGlobalScope(x, this.value)
         } 
       } else {
         this.onClick()
@@ -56,7 +57,7 @@ Vue.component("math-variable", {
         let x = prompt(`What would you like to change the value to?`, this.value)
         if (x) {
           this.value = x
-          this.$root.updateData(this.$attrs.id, 'value', x)
+          this.$root.updateGlobalScope(this.name, this.value)
         } 
       } else {
         this.onClick()
