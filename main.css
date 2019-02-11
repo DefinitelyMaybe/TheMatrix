@@ -18,6 +18,8 @@ td {
 
 p {
   margin: 0px;
+  padding-left: 1px;
+  padding-right: 1px;
 }
 
 ol.menu {
@@ -30,7 +32,6 @@ ol.menu {
 
 li {
   background: rgb(255, 255, 255);
-  width: 150px; /* Not the greatest solution to an ugly looking menu */
 }
 
 li.menu {

@@ -20,6 +20,7 @@ Vue.component("math-table", {
       showContextMenu: false,
       contextMenuStyle: {
         'position': 'absolute',
+        'width': '150px', // Not the greatest solution to an ugly looking menu
         'left': '0px',
         'top': '0px'
       },
@@ -207,21 +208,24 @@ Vue.component("math-table", {
         return this.outputTable
       },
       set: function (row) {
-        //console.log(typeof row);
-        // now with this index, create the variable scope object for the eval call
-        let scope = {}
+        // First get the whole scenes scope object
+        let scope = this.$root.getGlobalScope()
 
+        // Override the scope values with the ones from the table
         for (let i = 0; i < this.inputHeaders.length; i++) {
           scope[this.inputHeaders[i]] = this.inputTable[row][i]
         }
-        //console.log(scope);
-        // next we need the output function string
+        
+        // For each output symbol
         for (let i = 0; i < this.outputHeaders.length; i++) {
-          //console.log(i);
+          // Get the function string for it
           let func = this.$root.getFunctionString(this.outputHeaders[i])
+
+          // If found do the evaluation
           if (func) {
             let g = math.compile(func)
-            let outputValue
+            // Setting up a default value
+            let outputValue = "?"
             try {
               outputValue = g.eval(scope)
               // a simple check for strange values
@@ -234,9 +238,7 @@ Vue.component("math-table", {
             } catch (error) {
               console.warn("outputValue is not undefined because...");
               console.warn(error);
-              outputValue = '?'
             }
-            //console.log(outputValue);
             let newRow = this.outputTable[row]
             newRow.splice(i, 1, outputValue)
             this.outputTable.splice(row, 1, newRow)
