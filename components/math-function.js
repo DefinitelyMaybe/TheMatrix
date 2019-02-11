@@ -105,7 +105,7 @@ v-bind:class="{ function: true, selected: selected}"
 v-on:click.prevent="onClick"
 v-on:contextmenu.prevent="onRightClick">
   <p v-on:click.prevent="changeName">{{name}}</p>
-  <p>=</p>
+  <p>:</p>
   <p v-on:click.prevent="changeExpression">{{expression}}</p>
   <ol v-on:contextmenu.prevent="0"
   v-bind:class="{menu: true}"
