@@ -23,6 +23,7 @@ p {
 }
 
 ol.menu {
+  z-index: 1;
   border: 1px rgb(103, 237, 255) solid;
   list-style: none;
   padding-left: 0px;

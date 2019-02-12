@@ -48,7 +48,9 @@ const TheMatrix = new Vue({
       this.createObj(DATA_objects[i])
       x += 1
     }
-    this.nextID = x + 1
+    this.nextID = x
+    //console.log(x);
+    //console.log(this.nextID);
   },
   methods: {
     // Organizing the scene
@@ -164,7 +166,7 @@ const TheMatrix = new Vue({
       }
     },
     userCreateObj: function (event) {
-      let obj = prompt("What would you like to create? Type one of the following...\nmatrix\nfunction\nvariable\ntext\ntable", '')
+      let obj = prompt("What would you like to create? Type one of the following...\nfunction\nvariable\ntext\ntable", '')
       
       switch (obj) {
         case 'matrix':
@@ -266,24 +268,8 @@ const TheMatrix = new Vue({
     },
     deleteObjByID: function (id) {
       let x = this.getObjectByID(id)
-      //this.initObjects.splice()
-      console.log(x);
-
-      // TODO: redo this code block --------
-      let newObjs = []
-      while (this.initObjects.length > 0) {
-        x = this.initObjects.pop()
-        if (x.id != id) {
-          newObjs.push(x)
-        } else {
-          // because we've found the obj that we want to del
-          // we must add its index to free indices.
-          // this is so we can guarantee that all object ids are unquie
-          this.freeObjectID.push(x.id)
-        }
-      }
-      this.initObjects = newObjs
-      // ----------------------------
+      //console.log(x);
+      this.initObjects.splice(x[1], 1)
 
       // and we must close the context menu once the operation finishes
       this.showContextMenu = false

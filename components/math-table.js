@@ -20,7 +20,7 @@ Vue.component("math-table", {
       showContextMenu: false,
       contextMenuStyle: {
         'position': 'absolute',
-        'width': '150px', // A particular solution to an ugly looking menu
+        'width': '175px', // A particular solution to an ugly looking menu
         'left': '0px',
         'top': '0px'
       },
@@ -104,11 +104,10 @@ Vue.component("math-table", {
       }
     },
     removeInputColumn: function (index) {
-      if (this.this.inputHeaders.length > 1) {
+      if (this.inputHeaders.length > 1) {
         this.inputHeaders.splice(index, 1)
         for (let i = 0; i < this.inputTable.length; i++) {
-          let newArray = this.inputTable[i].splice(index, 1)
-          this.inputTable.splice(i, 1, newArray)
+          this.inputTable[i].splice(index, 1)
         }
       } else {
         console.warn('Not removing column because table is too small');
@@ -118,8 +117,7 @@ Vue.component("math-table", {
       if (this.outputHeaders.length > 1) {
         this.outputHeaders.splice(index, 1)
         for (let i = 0; i < this.outputTable.length; i++) {
-          let newArray = this.outputTable[i].splice(index, 1)
-          this.outputTable.splice(i, 1, newArray)
+          this.outputTable[i].splice(index, 1)
         } 
       } else {
         console.warn('Not removing column because table is too small');
@@ -183,16 +181,26 @@ Vue.component("math-table", {
             }
           }
           break;
-        case 'column':
+        case 'inputcolumn':
           {
-            console.log("Remove column from table");
-            let symbolX = prompt("Whats the name of the column you would like to delete", '?')
-            if (symbolX) {
-              if (this.inputHeaders.includes(symbolX)) {
-                this.removeInputColumn(this.inputHeaders.indexOf(symbolX))
+            //console.log("Remove column from table");
+            let colX = prompt("What number column would you like to delete", '1')
+            if (colX) {
+              let intX = parseInt(colX)
+              if (intX == colX) {
+                this.removeInputColumn(intX - 1)
               }
-              if (this.outputHeaders.includes(symbolX)) {
-                this.removeOutputColumn(this.outputHeaders.indexOf(symbolX))
+            }
+          }
+          break;
+        case 'outputcolumn':
+          {
+            //console.log("Remove column from table");
+            let colX = prompt("What number column would you like to delete", '1')
+            if (colX) {
+              let intX = parseInt(colX)
+              if (intX == colX) {
+                this.removeOutputColumn(intX - 1)
               }
             }
           }
@@ -332,10 +340,11 @@ Vue.component("math-table", {
       <li v-on:click="addToTable('input')" v-bind:class="{menu:true}">Add Input Column</li>
       <li v-on:click="addToTable('output')" v-bind:class="{menu:true}">Add Output Column</li>
       <li v-on:click="addToTable('row')" v-bind:class="{menu:true}">Add Row</li>
-      <li v-bind:class="{menu: false}">-----</li>
+      <li v-bind:class="{menu: false}">----------</li>
       <li v-on:click="deleteTable" v-bind:class="{menu: true}">Delete Table</li>
       <li v-on:click="removeFromTable('row')" v-bind:class="{menu: true}">Delete Row</li>
-      <li v-on:click="removeFromTable('column')" v-bind:class="{menu: true}">Delete Column</li>
+      <li v-on:click="removeFromTable('inputcolumn')" v-bind:class="{menu: true}">Delete Input Column</li>
+      <li v-on:click="removeFromTable('outputcolumn')" v-bind:class="{menu: true}">Delete Output Column</li>
     </ol>
   </div>`,
 })
