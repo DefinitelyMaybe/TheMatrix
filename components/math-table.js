@@ -20,7 +20,7 @@ Vue.component("math-table", {
       showContextMenu: false,
       contextMenuStyle: {
         'position': 'absolute',
-        'width': '150px', // Not the greatest solution to an ugly looking menu
+        'width': '150px', // A particular solution to an ugly looking menu
         'left': '0px',
         'top': '0px'
       },
@@ -103,11 +103,32 @@ Vue.component("math-table", {
         this.onClick(event)
       }
     },
+    removeInputColumn: function (index) {
+      if (this.this.inputHeaders.length > 1) {
+        this.inputHeaders.splice(index, 1)
+        for (let i = 0; i < this.inputTable.length; i++) {
+          let newArray = this.inputTable[i].splice(index, 1)
+          this.inputTable.splice(i, 1, newArray)
+        }
+      } else {
+        console.warn('Not removing column because table is too small');
+      }
+    },
+    removeOutputColumn: function (index) {
+      if (this.outputHeaders.length > 1) {
+        this.outputHeaders.splice(index, 1)
+        for (let i = 0; i < this.outputTable.length; i++) {
+          let newArray = this.outputTable[i].splice(index, 1)
+          this.outputTable.splice(i, 1, newArray)
+        } 
+      } else {
+        console.warn('Not removing column because table is too small');
+      }
+    },
     addToTable: function (arg) {
       switch (arg) {
         case 'input':
           {
-            console.log("Add input column");
             // get the data for the currently selected table
             this.inputHeaders.push('x')
             // then we'll add in some default values to the table
@@ -118,14 +139,16 @@ Vue.component("math-table", {
           break;
         case 'output':
           {
-            console.log("Add output column");
-            // At the end of all this, close the context menu
+            this.outputHeaders.push('?')
+            // then we'll add in some default values to the table
+            for (let i = 0; i < this.inputTable.length; i++) {
+              this.outputTable[i].push("?");
+            }
           }
           break;
         case 'row':
           {
             console.log("Add row to tables");
-            // At the end of all this, close the context menu
           }
           break;
         default:
@@ -136,34 +159,53 @@ Vue.component("math-table", {
     },
     removeFromTable: function (arg) {
       switch (arg) {
-        case 'table':
-          {
-            //console.log("Remove table");
-            this.deleteCurrentObj()
-            // At the end of all this, close the context menu
-            this.showContextMenu = false
-          }
-          break;
         case 'row':
           {
-            console.log("Remove row from table");
-            // At the end of all this, close the context menu
-            this.showContextMenu = false
+            //console.log("Remove row from table");
+            let rowX = prompt("Which row would you like to delete", '1')
+            if (rowX) {
+              try {
+                let intX = parseInt(rowX)
+                if (intX == rowX) {
+                  intX -= 1 // someone would say delete the 1st row,
+                  // not delete the 0th row. A small difference between maths and programming
+                  if (this.inputTable.length > 1) {
+                    this.inputTable.splice(intX, 1)
+                    this.outputTable.splice(intX, 1)
+                  } else {
+                    console.warn('Not removing row because table is too small');
+                  }
+                }
+              } catch (error) {
+                console.warn("Could parseInt because...");
+                console.warn(error);
+              }
+            }
           }
           break;
         case 'column':
           {
             console.log("Remove column from table");
-            // At the end of all this, close the context menu
-            this.showContextMenu = false
+            let symbolX = prompt("Whats the name of the column you would like to delete", '?')
+            if (symbolX) {
+              if (this.inputHeaders.includes(symbolX)) {
+                this.removeInputColumn(this.inputHeaders.indexOf(symbolX))
+              }
+              if (this.outputHeaders.includes(symbolX)) {
+                this.removeOutputColumn(this.outputHeaders.indexOf(symbolX))
+              }
+            }
           }
           break;
         default:
           break;
       }
+      // in all cases close the context menu
+      this.showContextMenu = false
     },
     deleteTable: function () {
-      console.log("delete what?");
+      //console.log("delete what?");
+      this.$root.deleteObjByID(this.$attrs.id)
     },
     toObject: function () {
       return {
