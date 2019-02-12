@@ -191,10 +191,8 @@ const TheMatrix = new Vue({
           }
           this.createObj({
             type: 'math-matrix',
-            data: {
-              position:[`${event.x}px`, `${event.y}px`],
-              entries: defaultEntries
-            }
+            position:[`${event.x}px`, `${event.y}px`],
+            entries: defaultEntries
           })
           break;
         }
@@ -202,6 +200,8 @@ const TheMatrix = new Vue({
         {
           this.createObj({
             type: 'math-function',
+            name: 'f',
+            expression: 'x',
             position:[`${event.x}px`, `${event.y}px`]
           })
           break;
@@ -210,6 +210,8 @@ const TheMatrix = new Vue({
         {
           this.createObj({
             type: 'math-variable',
+            name: 'x',
+            value: 0,
             position:[`${event.x}px`, `${event.y}px`]
           })
           break;
