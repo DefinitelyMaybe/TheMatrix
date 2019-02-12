@@ -202,9 +202,7 @@ const TheMatrix = new Vue({
         {
           this.createObj({
             type: 'math-function',
-            data: {
-              position:[`${event.x}px`, `${event.y}px`]
-            }
+            position:[`${event.x}px`, `${event.y}px`]
           })
           break;
         }
@@ -212,9 +210,7 @@ const TheMatrix = new Vue({
         {
           this.createObj({
             type: 'math-variable',
-            data: {
-              position:[`${event.x}px`, `${event.y}px`]
-            }
+            position:[`${event.x}px`, `${event.y}px`]
           })
           break;
         }
@@ -222,9 +218,7 @@ const TheMatrix = new Vue({
         {
           this.createObj({
             type: 'base-text',
-            data: {
-              position:[`${event.x}px`, `${event.y}px`]
-            }
+            position:[`${event.x}px`, `${event.y}px`]
           })
           break;
         }
@@ -232,9 +226,7 @@ const TheMatrix = new Vue({
         {
           this.createObj({
             type: 'math-table',
-            data: {
-              position:[`${event.x}px`, `${event.y}px`]
-            }
+            position:[`${event.x}px`, `${event.y}px`]
           })
           break;
         }
