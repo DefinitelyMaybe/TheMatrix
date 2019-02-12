@@ -56,8 +56,15 @@ Vue.component("math-variable", {
       if (this.selected) {
         let x = prompt(`What would you like to change the value to?`, this.value)
         if (x) {
-          this.value = x
-          this.$root.updateGlobalScope(this.name, this.value)
+          let num = parseFloat(x)
+          if (num == x) {
+            this.value = num
+            this.$root.updateGlobalScope(this.name, this.value)
+          } else {
+            console.warn("Only using numbers for variables at this point");
+            this.value = '?'
+            this.$root.updateGlobalScope(this.name, this.value)
+          }
         } 
       } else {
         this.onClick()
@@ -114,14 +121,7 @@ v-bind:style="styleObj"
 v-bind:class="{variable:true, selected:selected, objHover:objHover}">
   <p v-on:click="changeName">{{name}}</p>
   <p>=</p>
-  <p v-if="valueType == 'number'"
-  v-on:click="changeValue">{{value}}</p>
-  <component
-  v-if="valueType == 'math-matrix'"
-  v-bind:is="'math-matrix'"
-  v-bind:selected="selected"
-  v-bind:initData="{'entries':value}">
-  </component>
+  <p v-on:click="changeValue">{{value}}</p>
   <ol v-on:contextmenu.prevent="0"
   v-bind:class="{menu: true}"
   v-show="showContextMenu && selected"
