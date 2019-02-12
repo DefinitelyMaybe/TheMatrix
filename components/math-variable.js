@@ -75,7 +75,7 @@ Vue.component("math-variable", {
       }
     },
     deleteVariable: function () {
-      console.log("delete variable");
+      this.$root.deleteObjByID(this.$attrs.id)
     },
     onDragEnd: function (event) {
       let x = event.x - this.dragOffsetX

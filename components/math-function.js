@@ -70,8 +70,8 @@ Vue.component("math-function", {
         "id": this.$attrs.id
       }
     },
-    deleteTable: function () {
-      console.log("Need to link up delete function");
+    deleteFunction: function () {
+      this.$root.deleteObjByID(this.$attrs.id)
     },
     onDragEnd: function (event) {
       let x = event.x - this.dragOffsetX
@@ -111,7 +111,7 @@ v-on:contextmenu.prevent="onRightClick">
   v-bind:class="{menu: true}"
   v-show="showContextMenu && selected"
   v-bind:style="contextMenuStyle">
-    <li v-on:click="deleteTable" v-bind:class="{menu: true}">Delete</li>
+    <li v-on:click="deleteFunction" v-bind:class="{menu: true}">Delete</li>
   </ol>
 </div>`,
 })

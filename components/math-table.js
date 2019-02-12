@@ -204,7 +204,6 @@ Vue.component("math-table", {
       this.showContextMenu = false
     },
     deleteTable: function () {
-      //console.log("delete what?");
       this.$root.deleteObjByID(this.$attrs.id)
     },
     toObject: function () {

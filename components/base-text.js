@@ -48,7 +48,7 @@ Vue.component("base-text", {
       }
     },
     deleteText: function () {
-      console.log("Delete text function");
+      this.$root.deleteObjByID(this.$attrs.id)
     },
     onDragEnd: function (event) {
       let x = event.x - this.dragOffsetX

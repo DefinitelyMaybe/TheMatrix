@@ -70,7 +70,7 @@ Vue.component("math-matrix", {
       }
     },
     deleteMatrix: function () {
-      console.log("Delete matrix");
+      this.$root.deleteObjByID(this.$attrs.id)
     },
     onDragEnd: function (event) {
       let x = event.x - this.dragOffsetX
