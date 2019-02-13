@@ -159,6 +159,15 @@ const TheMatrix = new Vue({
           })
           break;
         }
+        case 'math-graph':
+        {
+          this.initObjects.push({
+            id: options.id || this.getNewObjectID(),
+            type: options.type,
+            position: options.position,
+          })
+          break;
+        }
         default:
           console.warn("The default creation case hasn't created anything with:");
           console.log(options);
