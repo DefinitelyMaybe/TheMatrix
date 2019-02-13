@@ -4,8 +4,9 @@ html {
 
 body {
   background: rgb(255, 255, 255);
-  height: 100%;
-  overflow: hidden;
+  width: 2480px; /* a4 300dpi page size */
+  height: 3508px;
+  /*overflow: hidden;*/
   margin: 0px;
   font-size: 20px;
   background-size: 20px 20px;
