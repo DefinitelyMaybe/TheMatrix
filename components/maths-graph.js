@@ -6,6 +6,7 @@ Vue.component("math-graph", {
   data: function () {
     return {
       // some defaults
+      graph: '',
       header: 'graph',
       axis: ['x', 'y'],
       data: {
@@ -45,7 +46,6 @@ Vue.component("math-graph", {
       this.styleObj.height = this.initData.height
       this.styleObj.left = this.initData.position[0]
       this.styleObj.top = this.initData.position[1]
-      console.log(this);
     }
   },
   mounted: function () {

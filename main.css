@@ -45,6 +45,14 @@ li.menu:hover {
   background: rgb(227, 252, 255)
 }
 
+.graph {
+  border: 2px rgb(103, 237, 255) solid;
+}
+
+.graph.selected {
+  border: 2px rgb(0, 0, 0) solid;
+}
+
 .tableContainer {
   display: flex;
   flex-direction: row;
