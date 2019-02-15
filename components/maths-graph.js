@@ -6,15 +6,59 @@ Vue.component("math-graph", {
   data: function () {
     return {
       // some defaults
-      graph: '',
-      header: 'graph',
-      axis: ['x', 'y'],
-      data: {
-        'x': [1, 2, 3, 4, 5],
-        'y': [1, 2, 4, 8, 16]
+      graph: '', // htmlelement ref
+      trace: [
+        {
+          'x': [1, 2, 3, 4, 5],
+          'y': [1, 2, 4, 8, 16],
+          type: 'scatter'
+        }
+      ],
+      layout: {
+        title: {
+          text:'Title',
+          x: 10,
+          y: 10
+        },
+        width: 200,
+        height: 200,
+        margin: {
+          l: 0,
+          r: 0,
+          b: 0,
+          t: 50,
+          pad: 0
+        },
+        xaxis: {
+          //range: [-10, 10],
+          showgrid: true,
+          zeroline: true,
+          showline: true,
+          //mirror: 'ticks',
+          gridcolor: '#000000',
+          gridwidth: 1,
+          zerolinecolor: '#000000',
+          zerolinewidth: 3,
+          //linecolor: '#67edff',
+          //linewidth: 6
+        },
+        yaxis: {
+          //range: [-10, 10],
+          showgrid: true,
+          zeroline: true,
+          showline: true,
+          gridcolor: '#000000',
+          gridwidth: 1,
+          zerolinecolor: '#000000',
+          zerolinewidth: 3,
+          /*mirror: 'ticks',
+          linecolor: '#67edff',
+          linewidth: 6*/
+        }
       },
       options: {
-        margin: { t: 0 }
+        zoomscroll: true,
+        //responsive: true
       },
       
       // styling and misc data
@@ -22,8 +66,6 @@ Vue.component("math-graph", {
         'position': 'absolute',
         'left': '0px',
         'top': '0px',
-        'width': "300px",
-        'height': "300px"
       },
       showContextMenu: false,
       contextMenuStyle: {
@@ -38,10 +80,6 @@ Vue.component("math-graph", {
   created: function () {
     if (this.initData) {
       //console.log(this.initData);
-      /*this.inputHeaders = this.initData.inputHeaders
-      this.outputHeaders = this.initData.outputHeaders
-      this.inputTable = this.initData.inputTable
-      this.outputTable = this.initData.outputTable*/
       this.styleObj.width = this.initData.width
       this.styleObj.height = this.initData.height
       this.styleObj.left = this.initData.position[0]
@@ -55,8 +93,12 @@ Vue.component("math-graph", {
   methods: {
     // Graph specific
     plot: function () {
-      console.log("hello world");
-      Plotly.plot( this.graph, [this.data], this.options);
+      //console.log("hello world");
+      Plotly.plot( this.graph, this.trace, this.layout, this.options);
+      // trace = array of data objects
+      // layout = object
+      // options = object
+      //plot(htmlelement, trace, layout, options)
     },
     deleteGraph: function () {
       this.$root.deleteObjByID(this.$attrs.id)
@@ -75,15 +117,17 @@ Vue.component("math-graph", {
     onDragEnd: function (event) {
       let x = event.x - this.dragOffsetX
       let y = event.y - this.dragOffsetY
+      console.log(`moving to:\n(${x},${y})`);
       this.styleObj.left = `${x}px`
       this.styleObj.top = `${y}px`
     },
     onDragStart: function (event) {
       //console.log("onDragStart function says...");
-      //console.log(event);
+      console.log(event);
       this.onClick()
       this.dragOffsetX = event.offsetX
       this.dragOffsetY = event.offsetY
+      console.log(`(${this.dragOffsetX}, ${this.dragOffsetY})`);
     },
     onClick: function () {
       this.$root.selectObj(this.$attrs.id)
