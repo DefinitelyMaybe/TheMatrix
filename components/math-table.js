@@ -272,10 +272,13 @@ Vue.component("math-table", {
 
           // If found do the evaluation
           if (func) {
-            let g = math.compile(func)
-            // Setting up a default value
+            let g;
             let outputValue = "?"
             try {
+              let g = math.compile(func)
+              // Setting up a default value
+              
+
               outputValue = g.eval(scope)
               // a simple check for strange values
               if (outputValue == "Infinity") {
@@ -285,8 +288,8 @@ Vue.component("math-table", {
                 outputValue = math.format(outputValue, {precision: 4})
               }
             } catch (error) {
-              console.warn("outputValue is not undefined because...");
-              console.warn(error);
+              console.log("outputValue is not undefined because...");
+              //console.warn(error);
             }
             let newRow = this.outputTable[row]
             newRow.splice(i, 1, outputValue)
