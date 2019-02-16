@@ -16,6 +16,8 @@ function sayHi(name) {
   console.log(`Hey ${name}`);
 }
 
+const MQ = MathQuill.getInterface(2);
+
 const TheMatrix = new Vue({
   el: '#TheMatrix',
   data: {
