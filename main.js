@@ -111,7 +111,8 @@ const TheMatrix = new Vue({
             result: options.result,
             variables: options.variables,
             name: options.name,
-            expression: options.expression
+            expression: options.expression,
+            latex: options.latex
           })
           break;
         }

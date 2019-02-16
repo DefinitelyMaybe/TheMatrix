@@ -9,6 +9,7 @@ Vue.component("math-function", {
       // used as a referrence for other functions
       name: "f",
       expression: "x + 1",
+      latex: 'x+1',
       mathq: '',
       
       // styling and misc data
@@ -35,6 +36,7 @@ Vue.component("math-function", {
       //console.log(this.initData);
       this.name = this.initData.name
       this.expression = this.initData.expression
+      this.latex = this.initData.latex
       this.styleObj.left = this.initData.position[0]
       this.styleObj.top = this.initData.position[1]
     }
@@ -45,7 +47,7 @@ Vue.component("math-function", {
         edit: this.spanEdit
       }
     })
-    this.mathq.latex(this.expression)
+    this.mathq.latex(this.latex)
   },
   methods: {
     changeName: function () {
@@ -53,17 +55,6 @@ Vue.component("math-function", {
         let newName = prompt("what would you like to change the name to?", this.name)
         if (newName && this.name != newName) {
           this.name = newName
-          this.$root.updateTablesWithSymbol(this.name)
-        } 
-      } else {
-        this.onClick(event)
-      }
-    },
-    changeExpression: function () {
-      if (this.selected) {
-        let newExpression = prompt("what would you like to change the name to?", this.expression)
-        if (newExpression && this.expression != newExpression) {
-          this.expression = newExpression
           this.$root.updateTablesWithSymbol(this.name)
         } 
       } else {
@@ -81,7 +72,23 @@ Vue.component("math-function", {
     },
     spanEdit: function () {
       //console.log("span edit");
-      //console.log(this.mathq.latex());
+      this.latex = this.mathq.latex()
+      this.expression = this.expressionFromLatex(this.latex);
+      this.$root.updateTablesWithSymbol(this.name)
+    },
+    expressionFromLatex: function (latexString) {
+      // find \left( and \right)
+      let newString = latexString.replace(/\\left\(/g, '(')
+      newString = newString.replace(/\\right\)/g, ')')
+
+      // then remove any { }
+      newString = newString.replace(/{/g, '')
+      newString = newString.replace(/}/g, '')
+
+      // replace any cdot's (which is multiply)
+      newString = newString.replace(/\\cdot/g, '*')
+
+      return newString
     },
     deleteFunction: function () {
       this.$root.deleteObjByID(this.$attrs.id)
@@ -128,3 +135,18 @@ v-on:contextmenu.prevent="onRightClick">
   </ol>
 </div>`,
 })
+
+/*
+
+    changeExpression: function () {
+      if (this.selected) {
+        let newExpression = prompt("what would you like to change the name to?", this.expression)
+        if (newExpression && this.expression != newExpression) {
+          this.expression = newExpression
+          this.$root.updateTablesWithSymbol(this.name)
+        } 
+      } else {
+        this.onClick(event)
+      }
+    },
+*/

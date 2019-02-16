@@ -7,12 +7,14 @@ DATA_objects = [{
 }, {
   "name": "f",
   "expression": "2x + z",
+  "latex": "2x+z",
   "position": ["118px", "95px"],
   "type": "math-function",
   "id": "1"
 }, {
   "name": "g",
-  "expression": "3x^2 + y",
+  "expression": "10x^(2-x)+(y+1)",
+  "latex": "10x^{2-x}+(y+1)",
   "position": ["104px", "152px"],
   "type": "math-function",
   "id": "2"
