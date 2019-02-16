@@ -9,6 +9,7 @@ Vue.component("math-function", {
       // used as a referrence for other functions
       name: "f",
       expression: "x + 1",
+      mathq: '',
       
       // styling and misc data
       styleObj: {
@@ -37,6 +38,14 @@ Vue.component("math-function", {
       this.styleObj.left = this.initData.position[0]
       this.styleObj.top = this.initData.position[1]
     }
+  },
+  mounted: function () {
+    this.mathq =  MQ.MathField(this.$refs.quillspan, {
+      handlers: {
+        edit: this.spanEdit
+      }
+    })
+    this.mathq.latex(this.expression)
   },
   methods: {
     changeName: function () {
@@ -69,6 +78,10 @@ Vue.component("math-function", {
         "type": 'math-function',
         "id": this.$attrs.id
       }
+    },
+    spanEdit: function () {
+      //console.log("span edit");
+      //console.log(this.mathq.latex());
     },
     deleteFunction: function () {
       this.$root.deleteObjByID(this.$attrs.id)
@@ -106,7 +119,7 @@ v-on:click.prevent="onClick"
 v-on:contextmenu.prevent="onRightClick">
   <p v-on:click.prevent="changeName">{{name}}</p>
   <p>:</p>
-  <p v-on:click.prevent="changeExpression">{{expression}}</p>
+  <span ref="quillspan"></span>
   <ol v-on:contextmenu.prevent="0"
   v-bind:class="{menu: true}"
   v-show="showContextMenu && selected"
