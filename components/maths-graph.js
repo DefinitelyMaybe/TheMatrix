@@ -9,8 +9,8 @@ Vue.component("math-graph", {
       graph: '', // htmlelement ref
       trace: [
         {
-          'x': [1, 2, 3, 4, 5],
-          'y': [1, 2, 4, 8, 16],
+          'x': [0, 1, 2, 3, 4, 5],
+          'y': [0, 1, 4, 9, 16, 25],
           type: 'scatter'
         }
       ],
@@ -26,15 +26,17 @@ Vue.component("math-graph", {
           l: 0,
           r: 0,
           b: 0,
-          t: 50,
+          t: 0,
           pad: 0
         },
         xaxis: {
           //range: [-10, 10],
+          tickmode: 'auto',
+          nticks: 20,
           showgrid: true,
           zeroline: true,
           showline: true,
-          //mirror: 'ticks',
+          //dtick: 1,
           gridcolor: '#000000',
           gridwidth: 1,
           zerolinecolor: '#000000',
@@ -43,7 +45,8 @@ Vue.component("math-graph", {
           //linewidth: 6
         },
         yaxis: {
-          //range: [-10, 10],
+          tickmode: 'auto',
+          nticks: 20,
           showgrid: true,
           zeroline: true,
           showline: true,
@@ -51,8 +54,8 @@ Vue.component("math-graph", {
           gridwidth: 1,
           zerolinecolor: '#000000',
           zerolinewidth: 3,
-          /*mirror: 'ticks',
-          linecolor: '#67edff',
+          //dtick: 1,
+          /*linecolor: '#67edff',
           linewidth: 6*/
         }
       },
@@ -86,7 +89,7 @@ Vue.component("math-graph", {
       this.styleObj.top = this.initData.position[1]
     }
   },
-  mounted: function () {
+  mounted() {
     this.graph = this.$refs.graph
     this.plot()
   },
@@ -117,17 +120,17 @@ Vue.component("math-graph", {
     onDragEnd: function (event) {
       let x = event.x - this.dragOffsetX
       let y = event.y - this.dragOffsetY
-      console.log(`moving to:\n(${x},${y})`);
+      //console.log(`moving to:\n(${x},${y})`);
       this.styleObj.left = `${x}px`
       this.styleObj.top = `${y}px`
     },
     onDragStart: function (event) {
       //console.log("onDragStart function says...");
-      console.log(event);
+      //console.log(event);
       this.onClick()
       this.dragOffsetX = event.offsetX
       this.dragOffsetY = event.offsetY
-      console.log(`(${this.dragOffsetX}, ${this.dragOffsetY})`);
+      //console.log(`(${this.dragOffsetX}, ${this.dragOffsetY})`);
     },
     onClick: function () {
       this.$root.selectObj(this.$attrs.id)
