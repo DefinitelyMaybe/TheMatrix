@@ -45,6 +45,10 @@ li.menu:hover {
   background: rgb(227, 252, 255)
 }
 
+.mq-editable-field {
+ border: 0px;
+}
+
 .graph {
   border: 2px rgb(103, 237, 255) solid;
 }
