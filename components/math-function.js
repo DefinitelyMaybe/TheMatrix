@@ -75,18 +75,27 @@ Vue.component("math-function", {
       this.latex = this.mathq.latex()
       this.expression = this.expressionFromLatex(this.latex);
       this.$root.updateTablesWithSymbol(this.name)
+      console.log(`latex: ${this.latex}\nexpression: ${this.expression}`);
     },
     expressionFromLatex: function (latexString) {
       // find \left( and \right)
       let newString = latexString.replace(/\\left\(/g, '(')
       newString = newString.replace(/\\right\)/g, ')')
 
-      // then remove any { }
-      newString = newString.replace(/{/g, '')
-      newString = newString.replace(/}/g, '')
-
       // replace any cdot's (which is multiply)
       newString = newString.replace(/\\cdot/g, '*')
+
+      // division requires some extra work
+      newString = newString.replace(/\\frac{/g, function (match, offset, string) {
+        //will need to keep matching until the appropriate number of brackets have been reached
+        let numerator = ''
+        let demoninator = ''
+        return `(${numerator}/${demoninator})`
+      })
+      
+      // at the end we remove any extra {}'s
+      newString = newString.replace(/{/g, '')
+      newString = newString.replace(/}/g, '')
 
       return newString
     },
