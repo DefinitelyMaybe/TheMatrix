@@ -78,6 +78,48 @@ Vue.component("math-function", {
       console.log(`latex: ${this.latex}\nexpression: ${this.expression}`);
     },
     expressionFromLatex: function (latexString) {
+      function parseFraction(string) {
+        let i = string.lastIndexOf('\\frac{')
+        
+        // hardcoding the length of the match
+        let firstHalf = string.slice(0, i)
+        let lastHalf = string.slice(i + 6)
+
+        // getting the numerator is easy
+        i = lastHalf.lastIndexOf('}{')
+        let numi = lastHalf.slice(0, i)
+        let demo = '' // for safe keeping
+
+        // and then we can adjust the last part of the string accordingly
+        lastHalf = lastHalf.slice(i+2)
+
+        let c = 1
+        let demoC = null
+        for (let i = 0; i < lastHalf.length; i++) {
+          const element = lastHalf[i];
+          if (element == '{') {
+            c += 1
+          } else if (element == '}') {
+            c -= 1
+          }
+          if (c == 0) {
+            // then we know we've got to the end of the denominator
+            demo = lastHalf.slice(0, i)
+            demoC = i
+            break
+          }
+        }
+        // lets check what we have
+        if (demoC) {
+          lastHalf = lastHalf.slice(demoC + 1)
+        } else {
+          console.log("something may have gone wrong...");
+        }
+
+        //console.log(`first: ${firstHalf}\nlast: ${lastHalf}`);
+        string = firstHalf + `(${numi})/(${demo})` + lastHalf
+        return string
+      }
       // find \left( and \right)
       let newString = latexString.replace(/\\left\(/g, '(')
       newString = newString.replace(/\\right\)/g, ')')
@@ -86,12 +128,9 @@ Vue.component("math-function", {
       newString = newString.replace(/\\cdot/g, '*')
 
       // division requires some extra work
-      newString = newString.replace(/\\frac{/g, function (match, offset, string) {
-        //will need to keep matching until the appropriate number of brackets have been reached
-        let numerator = ''
-        let demoninator = ''
-        return `(${numerator}/${demoninator})`
-      })
+      while (newString.match(/\\frac{/g) != null) {
+        newString = parseFraction(newString)
+      }
       
       // at the end we remove any extra {}'s
       newString = newString.replace(/{/g, '')
