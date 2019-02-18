@@ -1,6 +1,6 @@
 DATA_objects = [{
   "name": "z",
-  "value": "5",
+  "value": 5,
   "position": ["127px", "217px"],
   "type": "math-variable",
   "id": "0"
