@@ -65,6 +65,7 @@ Vue.component("math-function", {
       return {
         "name": this.name,
         "expression": this.expression,
+        "latex": this.latex,
         "position": [this.styleObj.left, this.styleObj.top],
         "type": 'math-function',
         "id": this.$attrs.id
@@ -75,7 +76,7 @@ Vue.component("math-function", {
       this.latex = this.mathq.latex()
       this.expression = this.expressionFromLatex(this.latex);
       this.$root.updateTablesWithSymbol(this.name)
-      console.log(`latex: ${this.latex}\nexpression: ${this.expression}`);
+      //console.log(`latex: ${this.latex}\nexpression: ${this.expression}`);
     },
     expressionFromLatex: function (latexString) {
       function parseFraction(string) {
@@ -94,7 +95,7 @@ Vue.component("math-function", {
         lastHalf = lastHalf.slice(i+2)
 
         let c = 1
-        let demoC = null
+        let demoC = undefined
         for (let i = 0; i < lastHalf.length; i++) {
           const element = lastHalf[i];
           if (element == '{') {
@@ -105,19 +106,16 @@ Vue.component("math-function", {
           if (c == 0) {
             // then we know we've got to the end of the denominator
             demo = lastHalf.slice(0, i)
-            demoC = i
+            demoC = i + 1
             break
           }
         }
-        // lets check what we have
-        if (demoC) {
-          lastHalf = lastHalf.slice(demoC + 1)
-        } else {
-          console.log("something may have gone wrong...");
-        }
+        lastHalf = lastHalf.slice(demoC) // will this throw an error?
 
         //console.log(`first: ${firstHalf}\nlast: ${lastHalf}`);
-        string = firstHalf + `(${numi})/(${demo})` + lastHalf
+        // yes theres a lot of brackets but if they weren't there
+        // we'd have to worry about the order of operations.
+        string = firstHalf + `((${numi})/(${demo}))` + lastHalf
         return string
       }
       function parseExponent(string) {
@@ -129,7 +127,7 @@ Vue.component("math-function", {
 
         
         let c = 1
-        let demoC = null
+        let demoC = undefined
         let expo;
         for (let i = 0; i < lastHalf.length; i++) {
           const element = lastHalf[i];
@@ -141,19 +139,12 @@ Vue.component("math-function", {
           if (c == 0) {
             // then we know we've got to the end of the denominator
             expo = lastHalf.slice(0, i)
-            demoC = i
+            demoC = i + 1
             break
           }
         }
+        lastHalf = lastHalf.slice(demoC)
 
-        // lets check what we have
-        if (demoC) {
-          lastHalf = lastHalf.slice(demoC + 1)
-        } else {
-          console.log("something may have gone wrong...");
-        }
-
-        //console.log(`first: ${firstHalf}\nlast: ${lastHalf}`);
         string = firstHalf + `^(${expo})` + lastHalf
         return string
       }
@@ -174,6 +165,7 @@ Vue.component("math-function", {
         newString = parseExponent(newString)
       }
       
+      // Check this later... may not need these next three lines
       // at the end we remove any extra {}'s
       newString = newString.replace(/{/g, '')
       newString = newString.replace(/}/g, '')

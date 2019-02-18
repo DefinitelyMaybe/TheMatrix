@@ -215,7 +215,8 @@ const TheMatrix = new Vue({
           this.createObj({
             type: 'math-function',
             name: 'f',
-            expression: 'x',
+            expression: 'x+1',
+            latex: 'x+1',
             position:[`${event.x}px`, `${event.y}px`]
           })
           break;
