@@ -120,6 +120,43 @@ Vue.component("math-function", {
         string = firstHalf + `(${numi})/(${demo})` + lastHalf
         return string
       }
+      function parseExponent(string) {
+        let i = string.lastIndexOf('^{')
+        
+        // hardcoding the length of the match
+        let firstHalf = string.slice(0, i)
+        let lastHalf = string.slice(i + 2)
+
+        
+        let c = 1
+        let demoC = null
+        let expo;
+        for (let i = 0; i < lastHalf.length; i++) {
+          const element = lastHalf[i];
+          if (element == '{') {
+            c += 1
+          } else if (element == '}') {
+            c -= 1
+          }
+          if (c == 0) {
+            // then we know we've got to the end of the denominator
+            expo = lastHalf.slice(0, i)
+            demoC = i
+            break
+          }
+        }
+
+        // lets check what we have
+        if (demoC) {
+          lastHalf = lastHalf.slice(demoC + 1)
+        } else {
+          console.log("something may have gone wrong...");
+        }
+
+        //console.log(`first: ${firstHalf}\nlast: ${lastHalf}`);
+        string = firstHalf + `^(${expo})` + lastHalf
+        return string
+      }
       // find \left( and \right)
       let newString = latexString.replace(/\\left\(/g, '(')
       newString = newString.replace(/\\right\)/g, ')')
@@ -130,6 +167,11 @@ Vue.component("math-function", {
       // division requires some extra work
       while (newString.match(/\\frac{/g) != null) {
         newString = parseFraction(newString)
+      }
+
+      // non-trival exponents need attention
+      while (newString.match(/\^{/g) != null) {
+        newString = parseExponent(newString)
       }
       
       // at the end we remove any extra {}'s
