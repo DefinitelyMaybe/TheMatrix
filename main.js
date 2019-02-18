@@ -168,6 +168,8 @@ const TheMatrix = new Vue({
             id: options.id || this.getNewObjectID(),
             type: options.type,
             position: options.position,
+            width: options.width,
+            height: options.height
           })
           break;
         }
