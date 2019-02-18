@@ -152,6 +152,10 @@ Vue.component("math-function", {
       let newString = latexString.replace(/\\left\(/g, '(')
       newString = newString.replace(/\\right\)/g, ')')
 
+      // brackets
+      newString = newString.replace(/\\left\[/g, '[')
+      newString = newString.replace(/\\right\]/g, ']')
+
       // replace any cdot's (which is multiply)
       newString = newString.replace(/\\cdot/g, '*')
 
@@ -165,6 +169,9 @@ Vue.component("math-function", {
         newString = parseExponent(newString)
       }
       
+      // spaces
+      newString = newString.replace(/\\ /g, '')
+
       // Check this later... may not need these next three lines
       // at the end we remove any extra {}'s
       newString = newString.replace(/{/g, '')
