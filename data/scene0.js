@@ -13,19 +13,19 @@ DATA_objects = [{
   "id": "1"
 }, {
   "name": "g",
-  "expression": "10x^(2-x)+(y+1)",
-  "latex": "10x^{2-x}+(y+1)",
+  "expression": "10x^(2-y)",
+  "latex": "10x^{2-y}",
   "position": ["104px", "152px"],
   "type": "math-function",
   "id": "2"
 }, {
   "inputHeaders": ["x", "y", "a", "b"],
   "inputTable": [
-    [1, 0, 0, 0],
-    [2, 1, 1, 1],
-    [3, 2, 2, 2],
-    [4, 3, 3, 3],
-    [5, 4, 4, 4]
+    [1, 2, 3, 4],
+    [2, 3, 4, 5],
+    [3, 4, 5, 6],
+    [4, 5, 6, 7],
+    [5, 6, 7, 8]
   ],
   "outputHeaders": ["f", "g"],
   "outputTable": [
