@@ -1,3 +1,5 @@
+tempC = 1
+
 Vue.component("math-graph", {
   props: {
     initData: Object,
@@ -9,61 +11,72 @@ Vue.component("math-graph", {
       graph: '', // htmlelement ref
       trace: [
         {
-          'x': [0, 1, 2, 3, 4, 5],
-          'y': [0, 1, 4, 9, 16, 25],
+          'x': [],
+          'y': [],
           type: 'scatter'
         }
       ],
       layout: {
         title: {
-          text:'Title',
+          text:'f(x)',
           x: 10,
           y: 10
         },
         width: 200,
         height: 200,
         margin: {
-          l: 0,
-          r: 0,
-          b: 0,
-          t: 0,
+          l: 50,
+          r: 50,
+          b: 50,
+          t: 50,
           pad: 0
         },
         xaxis: {
           //range: [-10, 10],
-          tickmode: 'auto',
-          nticks: 20,
-          showgrid: true,
-          zeroline: true,
-          showline: true,
+          title: 'x',
           //dtick: 1,
           gridcolor: '#000000',
-          gridwidth: 1,
           zerolinecolor: '#000000',
-          zerolinewidth: 3,
-          //linecolor: '#67edff',
-          //linewidth: 6
+          zerolinewidth: 2,
         },
         yaxis: {
-          tickmode: 'auto',
-          nticks: 20,
-          showgrid: true,
-          zeroline: true,
-          showline: true,
+          title: 'y',
           gridcolor: '#000000',
-          gridwidth: 1,
           zerolinecolor: '#000000',
-          zerolinewidth: 3,
+          zerolinewidth: 2,
           //dtick: 1,
-          /*linecolor: '#67edff',
-          linewidth: 6*/
         }
       },
       options: {
         zoomscroll: true,
-        //responsive: true
+        //displayModeBar: true,
+        //showLink: true,
+        //linkText: "edit",
+        //save button?
+        //showSendToCloud: true,
+        //lanuage
+        //locale: 'fr'
+        displaylogo:false,
+        modeBarButtons: [
+          // Can also do custom buttons too
+          // https://codepen.io/etpinard/pen/pLOMXR?editors=0010
+          // custom buttons look like this: 
+          [
+            {
+              name: 'click me',
+              click: function(gd) {
+                Plotly.relayout(gd, 'title', 'click number: ' + tempC++)
+              }
+            }
+          ],
+          ['autoScale2d', 'zoom2d', 'lasso2d']
+        ],
+        //modeBarButtonsToRemove: ['toImage'],
+        editable: true,
+        //staticPlot: true, //negates editibility
+        responsive: true // window resizing
       },
-      
+
       // styling and misc data
       styleObj: {
         'position': 'absolute',
@@ -83,25 +96,23 @@ Vue.component("math-graph", {
   created: function () {
     if (this.initData) {
       //console.log(this.initData);
-      this.styleObj.width = this.initData.width
-      this.styleObj.height = this.initData.height
+      this.layout.width = this.initData.width
+      this.layout.height = this.initData.height
       this.styleObj.left = this.initData.position[0]
       this.styleObj.top = this.initData.position[1]
     }
   },
   mounted() {
     this.graph = this.$refs.graph
-    this.plot()
+    this.initPlot()
   },
   methods: {
     // Graph specific
-    plot: function () {
-      //console.log("hello world");
-      Plotly.plot( this.graph, this.trace, this.layout, this.options);
-      // trace = array of data objects
-      // layout = object
-      // options = object
-      //plot(htmlelement, trace, layout, options)
+    initPlot: function () {
+      Plotly.plot(this.graph, this.trace, this.layout, this.options);
+    },
+    update: function () {
+      Plotly.update(this.graph, this.trace, this.layout)
     },
     deleteGraph: function () {
       this.$root.deleteObjByID(this.$attrs.id)
@@ -111,6 +122,8 @@ Vue.component("math-graph", {
     toObject: function () {
       return {
         "position": [this.styleObj.left, this.styleObj.top],
+        "width": this.layout.width,
+        "height": this.layout.height,
         "type": 'math-graph',
         "id": this.$attrs.id
       }
