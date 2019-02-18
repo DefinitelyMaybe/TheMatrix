@@ -42,6 +42,7 @@ Vue.component("math-function", {
     }
   },
   mounted: function () {
+    // the MQ variable is defined in main.js and is equal to: MathQuill.getInterface(2);
     this.mathq =  MQ.MathField(this.$refs.quillspan, {
       handlers: {
         edit: this.spanEdit
@@ -76,9 +77,29 @@ Vue.component("math-function", {
       this.latex = this.mathq.latex()
       this.expression = this.expressionFromLatex(this.latex);
       this.$root.updateTablesWithSymbol(this.name)
-      //console.log(`latex: ${this.latex}\nexpression: ${this.expression}`);
+      console.log(`latex: ${this.latex}\nexpression: ${this.expression}`);
     },
     expressionFromLatex: function (latexString) {
+      function indexOfMatchingBracket(string) {
+        // expects the string to be missing the initial open bracket
+        let index;
+        let c = 1
+        
+        for (let i = 0; i < string.length; i++) {
+          const element = string[i];
+          if (element == '{') {
+            c += 1
+          } else if (element == '}') {
+            c -= 1
+          }
+          if (c == 0) {
+            // we've found the first matching bracket
+            index = i
+            break
+          }
+        }
+        return index
+      }
       function parseFraction(string) {
         let i = string.lastIndexOf('\\frac{')
         
@@ -94,23 +115,9 @@ Vue.component("math-function", {
         // and then we can adjust the last part of the string accordingly
         lastHalf = lastHalf.slice(i+2)
 
-        let c = 1
-        let demoC = undefined
-        for (let i = 0; i < lastHalf.length; i++) {
-          const element = lastHalf[i];
-          if (element == '{') {
-            c += 1
-          } else if (element == '}') {
-            c -= 1
-          }
-          if (c == 0) {
-            // then we know we've got to the end of the denominator
-            demo = lastHalf.slice(0, i)
-            demoC = i + 1
-            break
-          }
-        }
-        lastHalf = lastHalf.slice(demoC) // will this throw an error?
+        i = indexOfMatchingBracket(lastHalf)
+        demo = lastHalf.slice(0, i)
+        lastHalf = lastHalf.slice(i + 1) // will this throw an error?
 
         //console.log(`first: ${firstHalf}\nlast: ${lastHalf}`);
         // yes theres a lot of brackets but if they weren't there
@@ -125,29 +132,28 @@ Vue.component("math-function", {
         let firstHalf = string.slice(0, i)
         let lastHalf = string.slice(i + 2)
 
-        
-        let c = 1
-        let demoC = undefined
-        let expo;
-        for (let i = 0; i < lastHalf.length; i++) {
-          const element = lastHalf[i];
-          if (element == '{') {
-            c += 1
-          } else if (element == '}') {
-            c -= 1
-          }
-          if (c == 0) {
-            // then we know we've got to the end of the denominator
-            expo = lastHalf.slice(0, i)
-            demoC = i + 1
-            break
-          }
-        }
-        lastHalf = lastHalf.slice(demoC)
+        i = indexOfMatchingBracket(lastHalf)
+        let expo = lastHalf.slice(0, i)
+        lastHalf = lastHalf.slice(i+1)
 
         string = firstHalf + `^(${expo})` + lastHalf
         return string
       }
+      function parseSqrt(string) {
+        let i = string.lastIndexOf('\\sqrt{')
+        
+        // hardcoding the length of the match
+        let firstHalf = string.slice(0, i)
+        let lastHalf = string.slice(i + 6)
+
+        i = indexOfMatchingBracket(lastHalf)
+        let expo = lastHalf.slice(0, i)
+        lastHalf = lastHalf.slice(i+1)
+
+        string = firstHalf + `sqrt(${expo})` + lastHalf
+        return string
+      }
+      
       // find \left( and \right)
       let newString = latexString.replace(/\\left\(/g, '(')
       newString = newString.replace(/\\right\)/g, ')')
@@ -168,14 +174,14 @@ Vue.component("math-function", {
       while (newString.match(/\^{/g) != null) {
         newString = parseExponent(newString)
       }
+
+      // square-roots
+      while (newString.match(/\\sqrt{/g) != null) {
+        newString = parseSqrt(newString)
+      }
       
       // spaces
       newString = newString.replace(/\\ /g, '')
-
-      // Check this later... may not need these next three lines
-      // at the end we remove any extra {}'s
-      newString = newString.replace(/{/g, '')
-      newString = newString.replace(/}/g, '')
 
       return newString
     },
