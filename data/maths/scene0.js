@@ -40,6 +40,8 @@ DATA_objects = [{
   "id": "3"
 }, {
   "position": ["136px", "344px"],
+  "width": 500,
+  "height": 400,
   "type": "math-graph",
   "id": "4"
 }]
