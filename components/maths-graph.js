@@ -18,7 +18,7 @@ Vue.component("math-graph", {
       ],
       layout: {
         title: {
-          text:'f(x)',
+          text:'my graph',
           x: 10,
           y: 10
         },
@@ -45,7 +45,9 @@ Vue.component("math-graph", {
           zerolinecolor: '#000000',
           zerolinewidth: 2,
           //dtick: 1,
-        }
+        },
+        //paper_bgcolor: 'rgba(0,0,0,0)',
+        //plot_bgcolor: 'rgba(0,0,0,0)'
       },
       options: {
         zoomscroll: true,
@@ -105,11 +107,19 @@ Vue.component("math-graph", {
   mounted() {
     this.graph = this.$refs.graph
     this.initPlot()
+    console.log(this.graph);
   },
   methods: {
     // Graph specific
     initPlot: function () {
       Plotly.plot(this.graph, this.trace, this.layout, this.options);
+      this.graph.on('plotly_event', function (data) {
+        console.log(this);
+        console.log(data);
+      })
+      this.graph.on('plotly_afterplot', function(){
+        console.log('done plotting');
+      });
     },
     update: function () {
       Plotly.update(this.graph, this.trace, this.layout)
@@ -117,6 +127,10 @@ Vue.component("math-graph", {
     deleteGraph: function () {
       this.$root.deleteObjByID(this.$attrs.id)
     },
+    test: function () {
+      console.log("hello world");
+    },
+    
 
     // Root specific
     toObject: function () {
@@ -166,6 +180,7 @@ Vue.component("math-graph", {
   v-bind:class="{ graph: true, selected: selected}"
   v-bind:style="styleObj">
     <div ref="graph"></div>
+    <div ref="helper" v-bind:class="{graphHelper:true}"></div>
     <ol v-on:contextmenu.prevent="0"
     v-bind:class="{menu: true}"
     v-show="showContextMenu && selected"
