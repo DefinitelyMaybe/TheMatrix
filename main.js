@@ -180,7 +180,7 @@ const TheMatrix = new Vue({
       }
     },
     userCreateObj: function (event) {
-      let obj = prompt("What would you like to create? Type one of the following...\nfunction\nvariable\ntext\ntable", '')
+      let obj = prompt("What would you like to create? Type one of the following...\nfunction\nvariable\ntext\ntable\ngraph", '')
       
       switch (obj) {
         case 'matrix':
@@ -246,6 +246,16 @@ const TheMatrix = new Vue({
           this.createObj({
             type: 'math-table',
             position:[`${event.x}px`, `${event.y}px`]
+          })
+          break;
+        }
+        case 'graph':
+        {
+          this.createObj({
+            type: 'math-graph',
+            position:[`${event.x}px`, `${event.y}px`],
+            width: 500,
+            height: 500
           })
           break;
         }
