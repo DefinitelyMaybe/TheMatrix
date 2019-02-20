@@ -17,22 +17,12 @@ Vue.component("math-graph", {
         }
       ],
       layout: {
-        title: {
-          text:'my graph',
-          x: 10,
-          y: 10
-        },
-        width: 200,
-        height: 200,
-        margin: {
-          l: 50,
-          r: 50,
-          b: 50,
-          t: 50,
-          pad: 0
-        },
+        title: 'My Graph',
+        width: 300,
+        height: 300,
+        autosize: false,
         xaxis: {
-          //range: [-10, 10],
+          range: [-10, 10],
           title: 'x',
           //dtick: 1,
           gridcolor: '#000000',
@@ -40,7 +30,8 @@ Vue.component("math-graph", {
           zerolinewidth: 2,
         },
         yaxis: {
-          title: 'y',
+          range: [-10, 10],
+          title: 'f',
           gridcolor: '#000000',
           zerolinecolor: '#000000',
           zerolinewidth: 2,
@@ -71,9 +62,9 @@ Vue.component("math-graph", {
               }
             }
           ],
-          ['autoScale2d', 'zoom2d', 'lasso2d']
+          ['autoScale2d']
         ],
-        //modeBarButtonsToRemove: ['toImage'],
+        //modeBarButtonsToRemove: ['toImage', 'lasso2d', 'zoom2d'],
         editable: true,
         //staticPlot: true, //negates editibility
         responsive: true // window resizing
@@ -100,6 +91,9 @@ Vue.component("math-graph", {
       //console.log(this.initData);
       this.layout.width = this.initData.width
       this.layout.height = this.initData.height
+      this.layout.title = this.initData.title
+      this.layout.xaxis.title = this.initData.xaxis
+      this.layout.yaxis.title = this.initData.yaxis
       this.styleObj.left = this.initData.position[0]
       this.styleObj.top = this.initData.position[1]
     }
@@ -107,28 +101,68 @@ Vue.component("math-graph", {
   mounted() {
     this.graph = this.$refs.graph
     this.initPlot()
-    console.log(this.graph);
+    this.$root.updateAllGraphs()
+    this.manualGraphUpdate()
   },
   methods: {
     // Graph specific
     initPlot: function () {
       Plotly.plot(this.graph, this.trace, this.layout, this.options);
-      this.graph.on('plotly_event', function (data) {
-        console.log(this);
-        console.log(data);
-      })
-      this.graph.on('plotly_afterplot', function(){
-        console.log('done plotting');
-      });
     },
     update: function () {
-      Plotly.update(this.graph, this.trace, this.layout)
+      // Do not call Plotly.update() here. that would cause an infinite loop
+      console.log("Graph update function called");
+      //console.log(this.trace);
+      //console.log(this.layout);
+      // get the type of graph first
+      let graphType = this.trace[0].type
+      if (graphType == "scatter") {
+        console.log("updating a scatter plot");
+        // get the input range
+        let range = this.layout.xaxis.range
+
+        // getting the function string
+        let func = this.$root.getFunctionString(this.layout.yaxis.title.text)
+
+        // If found do the evaluation
+        if (func) {
+          try {
+            let g = math.compile(func)
+            // setup the scope variable for eval
+            let delta = Math.abs(range[1]-range[0])/10;
+            let newXaxis = _.range(range[0], range[1]+delta, delta)
+            let scope = {};
+            scope[this.layout.xaxis.title.text] = newXaxis
+            console.log(scope);
+            // do the eval
+            let outputs = g.eval(scope)
+
+            // update the data
+            let data = this.trace[0]
+            data.x = newXaxis
+            data.y = outputs
+            this.trace.splice(0, 1, data)
+            console.log(this.trace);
+          } catch (error) {
+            console.log("Graph threw error.");
+            console.log(error);
+          }
+        } else {
+          // set to nothing
+          this.trace[0].y.splice(0, this.trace[0].y.length)
+        }
+      }
     },
     deleteGraph: function () {
       this.$root.deleteObjByID(this.$attrs.id)
     },
-    test: function () {
+    onGraphClick: function () {
       console.log("hello world");
+      this.update()
+    },
+    manualGraphUpdate: function () {
+      console.log("this is a custom vue call");
+      Plotly.update(this.graph, this.trace, this.layout)
     },
     
 
@@ -179,8 +213,9 @@ Vue.component("math-graph", {
   v-on:contextmenu.prevent="onRightClick"
   v-bind:class="{ graph: true, selected: selected}"
   v-bind:style="styleObj">
-    <div ref="graph"></div>
-    <div ref="helper" v-bind:class="{graphHelper:true}"></div>
+    <div ref="graph"
+    v-on:click="onGraphClick"
+    v-on:keyup="manualGraphUpdate"></div>
     <ol v-on:contextmenu.prevent="0"
     v-bind:class="{menu: true}"
     v-show="showContextMenu && selected"
@@ -189,3 +224,5 @@ Vue.component("math-graph", {
     </ol>
   </div>`,
 })
+
+//v-on:plotly_afterplot="customFunction"
