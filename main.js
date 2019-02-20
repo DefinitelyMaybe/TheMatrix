@@ -1,11 +1,9 @@
 // Global Scripts
 // mathjs - http://mathjs.org/
 // plotly - https://plot.ly/javascript/
+// mathquill - http://mathquill.com/ (requires JQuery)
+// lodash - https://lodash.com/ make js great again.
 
-// possibles
-// mathjax - for making it look pretty
-// http://docs.mathjax.org/en/latest/advanced/typeset.html
-// http://mathquill.com/ - for typing maths into the browser (requires JQuery)
 
 // global varibles
 // Have a look at whats in the html file and then in the data folder.
@@ -169,7 +167,10 @@ const TheMatrix = new Vue({
             type: options.type,
             position: options.position,
             width: options.width,
-            height: options.height
+            height: options.height,
+            title: options.title,
+            xaxis: options.xaxis,
+            yaxis: options.yaxis
           })
           break;
         }
@@ -428,6 +429,15 @@ const TheMatrix = new Vue({
     },
     getGlobalScope: function () {
       return this.globalScope
+    },
+
+    // Plotly graph events are weird
+    updateAllGraphs: function(event) {
+      console.log("Going to update all graphs");
+      let graphs = this.getAllObjectsOfType('math-graph')
+      for (let i = 0; i < graphs.length; i++) {
+        graphs[i].update()
+      }
     }
   },
   template: `<div ondragover="event.preventDefault()"
