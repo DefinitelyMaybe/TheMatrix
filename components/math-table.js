@@ -296,7 +296,7 @@ Vue.component("math-table", {
             this.outputTable.splice(row, 1, newRow)
           } else {
             let newRow = this.outputTable[row]
-            newRow.splice(i, 1, '')
+            newRow.splice(i, 1, '?')
             this.outputTable.splice(row, 1, newRow)
           }
         }
