@@ -6,8 +6,8 @@ DATA_objects = [{
   "id": "0"
 }, {
   "name": "f",
-  "expression": "2x + z",
-  "latex": "2x+z",
+  "expression": "2y + 1",
+  "latex": "2y+1",
   "position": ["118px", "95px"],
   "type": "math-function",
   "id": "1"
@@ -40,8 +40,11 @@ DATA_objects = [{
   "id": "3"
 }, {
   "position": ["136px", "344px"],
-  "width": 500,
-  "height": 400,
+  "width": 700,
+  "height": 500,
+  "title": "Some Graph",
+  "xaxis": "y",
+  "yaxis": "f",
   "type": "math-graph",
   "id": "4"
 }]
