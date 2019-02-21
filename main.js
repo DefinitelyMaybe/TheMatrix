@@ -417,6 +417,17 @@ const TheMatrix = new Vue({
         }
       }
     },
+    updateGraphsWithSymbol: function (symbol) {
+      //console.log(`updating graphs with: ${symbol}`);
+      let graphs = this.getAllObjectsOfType("math-graph")
+      for (let i = 0; i < graphs.length; i++) {
+        // first does the table have the symbol
+        if (graphs[i].layout.yaxis.title == symbol || graphs[i].layout.yaxis.title.text == symbol) {
+          // if we did find it then we can call evaluate
+          graphs[i].update()
+        }
+      }
+    },
     removeFromGlobalScope: function (symbol) {
       delete this.globalScope[symbol]
     },
