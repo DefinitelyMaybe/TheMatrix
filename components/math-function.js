@@ -77,6 +77,7 @@ Vue.component("math-function", {
       this.latex = this.mathq.latex()
       this.expression = this.expressionFromLatex(this.latex);
       this.$root.updateTablesWithSymbol(this.name)
+      this.$root.updateGraphsWithSymbol(this.name)
       console.log(`latex: ${this.latex}\nexpression: ${this.expression}`);
     },
     expressionFromLatex: function (latexString) {
