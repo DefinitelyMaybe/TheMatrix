@@ -41,8 +41,9 @@ Vue.component("math-function", {
       this.styleObj.top = this.initData.position[1]
     }
   },
-  mounted: function () {
+  mounted () {
     // the MQ variable is defined in main.js and is equal to: MathQuill.getInterface(2);
+    // TODO: this is throwing the two error messages at the start. Why?
     this.mathq =  MQ.MathField(this.$refs.quillspan, {
       handlers: {
         edit: this.spanEdit
@@ -154,7 +155,21 @@ Vue.component("math-function", {
         string = firstHalf + `sqrt(${expo})` + lastHalf
         return string
       }
-      
+      function parseTrigFunctions(string) {
+        let trigf = 'sin'
+        let i = string.lastIndexOf('\\sin')
+        if (i == -1) {
+          i = string.lastIndexOf('\\cos')
+          trigf = 'cos'
+        }
+        
+        // hardcoding the length of the match
+        let firstHalf = string.slice(0, i)
+        let lastHalf = string.slice(i + 4)
+
+        string = firstHalf + trigf + lastHalf
+        return string
+      }
       // find \left( and \right)
       let newString = latexString.replace(/\\left\(/g, '(')
       newString = newString.replace(/\\right\)/g, ')')
@@ -179,6 +194,11 @@ Vue.component("math-function", {
       // square-roots
       while (newString.match(/\\sqrt{/g) != null) {
         newString = parseSqrt(newString)
+      }
+
+      // basic trig functions
+      while (newString.match(/\\sin/g) != null || newString.match(/\\cos/g) != null) {
+        newString = parseTrigFunctions(newString)
       }
       
       // spaces
