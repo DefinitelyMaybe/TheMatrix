@@ -206,7 +206,9 @@ Vue.component("math-graph", {
         "width": this.layout.width,
         "height": this.layout.height,
         "type": 'math-graph',
-        "id": this.$attrs.id
+        "id": this.$attrs.id,
+        "xaxis": this.layout.xaxis.title.text,
+        "yaxis": this.layout.yaxis.title.text
       }
     },
 
