@@ -17,10 +17,8 @@ function sayHi(name) {
 const MQ = MathQuill.getInterface(2);
 
 const TheMatrix = new Vue({
-  el: '#TheMatrix',
-  data: {
-    name: 'The Matrix',
-    
+  el: '#VueContainer',
+  data: {    
     nextID: 0, // The next ID to be used if there are no freeobjectIDs left
     freeObjectID: [], // if an object is ever removed. its id is added here
     selectedObj: '', // The id of the currently selected object
