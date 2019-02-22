@@ -50,7 +50,11 @@ li.menu:hover {
 }
 
 .graph {
-  border: 2px rgb(103, 237, 255) solid;
+  border: 1px rgb(103, 237, 255) solid;
+}
+
+.graph.selected {
+  border: 1px rgb(0, 0, 0) solid;
 }
 
 .tableContainer {
