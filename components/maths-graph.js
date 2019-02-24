@@ -200,6 +200,13 @@ Vue.component("math-graph", {
         this.update()
       }
     },
+    changeViewRange: function () {
+      let xrange = this.layout.yaxis.range
+      console.log(xrange);
+      let yrange = this.layout.xaxis.range
+      console.log(yrange);
+      
+    },
     update: function () {
       this.updateTrace(this)
       Plotly.newPlot(this.graph, this.trace, this.layout)
@@ -263,6 +270,7 @@ Vue.component("math-graph", {
     v-show="showContextMenu && selected"
     v-bind:style="contextMenuStyle">
       <li v-on:click="changeFunction" v-bind:class="{menu: true}">Change function</li>
+      <li v-on:click="changeViewRange" v-bind:class="{menu: true}">Change view/range</li>
       <li v-on:click="deleteGraph" v-bind:class="{menu: true}">Delete</li>
     </ol>
   </div>`,
