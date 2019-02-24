@@ -41,7 +41,7 @@ Vue.component("math-graph", {
       options: {
         scrollZoom: true,
         displayModeBar: false,
-        editable: true,
+        //editable: true,
         showAxisDragHandles: false,
         //displaylogo:false,
         //showLink: true,
@@ -193,6 +193,13 @@ Vue.component("math-graph", {
       //this.updateTrace(this)
       //Plotly.newPlot(this.graph, this.trace, this.layout)
     },
+    changeFunction: function () {
+      let func = prompt("What's the name of the new function you'd like to graph?", this.layout.yaxis.title.text)
+      if (func) {
+        this.layout.yaxis.title.text = func
+        this.update()
+      }
+    },
     update: function () {
       this.updateTrace(this)
       Plotly.newPlot(this.graph, this.trace, this.layout)
@@ -255,7 +262,8 @@ Vue.component("math-graph", {
     v-bind:class="{menu: true}"
     v-show="showContextMenu && selected"
     v-bind:style="contextMenuStyle">
-      <li v-on:click="deleteGraph" v-bind:class="{menu: true}">Delete Table</li>
+      <li v-on:click="changeFunction" v-bind:class="{menu: true}">Change function</li>
+      <li v-on:click="deleteGraph" v-bind:class="{menu: true}">Delete</li>
     </ol>
   </div>`,
 })
