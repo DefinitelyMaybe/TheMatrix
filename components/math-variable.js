@@ -120,13 +120,14 @@ v-on:contextmenu.prevent="onRightClick"
 
 v-bind:style="styleObj"
 v-bind:class="{variable:true, selected:selected, objHover:objHover}">
-  <p v-on:click="changeName">{{name}}</p>
+  <p>{{name}}</p>
   <p>=</p>
   <p v-on:click="changeValue">{{value}}</p>
   <ol v-on:contextmenu.prevent="0"
   v-bind:class="{menu: true}"
   v-show="showContextMenu && selected"
   v-bind:style="contextMenuStyle">
+    <li v-on:click="changeName" v-bind:class="{menu: true}">Rename</li>
     <li v-on:click="deleteVariable" v-bind:class="{menu: true}">Delete</li>
   </ol>
 </div>`,
