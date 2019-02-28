@@ -47,4 +47,11 @@ DATA_objects = [{
   "yaxis": "f",
   "type": "math-graph",
   "id": "4"
+}, {
+  "position": ["550px", "100px"],
+  "formData": {
+    "type": "function"
+  },
+  "type": "form-create",
+  "id": "5"
 }]
