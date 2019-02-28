@@ -173,6 +173,16 @@ const TheMatrix = new Vue({
           })
           break;
         }
+        case 'form-create':
+        {
+          this.initObjects.push({
+            id: options.id || this.getNewObjectID(),
+            type: options.type,
+            position: options.position,
+            formData: options.formData
+          })
+          break;
+        }
         default:
           console.warn("The default creation case hasn't created anything with:");
           console.log(options);
