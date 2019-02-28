@@ -5,7 +5,9 @@ Vue.component("form-create", {
   },
   data: function () {
     return {
-      formData: {},
+      formData: {
+        type: "function"
+      },
 
       // styling and misc data
       styleObj: {
@@ -79,14 +81,18 @@ Vue.component("form-create", {
   v-on:dragstart="onDragStart"
   v-on:click.prevent="onClick"
   v-on:contextmenu.prevent="onRightClick"
-  v-on:mouseup="onResizeTextBox"
 
-  v-bind:class="{text:true, selected:selected}"
-  v-bind:style="styleObj"
-  v-model:value="value">
-  <form>
-    <label for="hello">Hello</label>
-    <input type="text" id="hello">world</input>
+  v-bind:class="{form:true, selected:selected}"
+  v-bind:style="styleObj">
+  <form onsubmit="return false">
+    <label for="object">What would you like to create?</label>
+    <select type="text" v-model="formData['type']">
+      <option>Function</option>
+      <option>Variable</option>
+      <option>Graph</option>
+      <option>Table</option>
+      <option>Text</option>
+    </select>
   </form>
 </div>`,
 })
