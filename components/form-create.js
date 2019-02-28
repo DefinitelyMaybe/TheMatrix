@@ -6,7 +6,7 @@ Vue.component("form-create", {
   data: function () {
     return {
       formData: {
-        type: "function"
+        type: "Function"
       },
 
       // styling and misc data
@@ -86,12 +86,12 @@ Vue.component("form-create", {
   v-bind:style="styleObj">
   <form onsubmit="return false">
     <label for="object">What would you like to create?</label>
-    <select type="text" v-model="formData['type']">
-      <option>Function</option>
-      <option>Variable</option>
-      <option>Graph</option>
-      <option>Table</option>
-      <option>Text</option>
+    <select type="text" v-model="formData.type">
+      <option v:bind:selected="'Function'==formData.type">Function</option>
+      <option v:bind:selected="'Variable'==formData.type">Variable</option>
+      <option v:bind:selected="'Graph'==formData.type">Graph</option>
+      <option v:bind:selected="'Table'==formData.type">Table</option>
+      <option v:bind:selected="'Text'==formData.type">Text</option>
     </select>
   </form>
 </div>`,

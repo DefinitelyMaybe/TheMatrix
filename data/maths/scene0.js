@@ -50,7 +50,7 @@ DATA_objects = [{
 }, {
   "position": ["550px", "100px"],
   "formData": {
-    "type": "function"
+    "type": "Function"
   },
   "type": "form-create",
   "id": "5"
