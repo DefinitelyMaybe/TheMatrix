@@ -435,6 +435,7 @@ const TheMatrix = new Vue({
       // however for the moment, when a symbol is updated
       // We will update every table
       this.updateAllTables()
+      this.updateAllGraphs()
     },
     getGlobalScope: function () {
       return this.globalScope

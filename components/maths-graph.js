@@ -152,7 +152,7 @@ Vue.component("math-graph", {
           let realOutputs = []
           let complexInputs = []
           let complexOutputs = []
-          let scope = {}
+          let scope = this.$root.getGlobalScope()
           // now lets deal with complex numbers, naively
           for (let i = 0; i < inputs.length; i++) {
             scope[axisLabels.xaxis] = inputs[i]
