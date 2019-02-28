@@ -53,7 +53,7 @@ Vue.component("math-function", {
     this.mathq.latex(this.latex)
   },
   methods: {
-    changeName: function () {
+    renameFunction: function () {
       if (this.selected) {
         let newName = prompt("what would you like to change the name to?", this.name)
         if (newName && this.name != newName) {
@@ -241,13 +241,14 @@ v-bind:class="{ function: true, selected: selected}"
 
 v-on:click.prevent="onClick"
 v-on:contextmenu.prevent="onRightClick">
-  <p v-on:click.prevent="changeName">{{name}}</p>
+  <p>{{name}}</p>
   <p>:</p>
   <span ref="quillspan"></span>
   <ol v-on:contextmenu.prevent="0"
   v-bind:class="{menu: true}"
   v-show="showContextMenu && selected"
   v-bind:style="contextMenuStyle">
+    <li v-on:click="renameFunction" v-bind:class="{menu: true}">Rename</li>
     <li v-on:click="deleteFunction" v-bind:class="{menu: true}">Delete</li>
   </ol>
 </div>`,
