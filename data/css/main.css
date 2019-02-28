@@ -45,10 +45,12 @@ li.menu:hover {
   background: rgb(227, 252, 255)
 }
 
-.form {
+.CreateForm {
   background: none;
   font-size: 17px;
   border: 1px dashed black;
+  padding: 10px;
+  cursor: pointer;
 }
 
 .mq-editable-field {
@@ -57,23 +59,13 @@ li.menu:hover {
 
 .graph {
   border: 1px rgb(103, 237, 255) solid;
-}
-
-.graph.selected {
-  border: 1px rgb(0, 0, 0) solid;
+  cursor: pointer;
 }
 
 .tableContainer {
   display: flex;
   flex-direction: row;
-}
-
-.tableContainer:hover {
-  background: rgba(103, 237, 255, 0.2);
-}
-
-.tableContainer.selected {
-  background: rgba(103, 237, 255, 0.2);
+  cursor: pointer;
 }
 
 .table {
@@ -97,6 +89,7 @@ li.menu:hover {
   border: none;
   resize: none;
   border: 1px dashed black;
+  cursor: pointer;
 }
 
 .text.selected {
@@ -104,13 +97,10 @@ li.menu:hover {
 }
 
 .variable:hover {
-  background: rgba(103, 237, 255, 0.2);
+  cursor: pointer;
 }
 
-.variable.selected {
-  background: rgba(103, 237, 255, 0.2);
-}
-
+/*
 .variable.objHover {
   background: rgba(103, 237, 255, 0.5);
 }
@@ -121,25 +111,10 @@ li.menu:hover {
 
 .variable .matrix:hover {
   background: rgba(103, 237, 255, 0.2);
-}
+}*/
 
 .function {
   display: flex;
   flex-direction: row;
-}
-
-.function:hover {
-  background: rgba(103, 237, 255, 0.2);
-}
-
-.function.selected {
-  background: rgba(103, 237, 255, 0.2);
-}
-
-.matrix.selected {
-  background: rgba(103, 237, 255, 0.2);
-}
-
-.matrix:hover {
-  background: rgba(103, 237, 255, 0.2);
+  cursor: pointer;
 }
