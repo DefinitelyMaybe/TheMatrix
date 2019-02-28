@@ -36,6 +36,22 @@ Vue.component("form-create", {
   },
   methods: {
     //form specific
+    subform: function (name) {
+      switch (name) {
+        case 'Function':
+          return 'form-function'
+        case 'Variable':
+          return 'form-variable'
+        case 'Graph':
+          return 'form-graph'
+        case 'Table':
+          return 'form-table'
+        case 'Text':
+          return 'form-text'
+        default:
+          return 'form-function'
+      }
+    },
 
     // needed by main.js
     toObject: function () {
@@ -81,8 +97,8 @@ Vue.component("form-create", {
   v-on:dragstart="onDragStart"
   v-on:click.prevent="onClick"
   v-on:contextmenu.prevent="onRightClick"
-
-  v-bind:class="{form:true, selected:selected}"
+  
+  v-bind:class="{CreateForm:true,selected:selected}"
   v-bind:style="styleObj">
   <form onsubmit="return false">
     <label for="object">What would you like to create?</label>
@@ -93,6 +109,7 @@ Vue.component("form-create", {
       <option v:bind:selected="'Table'==formData.type">Table</option>
       <option v:bind:selected="'Text'==formData.type">Text</option>
     </select>
+    <component v-bind:is="subform(formData.type)"></component>
   </form>
 </div>`,
 })
