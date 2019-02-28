@@ -68,9 +68,8 @@ Vue.component("base-text", {
     },
     onRightClick: function (event) {
       this.$root.selectObj(this.$attrs.id)
-      //console.log(event);
-      this.contextMenuStyle.left = `${event.x}px`
-      this.contextMenuStyle.top = `${event.y}px`
+      this.contextMenuStyle.left = `${event.layerX}px`
+      this.contextMenuStyle.top = `${event.layerY}px`
       this.showContextMenu = true
     },
     onResizeTextBox: function (event) {
@@ -84,16 +83,14 @@ Vue.component("base-text", {
       }
     }
   },
-  template: `<div>
-  <textarea draggable="true"
+  template: `<div draggable="true"
   v-on:dragend="onDragEnd"
   v-on:dragstart="onDragStart"
   v-on:click.prevent="onClick"
-  v-on:contextmenu.prevent="onRightClick"
   v-on:mouseup="onResizeTextBox"
-
-  v-bind:class="{text:true, selected:selected}"
-  v-bind:style="styleObj"
+  v-on:contextmenu.prevent="onRightClick"
+  v-bind:style="styleObj">
+  <textarea v-bind:class="{text:true, selected:selected}"
   v-model:value="value">
   </textarea>
   <ol v-on:contextmenu.prevent="0"
