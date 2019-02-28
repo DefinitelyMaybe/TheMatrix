@@ -1,4 +1,4 @@
-Vue.component("base-text", {
+Vue.component("form-create", {
   props: {
     initData: Object,
     selected: Boolean
