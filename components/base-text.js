@@ -19,6 +19,7 @@ Vue.component("base-text", {
       showContextMenu: false,
       contextMenuStyle : {
         'position': 'absolute',
+        'width': '175px',
         'left': '0px',
         'top': '0px',
       },

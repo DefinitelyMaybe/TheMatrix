@@ -16,6 +16,7 @@ Vue.component("math-matrix", {
       showContextMenu: false,
       contextMenuStyle: {
         'position': 'absolute',
+        'width': '175px',
         'left': '0px',
         'top': '0px'
       },
