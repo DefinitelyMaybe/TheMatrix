@@ -109,7 +109,9 @@ Vue.component("form-create", {
       <option v:bind:selected="'Table'==formData.type">Table</option>
       <option v:bind:selected="'Text'==formData.type">Text</option>
     </select>
-    <component v-bind:is="subform(formData.type)"></component>
+    <keep-alive>
+      <component v-bind:is="subform(formData.type)"></component>
+    </keep-alive>
   </form>
 </div>`,
 })
