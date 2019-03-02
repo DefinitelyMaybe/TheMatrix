@@ -91,7 +91,6 @@ Vue.component("math-graph", {
       //console.log(this.initData);
       this.layout.width = this.initData.width
       this.layout.height = this.initData.height
-      this.layout.xaxis.title = this.initData.xaxis
       this.layout.yaxis.title = this.initData.yaxis
       this.styleObj.left = this.initData.position[0]
       this.styleObj.top = this.initData.position[1]
