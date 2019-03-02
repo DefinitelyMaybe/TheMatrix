@@ -5,10 +5,7 @@ Vue.component("form-create", {
   },
   data: function () {
     return {
-      formData: {
-        type: "Function"
-      },
-
+      type: "Function",
       // styling and misc data
       styleObj: {
         'position': 'absolute',
@@ -29,7 +26,6 @@ Vue.component("form-create", {
   created: function () {
     if (this.initData) {
       //console.log(this.initData);
-      this.formData = this.initData.formData
       this.styleObj.left = this.initData.position[0]
       this.styleObj.top = this.initData.position[1]
     }
@@ -52,13 +48,40 @@ Vue.component("form-create", {
           return 'form-function'
       }
     },
+    finishForm: function (args) {
+      console.log(args);
+      switch (this.type) {
+        case 'Variable':
+          this.$root.createObj({
+              
+          })
+        case 'Graph':
+          this.$root.createObj({
+              
+          })
+        case 'Table':
+          this.$root.createObj({
+              
+          })
+        case 'Text':
+          this.$root.createObj({
+              
+          })
+        default:
+          // default case is Function
+          this.$root.createObj({
+            type: 'math-function',
+            position: [this.styleObj.left, this.styleObj.top],
+            name: args.name,
+            latex: args.latex
+          })
+      }
+      this.deleteForm()
+    },
 
     // needed by main.js
     toObject: function () {
       return {
-        "data": this.formData,
-        "width": this.styleObj.width,
-        "height": this.styleObj.height,
         "position": [this.styleObj.left, this.styleObj.top],
         "type": 'form-create',
         "id": this.$attrs.id
@@ -95,22 +118,21 @@ Vue.component("form-create", {
   template: `<div draggable="true"
   v-on:dragend="onDragEnd"
   v-on:dragstart="onDragStart"
-  v-on:click.prevent="onClick"
-  v-on:contextmenu.prevent="onRightClick"
+  v-on:click.self="onClick"
   
   v-bind:class="{CreateForm:true,selected:selected}"
   v-bind:style="styleObj">
   <form onsubmit="return false">
     <label for="object">What would you like to create?</label>
-    <select type="text" v-model="formData.type">
-      <option v:bind:selected="'Function'==formData.type">Function</option>
-      <option v:bind:selected="'Variable'==formData.type">Variable</option>
-      <option v:bind:selected="'Graph'==formData.type">Graph</option>
-      <option v:bind:selected="'Table'==formData.type">Table</option>
-      <option v:bind:selected="'Text'==formData.type">Text</option>
+    <select type="text" v-model="type">
+      <option v:bind:selected="'Function'==type">Function</option>
+      <option v:bind:selected="'Variable'==type">Variable</option>
+      <option v:bind:selected="'Graph'==type">Graph</option>
+      <option v:bind:selected="'Table'==type">Table</option>
+      <option v:bind:selected="'Text'==type">Text</option>
     </select>
     <keep-alive>
-      <component v-bind:is="subform(formData.type)"></component>
+      <component v-bind:is="subform(type)"></component>
     </keep-alive>
   </form>
 </div>`,
