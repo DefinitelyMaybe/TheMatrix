@@ -7,13 +7,6 @@
 
 // global varibles
 // Have a look at whats in the html file and then in the data folder.
-// This variable will be moved later
-
-// functions
-function sayHi(name) {
-  console.log(`Hey ${name}`);
-}
-
 const MQ = MathQuill.getInterface(2);
 
 const TheMatrix = new Vue({
@@ -105,10 +98,7 @@ const TheMatrix = new Vue({
             id: options.id || this.getNewObjectID(),
             type: options.type,
             position: options.position,
-            result: options.result,
-            variables: options.variables,
             name: options.name,
-            expression: options.expression,
             latex: options.latex
           })
           break;
@@ -178,8 +168,7 @@ const TheMatrix = new Vue({
           this.initObjects.push({
             id: options.id || this.getNewObjectID(),
             type: options.type,
-            position: options.position,
-            formData: options.formData
+            position: options.position
           })
           break;
         }
@@ -400,15 +389,6 @@ const TheMatrix = new Vue({
         }
       }
     },
-    evaluteTableWithID: function (id) {
-      // we assume that a table is already selected in order to get to this piece of code
-      let vueObj = this.getVueObjectbyID(id)
-      if (vueObj) {
-        //console.log(vueObj);
-        vueObj.evaluateAllRows()
-      }
-      this.showContextMenu = false
-    },
     updateAllTables: function () {
       let tables = this.getAllObjectsOfType("math-table")
       for (let i = 0; i < tables.length; i++) {
@@ -441,6 +421,7 @@ const TheMatrix = new Vue({
       delete this.globalScope[symbol]
     },
     updateGlobalScope: function (symbol, value) {
+      console.log(`updating global scope with: (${symbol}, ${value})`);
       this.globalScope[symbol] = value
       // There is a better way to do this
       // however for the moment, when a symbol is updated
@@ -449,12 +430,9 @@ const TheMatrix = new Vue({
       this.updateAllGraphs()
     },
     getGlobalScope: function () {
-      return this.globalScope
+      return Object.assign({}, this.globalScope)
     },
-
-    // Plotly graph events are weird
-    updateAllGraphs: function(event) {
-      console.log("Going to update all graphs");
+    updateAllGraphs: function() {
       let graphs = this.getAllObjectsOfType('math-graph')
       for (let i = 0; i < graphs.length; i++) {
         graphs[i].update()
