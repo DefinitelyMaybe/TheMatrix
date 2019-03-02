@@ -6,14 +6,12 @@ DATA_objects = [{
   "id": "0"
 }, {
   "name": "f",
-  "expression": "2y + 1",
-  "latex": "2y+1",
+  "latex": "2x+1",
   "position": ["118px", "95px"],
   "type": "math-function",
   "id": "1"
 }, {
   "name": "g",
-  "expression": "10x^(2-y)",
   "latex": "10x^{2-y}",
   "position": ["104px", "152px"],
   "type": "math-function",
@@ -42,16 +40,11 @@ DATA_objects = [{
   "position": ["136px", "344px"],
   "width": 700,
   "height": 500,
-  "title": "Some Graph",
-  "xaxis": "y",
   "yaxis": "f",
   "type": "math-graph",
   "id": "4"
 }, {
   "position": ["550px", "100px"],
-  "formData": {
-    "type": "Function"
-  },
   "type": "form-create",
   "id": "5"
 }]
