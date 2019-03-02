@@ -46,15 +46,11 @@ li.menu:hover {
 }
 
 .CreateForm {
-  background: none;
+  background: white;
   font-size: 17px;
   border: 1px dashed black;
   padding: 10px;
   cursor: pointer;
-}
-
-.mq-editable-field {
- border: 0px;
 }
 
 .graph {
@@ -117,4 +113,8 @@ li.menu:hover {
   display: flex;
   flex-direction: row;
   cursor: pointer;
+}
+
+.functionQuill {
+  border: 0px;
 }
