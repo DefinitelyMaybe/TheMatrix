@@ -36,7 +36,6 @@ Vue.component("math-function", {
     if (this.initData) {
       //console.log(this.initData);
       this.name = this.initData.name
-      this.expression = this.initData.expression
       this.latex = this.initData.latex
       this.styleObj.left = this.initData.position[0]
       this.styleObj.top = this.initData.position[1]
@@ -243,7 +242,7 @@ v-on:click.prevent="onClick"
 v-on:contextmenu.prevent="onRightClick">
   <p>{{name}}</p>
   <p>:</p>
-  <span ref="quillspan"></span>
+  <span ref="quillspan" v-bind:class="{functionQuill: true}"></span>
   <ol v-on:contextmenu.prevent="0"
   v-bind:class="{menu: true}"
   v-show="showContextMenu && selected"
