@@ -1,7 +1,8 @@
 Vue.component("form-variable", {
   data: function () {
     return {
-      name: "f",
+      name: "x",
+      value: 1
     }
   },
   created: function () {
@@ -14,9 +15,18 @@ Vue.component("form-variable", {
   },
   methods: {
     //form specific
+    finishForm: function () {
+      this.$parent.finishForm({
+        name: this.name,
+        value: this.value
+      })
+    }
   },
   template: `<form onsubmit="return false">
-  <label for="name">What would you like to name your function?</label>
-  <input type="text" v-model="name"></input>
+  <label>Name:</label>
+  <input type="text" v-model="name"></input><br>
+  <label>value:</label>
+  <input type="number" v-model="value"></input><br>
+  <button v-on:click="finishForm">Finish</button>
 </form>`,
 })
