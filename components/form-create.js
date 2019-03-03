@@ -53,20 +53,26 @@ Vue.component("form-create", {
       switch (this.type) {
         case 'Variable':
           this.$root.createObj({
-              
+              type: "math-variable",
+              position: [this.styleObj.left, this.styleObj.top],
+              value: args.value
           })
+          break
         case 'Graph':
           this.$root.createObj({
               
           })
+          break
         case 'Table':
           this.$root.createObj({
               
           })
+          break
         case 'Text':
           this.$root.createObj({
               
           })
+          break
         default:
           // default case is Function
           this.$root.createObj({
@@ -75,6 +81,7 @@ Vue.component("form-create", {
             name: args.name,
             latex: args.latex
           })
+          break
       }
       this.deleteForm()
     },
