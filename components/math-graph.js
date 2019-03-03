@@ -39,7 +39,7 @@ Vue.component("math-graph", {
         //plot_bgcolor: 'rgba(0,0,0,0)'
       },
       options: {
-        scrollZoom: true,
+        //scrollZoom: true,
         displayModeBar: false,
         //editable: true,
         showAxisDragHandles: false,
@@ -91,6 +91,8 @@ Vue.component("math-graph", {
       //console.log(this.initData);
       this.layout.width = this.initData.width
       this.layout.height = this.initData.height
+      this.layout.xaxis.range = this.initData.xrange
+      this.layout.yaxis.range = this.initData.yrange
       this.layout.yaxis.title = this.initData.yaxis
       this.styleObj.left = this.initData.position[0]
       this.styleObj.top = this.initData.position[1]
