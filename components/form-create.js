@@ -53,14 +53,19 @@ Vue.component("form-create", {
       switch (this.type) {
         case 'Variable':
           this.$root.createObj({
-              type: "math-variable",
-              position: [this.styleObj.left, this.styleObj.top],
-              value: args.value
+            type: "math-variable",
+            position: [this.styleObj.left, this.styleObj.top],
+            value: args.value
           })
           break
         case 'Graph':
           this.$root.createObj({
-              
+            type: "math-graph",
+            position: [this.styleObj.left, this.styleObj.top],
+            xaxis: args.xaxis,
+            yaxis: args.yaxis,
+            xrange: args.xrange,
+            yrange: args.yrange,
           })
           break
         case 'Table':
