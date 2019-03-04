@@ -340,7 +340,7 @@ const TheMatrix = new Vue({
       delete this.globalScope[symbol]
     },
     updateGlobalScope: function (symbol, value) {
-      console.log(`updating global scope with: (${symbol}, ${value})`);
+      //console.log(`updating global scope with: (${symbol}, ${value})`);
       this.globalScope[symbol] = value
       // There is a better way to do this
       // however for the moment, when a symbol is updated

@@ -14,7 +14,9 @@ Vue.component("base-text", {
       styleObj: {
         'position': 'absolute',
         'left': '0px',
-        'top': '0px',
+        'top': '0px'
+      },
+      textStyle: {
         'width': "300px",
         'height': "150px"
       },
@@ -33,8 +35,8 @@ Vue.component("base-text", {
     if (this.initData) {
       //console.log(this.initData);
       this.value = this.initData.value
-      this.styleObj.width = this.initData.width
-      this.styleObj.height = this.initData.height
+      this.textStyle.width = this.initData.width
+      this.textStyle.height = this.initData.height
       this.styleObj.left = this.initData.position[0]
       this.styleObj.top = this.initData.position[1]
     }
@@ -93,7 +95,7 @@ Vue.component("base-text", {
   v-on:contextmenu.prevent="onRightClick"
   v-bind:style="styleObj">
   <textarea v-bind:class="{text:true, selected:selected}"
-  v-model:value="value">
+  v-model:value="value" v-bind:style="textStyle">
   </textarea>
   <ol v-on:contextmenu.prevent="0"
     v-bind:class="{menu: true}"

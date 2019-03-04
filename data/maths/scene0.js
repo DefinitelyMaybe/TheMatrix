@@ -1,19 +1,21 @@
 DATA_objects = [{
   "name": "z",
   "value": 5,
-  "position": ["127px", "217px"],
+  "position": ["68px", "253px"],
   "type": "math-variable",
   "id": "0"
 }, {
   "name": "f",
-  "latex": "2x+1",
-  "position": ["118px", "95px"],
+  "expression": "2cos(((x)/(3)))",
+  "latex": "2\\cos\\left(\\frac{x}{3}\\right)",
+  "position": ["50px", "64px"],
   "type": "math-function",
   "id": "1"
 }, {
   "name": "g",
-  "latex": "10x^{2-y}",
-  "position": ["104px", "152px"],
+  "expression": "10z^(2-x)",
+  "latex": "10z^{2-x}",
+  "position": ["53px", "167px"],
   "type": "math-function",
   "id": "2"
 }, {
@@ -27,24 +29,28 @@ DATA_objects = [{
   ],
   "outputHeaders": ["f", "g"],
   "outputTable": [
-    ["7", "3"],
-    ["9", "13"],
-    ["11", "29"],
-    ["13", "51"],
-    ["15", "79"]
+    ["1.89", "50"],
+    ["1.572", "10"],
+    ["1.081", "2"],
+    ["0.4705", "0.4"],
+    ["-0.1914", "0.08"]
   ],
-  "position": ["293px", "83px"],
+  "position": ["214px", "55px"],
   "type": "math-table",
   "id": "3"
 }, {
-  "position": ["136px", "344px"],
+  "position": ["65px", "335px"],
   "width": 700,
   "height": 500,
-  "yaxis": "f",
   "type": "math-graph",
-  "id": "4"
+  "id": "4",
+  "xaxis": "x",
+  "yaxis": "f"
 }, {
-  "position": ["550px", "100px"],
-  "type": "form-create",
+  "value": "The web maths IDE.\n\nRight click anywhere to see different options. Drag things around. Saves are logged to the console (ctrl + shift + i).\n\nAt this point in time, it's functions, tables and some basic graphs.\n\nNote: Not all functions will work as I've needed to parse latex into ascii for evaluation.",
+  "width": "436px",
+  "height": "259px",
+  "position": ["462px", "39px"],
+  "type": "base-text",
   "id": "5"
 }]
