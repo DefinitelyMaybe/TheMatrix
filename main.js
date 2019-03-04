@@ -180,92 +180,10 @@ const TheMatrix = new Vue({
       }
     },
     userCreateObj: function (event) {
-      let obj = prompt("What would you like to create? Type one of the following...\nfunction\nvariable\ntext\ntable\ngraph", '')
-      
-      switch (obj) {
-        case 'matrix':
-        {
-          let rows = prompt("how many rows?", "1")
-          let cols = prompt("how many columns?", "1")
-
-          try {
-            rows = parseInt(rows)
-            cols = parseInt(cols)
-          } catch (error) {
-            alert("sorry, not sure how many rows and columns you wanted. default values are going to be used.")
-            rows = 1
-            cols = 1
-          }
-
-          let defaultEntries = []
-          for (let i = 0; i < rows; i++) {
-            let row = []
-            for (let j = 0; j < cols; j++) {
-              row.push(0)
-            }
-            defaultEntries.push(row)
-          }
-          this.createObj({
-            type: 'math-matrix',
-            position:[`${event.x}px`, `${event.y}px`],
-            entries: defaultEntries
-          })
-          break;
-        }
-        case 'function':
-        {
-          this.createObj({
-            type: 'math-function',
-            name: 'f',
-            expression: 'x+1',
-            latex: 'x+1',
-            position:[`${event.x}px`, `${event.y}px`]
-          })
-          break;
-        }
-        case 'variable':
-        {
-          this.createObj({
-            type: 'math-variable',
-            name: 'x',
-            value: 0,
-            position:[`${event.x}px`, `${event.y}px`]
-          })
-          break;
-        }
-        case 'text':
-        {
-          this.createObj({
-            type: 'base-text',
-            position:[`${event.x}px`, `${event.y}px`]
-          })
-          break;
-        }
-        case 'table':
-        {
-          this.createObj({
-            type: 'math-table',
-            position:[`${event.x}px`, `${event.y}px`]
-          })
-          break;
-        }
-        case 'graph':
-        {
-          this.createObj({
-            type: 'math-graph',
-            position:[`${event.x}px`, `${event.y}px`],
-            width: 500,
-            height: 500
-          })
-          break;
-        }
-        default:
-        {
-          // default is to say that what the user entered wasn't an object that can be created
-          alert("Sorry, not sure what you were wanting to create.")
-          break
-        }
-      }
+      this.createObj({
+        type: 'form-create',
+        position:[`${event.x}px`, `${event.y}px`]
+      })
       // we're assuming the function was called from a context menu
       this.showContextMenu = false
     },
