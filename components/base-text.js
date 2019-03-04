@@ -1,3 +1,5 @@
+// Add links within text or as a separate object or both.
+
 Vue.component("base-text", {
   props: {
     initData: Object,
