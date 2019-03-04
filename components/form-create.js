@@ -49,7 +49,7 @@ Vue.component("form-create", {
       }
     },
     finishForm: function (args) {
-      console.log(args);
+      //console.log(args);
       switch (this.type) {
         case 'Variable':
           this.$root.createObj({
@@ -70,12 +70,18 @@ Vue.component("form-create", {
           break
         case 'Table':
           this.$root.createObj({
-              
+            type: "math-table",
+            position: [this.styleObj.left, this.styleObj.top],
+            inputHeaders: this.inputHeaders,
+            inputTable: this.inputTable,
+            outputHeaders: this.outputHeaders,
+            outputTable: this.outputTable
           })
           break
         case 'Text':
           this.$root.createObj({
-              
+            type: "base-text",
+            position: [this.styleObj.left, this.styleObj.top],
           })
           break
         default:
@@ -131,7 +137,8 @@ Vue.component("form-create", {
   v-on:dragend="onDragEnd"
   v-on:dragstart="onDragStart"
   v-on:click.self="onClick"
-  
+  v-on:contextmenu.prevent="onRightClick"
+
   v-bind:class="{CreateForm:true,selected:selected}"
   v-bind:style="styleObj">
   <form onsubmit="return false">
@@ -147,5 +154,11 @@ Vue.component("form-create", {
       <component v-bind:is="subform(type)"></component>
     </keep-alive>
   </form>
+  <ol v-on:contextmenu.prevent="0"
+  v-bind:class="{menu: true}"
+  v-show="showContextMenu && selected"
+  v-bind:style="contextMenuStyle">
+    <li v-on:click="deleteForm" v-bind:class="{menu: true}">Delete</li>
+  </ol>
 </div>`,
 })
