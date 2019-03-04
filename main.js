@@ -157,9 +157,10 @@ const TheMatrix = new Vue({
             position: options.position,
             width: options.width,
             height: options.height,
-            title: options.title,
             xaxis: options.xaxis,
-            yaxis: options.yaxis
+            yaxis: options.yaxis,
+            xrange: options.xrange || [-10, 10],
+            yrange: options.yrange || [-10, 10],
           })
           break;
         }
