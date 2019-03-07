@@ -45,8 +45,8 @@ Vue.component("base-text", {
     toObject: function () {
       return {
         "value": this.value,
-        "width": this.styleObj.width,
-        "height": this.styleObj.height,
+        "width": this.textStyle.width,
+        "height": this.textStyle.height,
         "position": [this.styleObj.left, this.styleObj.top],
         "type": 'base-text',
         "id": this.$attrs.id
@@ -81,9 +81,9 @@ Vue.component("base-text", {
       // and if it did update the root object and the local object
       let w = event.srcElement.style.width
       let h = event.srcElement.style.height
-      if (w != this.width || h != this.height) {
-        this.styleObj.width = w
-        this.styleObj.height = h
+      if (w != this.textStyle.width || h != this.textStyle.height) {
+        this.textStyle.width = w
+        this.textStyle.height = h
       }
     }
   },
