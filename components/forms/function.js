@@ -47,6 +47,7 @@ Vue.component("form-function", {
   <label>Import latex</label>
   <input type="checkbox" v-model="importFunc"></input><br>
   <template v-if="importFunc">
+    <i>paste latex into textbox</i><br>
     <textarea v-model="latex"></textarea>
   </template><br>
   <button v-on:click="finishForm">Finish</button>
