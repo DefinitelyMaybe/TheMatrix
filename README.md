@@ -6,6 +6,7 @@ Well, theres just me working on different bits and pieces that I think are the a
 It changes a lot currently so I'm not detailing it much here.
 Notes:
 forms
+remove selected class?
 graph zeros
 saving and loading
 mathfields/text
