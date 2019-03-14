@@ -15,7 +15,7 @@ const TheMatrix = new Vue({
     nextID: 0, // The next ID to be used if there are no freeobjectIDs left
     freeObjectID: [], // if an object is ever removed. its id is added here
     selectedObj: '', // The id of the currently selected object
-    initObjects: [], // An array of objects which describe initialized objects
+    sceneObjects: [],
 
     // maths globals
     globalScope: {},
@@ -55,9 +55,9 @@ const TheMatrix = new Vue({
       return id.toString()
     },
     getObjectByID: function (id) {
-      for (let i = 0; i < this.initObjects.length; i++) {
-        if (this.initObjects[i].id == id) {
-          return [this.initObjects[i], i]
+      for (let i = 0; i < this.sceneObjects.length; i++) {
+        if (this.sceneObjects[i].id == id) {
+          return [this.sceneObjects[i], i]
         }
       }
     },
@@ -84,7 +84,7 @@ const TheMatrix = new Vue({
       switch (options.type) {
         case 'math-matrix':
         {
-          this.initObjects.push({
+          this.sceneObjects.push({
             id: options.id || this.getNewObjectID(),
             type: options.type,
             position: options.position,
@@ -94,7 +94,7 @@ const TheMatrix = new Vue({
         }
         case 'math-function':
         {
-          this.initObjects.push({
+          this.sceneObjects.push({
             id: options.id || this.getNewObjectID(),
             type: options.type,
             position: options.position,
@@ -105,7 +105,7 @@ const TheMatrix = new Vue({
         }
         case 'math-variable':
         {
-          this.initObjects.push({
+          this.sceneObjects.push({
             id: options.id || this.getNewObjectID(),
             type: options.type,
             position: options.position,
@@ -126,7 +126,7 @@ const TheMatrix = new Vue({
         }
         case 'base-text':
         {
-          this.initObjects.push({
+          this.sceneObjects.push({
             id: options.id || this.getNewObjectID(),
             type: options.type,
             position: options.position,
@@ -138,7 +138,7 @@ const TheMatrix = new Vue({
         }
         case 'math-table':
         {
-          this.initObjects.push({
+          this.sceneObjects.push({
             id: options.id || this.getNewObjectID(),
             type: options.type,
             position: options.position,
@@ -151,7 +151,7 @@ const TheMatrix = new Vue({
         }
         case 'math-graph':
         {
-          this.initObjects.push({
+          this.sceneObjects.push({
             id: options.id || this.getNewObjectID(),
             type: options.type,
             position: options.position,
@@ -166,7 +166,7 @@ const TheMatrix = new Vue({
         }
         case 'form-create':
         {
-          this.initObjects.push({
+          this.sceneObjects.push({
             id: options.id || this.getNewObjectID(),
             type: options.type,
             position: options.position
@@ -179,7 +179,7 @@ const TheMatrix = new Vue({
           break;
       }
     },
-    userCreateObj: function (event) {
+    userCreateObj: function (event, type) {
       this.createObj({
         type: 'form-create',
         position:[`${event.x}px`, `${event.y}px`]
@@ -193,8 +193,8 @@ const TheMatrix = new Vue({
       // Using a for loop is also an option.
       //console.log("delete function");
       let newObjs = []
-      while (this.initObjects.length > 0) {
-        let x = this.initObjects.pop()
+      while (this.sceneObjects.length > 0) {
+        let x = this.sceneObjects.pop()
         if (x.id != this.selectedObj) {
           newObjs.push(x)
         } else {
@@ -205,21 +205,21 @@ const TheMatrix = new Vue({
           this.freeObjectID.push(x.id)
         }
       }
-      this.initObjects = newObjs
+      this.sceneObjects = newObjs
       // and we must close the context menu once the operation finishes
       this.showContextMenu = false
     },
     deleteObjByID: function (id) {
       let x = this.getObjectByID(id)
       //console.log(x);
-      this.initObjects.splice(x[1], 1)
+      this.sceneObjects.splice(x[1], 1)
 
       // and we must close the context menu once the operation finishes
       this.showContextMenu = false
     },
     deleteAllObjects: function () {
-      // if all initObjects are being deleted we can reset the unique ids
-      this.initObjects.splice(0, this.initObjects.length, [])
+      // if all sceneObjects are being deleted we can reset the unique ids
+      this.sceneObjects.splice(0, this.sceneObjects.length, [])
       this.nextID = 0
       this.freeObjectID = []
     },
@@ -297,7 +297,7 @@ const TheMatrix = new Vue({
       this.showContextMenu = false
     },
 
-    // Helper functions for maths
+    // Helper functions for maths sceneObjects
     getFunctionString: function (symbol) {
       //console.log(symbol);
       // the idea here is to match the symbol to a function and return the function string
@@ -349,6 +349,8 @@ const TheMatrix = new Vue({
       this.updateAllGraphs()
     },
     getGlobalScope: function () {
+      // If we return the exact object then the functions we pass it to will insert
+      // there values into the object, which we dont want.
       return Object.assign({}, this.globalScope)
     },
     updateAllGraphs: function() {
@@ -362,7 +364,7 @@ const TheMatrix = new Vue({
 v-on:click.self.prevent="selectObj('')"
 v-on:contextmenu.self.prevent="onRightClick"
 v-bind:style="styleObj">
-  <component v-for="(obj, key) in initObjects"
+  <component v-for="(obj, key) in sceneObjects"
   v-bind:key="obj.id"
   v-bind:id="obj.id"
   v-bind:initData="obj"
