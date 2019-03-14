@@ -19,13 +19,13 @@ DATA_objects = [{
   "type": "math-function",
   "id": "2"
 }, {
-  "inputHeaders": ["x", "y", "a", "b"],
+  "inputHeaders": ["x", "y"],
   "inputTable": [
-    [1, 2, 3, 4],
-    [2, 3, 4, 5],
-    [3, 4, 5, 6],
-    [4, 5, 6, 7],
-    [5, 6, 7, 8]
+    [1, 2],
+    [2, 3],
+    [3, 4],
+    [4, 5],
+    [5, 6]
   ],
   "outputHeaders": ["f", "g"],
   "outputTable": [
@@ -46,11 +46,4 @@ DATA_objects = [{
   "id": "4",
   "xaxis": "x",
   "yaxis": "f"
-}, {
-  "value": "The web maths IDE.\n\nRight click anywhere to see different options. Drag things around. Saves are logged to the console (ctrl + shift + i).\n\nAt this point in time, it's functions, tables and some basic graphs.\n\nNote: Not all functions will work as I've needed to parse latex into ascii for evaluation.",
-  "width": "436px",
-  "height": "259px",
-  "position": ["462px", "39px"],
-  "type": "base-text",
-  "id": "5"
 }]
