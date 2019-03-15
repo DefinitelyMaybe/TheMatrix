@@ -173,17 +173,76 @@ const TheMatrix = new Vue({
           })
           break;
         }
+        case 'form-load':
+        {
+          this.sceneObjects.push({
+            id: options.id || this.getNewObjectID(),
+            type: options.type,
+            position: options.position
+          })
+          break;
+        }
+        case 'form-save':
+        {
+          this.sceneObjects.push({
+            id: options.id || this.getNewObjectID(),
+            type: options.type,
+            position: options.position
+          })
+          break;
+        }
+        case 'form-reset':
+        {
+          this.sceneObjects.push({
+            id: options.id || this.getNewObjectID(),
+            type: options.type,
+            position: options.position
+          })
+          break;
+        }
         default:
           console.warn("The default creation case hasn't created anything with:");
           console.log(options);
           break;
       }
     },
-    userCreateObj: function (event, type) {
-      this.createObj({
-        type: 'form-create',
-        position:[`${event.x}px`, `${event.y}px`]
-      })
+    mainMenu: function (event, type) {
+      console.log(type);
+      switch (type) {
+        case "load":
+        {
+          this.createObj({
+            type: "form-load",
+            position:[`${event.x}px`, `${event.y}px`]
+          })
+          break;
+        }
+        case "save":
+        {
+          this.createObj({
+            type: "form-save",
+            position:[`${event.x}px`, `${event.y}px`]
+          })
+          break;
+        }
+        case "reset":
+        {
+          this.createObj({
+            type: "form-reset",
+            position:[`${event.x}px`, `${event.y}px`]
+          })
+          break;
+        }   
+        default:
+        {
+          // default case is to create an object
+          this.createObj({
+            type: "form-create",
+            position:[`${event.x}px`, `${event.y}px`]
+          })
+          break;
+        }
+      }
       // we're assuming the function was called from a context menu
       this.showContextMenu = false
     },
@@ -376,9 +435,10 @@ v-bind:style="styleObj">
   v-show="showContextMenu && selectedObj == ''"
   v-bind:style="contextMenuStyle"
   v-bind:class="{menu: true}">
-    <li v-on:click="onLoad" v-bind:class="{menu: true}">Load</li>
-    <li v-on:click="saveObjects" v-bind:class="{menu: true}">Save</li>
-    <li v-on:click="userCreateObj" v-bind:class="{menu: true}">Create</li>
+    <li v-on:click="mainMenu($event, 'load')" v-bind:class="{menu: true}">Load</li>
+    <li v-on:click="mainMenu($event, 'save')" v-bind:class="{menu: true}">Save</li>
+    <li v-on:click="mainMenu" v-bind:class="{menu: true}">Create</li>
+    <li v-on:click="mainMenu($event, 'reset')" v-bind:class="{menu: true}">Reset</li>
   </ol>
 </div>`
 })
