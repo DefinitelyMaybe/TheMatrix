@@ -9,6 +9,7 @@ forms
 remove selected class?
 graph zeros
 saving and loading
+scene size vs view + object position on view
 mathfields/text
 matrices
 
