@@ -1,6 +1,8 @@
 Vue.component("form-table", {
   data: function () {
     return {
+      importData: false,
+      importedData: "",
       inputVarCount: 1,
       inputNames: ["x"],
       outputFuncCount: 1,
@@ -21,8 +23,11 @@ Vue.component("form-table", {
     }
   },
   methods: {
-    //form specific
+    recomputeTables: function () {
+      
+    },
     finishForm: function () {
+      this.recomputeTables()
       this.$parent.finishForm({
         inputHeaders: this.inputNames,
         inputTable: this.inputRanges,
@@ -32,17 +37,25 @@ Vue.component("form-table", {
     }
   },
   template: `<form onsubmit="return false">
-  <label>How many input variables would you like:</label>
-  <input type="number" v-model="inputVarCount"></input><br>
-  <label>How many output functions would you like:</label>
-  <input type="number" v-model="outputFuncCount"></input><br>
-  
-  <label>Name the variables:</label><br>
-  <template v-for="index in inputNames">
-    <input type="text" v-model="inputNames[index]" v-bind:key="index"></input><br>
+  <label>import csv</label>
+  <input type="checkbox" v-model="importData"></input><br>
+  <template v-if="importData">
+    <i>paste csv into textbox</i><br>
+    <textarea v-model="importedData"></textarea><br>
   </template>
-  <label>How many rows:</label>
-  <input type="number" v-model="rowCount"></input><br>
+  <template v-if="!importData">
+    <label>How many input variables would you like:</label>
+    <input type="number" v-model="inputVarCount"></input><br>
+    <label>How many output functions would you like:</label>
+    <input type="number" v-model="outputFuncCount"></input><br>
+    
+    <label>Name the variables:</label><br>
+    <template v-for="index in inputNames">
+      <input type="text" v-model="inputNames[index]" v-bind:key="index"></input><br>
+    </template>
+    <label>How many rows:</label>
+    <input type="number" v-model="rowCount"></input><br>
+  </template>
   <button v-on:click="finishForm">Finish</button>
 </form>`,
 })
