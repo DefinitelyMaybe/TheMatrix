@@ -5,10 +5,11 @@ This project is about doing maths in the browser. Progress is slow but lets keep
 Well, theres just me working on different bits and pieces that I think are the appropriate next steps.
 It changes a lot currently so I'm not detailing it much here.
 Notes:
-forms
 remove selected class?
 graph zeros
-saving and loading
+create a sceneObject class?
+ * What methods would it have
+ * What attributes/values
 scene size vs view + object position on view
 mathfields/text
 matrices
