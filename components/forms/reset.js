@@ -39,15 +39,6 @@ Vue.component("form-reset", {
       }
       this.deleteForm()
     },
-
-    // needed by main.js
-    toObject: function () {
-      return {
-        "position": [this.styleObj.left, this.styleObj.top],
-        "type": 'form-reset',
-        "id": this.$attrs.id
-      }
-    },
     deleteForm: function () {
       this.$root.deleteObjByID(this.$attrs.id)
     },

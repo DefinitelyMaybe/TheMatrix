@@ -37,15 +37,6 @@ Vue.component("form-save", {
     finishForm: function (args) {
       this.deleteForm()
     },
-
-    // needed by main.js
-    toObject: function () {
-      return {
-        "position": [this.styleObj.left, this.styleObj.top],
-        "type": 'form-save',
-        "id": this.$attrs.id
-      }
-    },
     deleteForm: function () {
       this.$root.deleteObjByID(this.$attrs.id)
     },
@@ -84,7 +75,7 @@ Vue.component("form-save", {
   v-bind:style="styleObj">
   <form onsubmit="return false">
     <i>Everything was saved into the textbox.</i><br>
-    <textarea v-model="data"></textarea><br>
+    <textarea v-model="data" v-bind:style="{width:'300px'}"></textarea><br>
     <i>copy, paste the textbox's contents into load.</i><br>
     <button v-on:click="finishForm">Close</button>
   </form>

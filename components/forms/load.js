@@ -41,26 +41,12 @@ Vue.component("form-load", {
         } catch (error) {
           console.error(error);
         }
-        if (this.dataType == "Scene") {
+        if (this.data != "") {
           for (let i = 0; i < this.data.length; i++) {
             this.$root.createObj(this.data[i])
           }
-        } else {
-          this.$root.createObj(this.data)
         }
         this.deleteForm()
-        if (this.reset) {
-          this.$root.deleteAllObjects()
-        }
-      },
-  
-      // needed by main.js
-      toObject: function () {
-        return {
-          "position": [this.styleObj.left, this.styleObj.top],
-          "type": 'form-load',
-          "id": this.$attrs.id
-        }
       },
       deleteForm: function () {
         this.$root.deleteObjByID(this.$attrs.id)
@@ -99,14 +85,8 @@ Vue.component("form-load", {
     v-bind:class="{CreateForm:true,selected:selected}"
     v-bind:style="styleObj">
     <form onsubmit="return false">
-      <label for="object">What would you like to load?</label>
-      <select type="text" v-model="dataType">
-        <option v:bind:selected="'Object'==dataType">Object</option>
-        <option v:bind:selected="'Scene'==dataType">Scene</option>
-      </select><br>
-      <label>Reset entire scene</label>
-      <input type="checkbox" v-model="reset"></input><br>
-      <textarea v-model="data"></textarea><br>
+      <label>Paste load data into the textbox:</label><br>
+      <textarea v-model="data" v-bind:style="{width:'300px'}"></textarea><br>
       <button v-on:click="finishForm">Finish</button>
     </form>
     <ol v-on:contextmenu.prevent="0"

@@ -96,15 +96,6 @@ Vue.component("form-create", {
       }
       this.deleteForm()
     },
-
-    // needed by main.js
-    toObject: function () {
-      return {
-        "position": [this.styleObj.left, this.styleObj.top],
-        "type": 'form-create',
-        "id": this.$attrs.id
-      }
-    },
     deleteForm: function () {
       this.$root.deleteObjByID(this.$attrs.id)
     },
