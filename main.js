@@ -246,28 +246,6 @@ const TheMatrix = new Vue({
       // we're assuming the function was called from a context menu
       this.showContextMenu = false
     },
-    deleteCurrentObj: function () {
-      // We can assume that selectedObj has the obj id we want to delete
-      // Also the while loop was just the first way I thought of doing it.
-      // Using a for loop is also an option.
-      //console.log("delete function");
-      let newObjs = []
-      while (this.sceneObjects.length > 0) {
-        let x = this.sceneObjects.pop()
-        if (x.id != this.selectedObj) {
-          newObjs.push(x)
-        } else {
-          // because we've found the obj that we want to del
-          // we must add its index to free indices.
-          // this is so we can guarantee that all object ids are unquie
-          //console.log(x.id);
-          this.freeObjectID.push(x.id)
-        }
-      }
-      this.sceneObjects = newObjs
-      // and we must close the context menu once the operation finishes
-      this.showContextMenu = false
-    },
     deleteObjByID: function (id) {
       let x = this.getObjectByID(id)
       //console.log(x);
@@ -285,8 +263,9 @@ const TheMatrix = new Vue({
     toJSON: function () {
       let output = []
       for (let i = 0; i < this.$children.length; i++) {
-        let x = this.$children[i].toObject()
-        output.push(x)
+        if (this.$children[i].toObject) {
+          output.push(this.$children[i].toObject())
+        }
       }
       return JSON.stringify(output)
     },
@@ -309,51 +288,6 @@ const TheMatrix = new Vue({
       this.contextMenuStyle.left = `${event.layerX}px`
       this.contextMenuStyle.top = `${event.layerY}px`
       this.showContextMenu = true
-    },
-    dropData: function (id, updateObj) {
-      //console.log("dropData called.");
-      //console.log(id, updateObj);
-      // creating the new one first so it has a different ID
-      this.createObj(updateObj)
-
-      this.deleteCurrentObj()
-      this.selectedObj = null
-
-      // first update the object that was just dropped on
-      this.deleteObjByID(id)
-    },
-    onLoad: function () {
-      this.showContextMenu = false
-      let x = prompt("what would you like to load in? Type on of the following:\nscene\nobject")
-      let y = prompt("paste all of the JSON data here:")
-      switch (x) {
-        case 'scene':
-          {
-            try {
-              let z = JSON.parse(y)
-              this.deleteAllObjects()
-              for (let i = 0; i < z.length; i++) {
-                this.createObj(z[i]);
-              }
-            } catch (error) {
-              console.log("couldn't manage to parse the data because:");
-              console.log(error);
-            }
-          }
-          break;
-        case 'object':
-          {
-            console.log('WIP');
-          }
-          break;
-        default:
-          console.log("Sorry, wasn't sure what you wanted to load in.");
-          break;
-      }
-    },
-    saveObjects: function () {
-      console.log(`Copy the following into the Load function:\n${this.toJSON()}`)
-      this.showContextMenu = false
     },
 
     // Helper functions for maths sceneObjects
