@@ -7,7 +7,6 @@ Vue.component("math-variable", {
     return {
       // some default settings
       name: 'x',
-      valueType: 'number',
       value: 0,
 
       // styling and misc data
@@ -34,7 +33,6 @@ Vue.component("math-variable", {
     if (this.initData) {
       //console.log(this.initData);
       this.name = this.initData.name
-      this.valueType = this.initData.valueType
       this.value = this.initData.value
       this.styleObj.left = this.initData.position[0]
       this.styleObj.top = this.initData.position[1]
@@ -72,10 +70,8 @@ Vue.component("math-variable", {
       }
     },
     toObject: function () {
-      console.log(this);
       return {
         "name": this.name,
-        "valueType": this.type,
         "value": this.value,
         "position": [this.styleObj.left, this.styleObj.top],
         "type": 'math-variable',
