@@ -21,6 +21,7 @@ Vue.component("math-table", {
       this.inputTable = this.initData.inputTable
       this.outputTable = this.initData.outputTable
     }
+    this.evaluateAllRows()
   },
   methods: {
     deleteObject: function () {
@@ -41,10 +42,29 @@ Vue.component("math-table", {
       console.log('empty edit function called.');
     },
     evaluateAllRows: function () {
-      //console.log("Evaluating...");
-      for (let i = 0; i < this.inputTable.length; i++) {
-        // I know this line looks strange but its what invokes the set method for the computed property.
-        this.functionsOutput = i
+      for (let row = 0; row < this.inputTable.length; row++) {
+        // First get the whole scenes scope object
+        let scope = this.$root.getGlobalScope()
+
+        // Override the scope values with the ones from the table
+        for (let i = 0; i < this.inputHeaders.length; i++) {
+          scope[this.inputHeaders[i]] = this.inputTable[row][i]
+        }
+        
+        // For each output function
+        for (let i = 0; i < this.outputHeaders.length; i++) {
+          // Get the eval result from the corresponding function
+          let result = this.$root.getFunctionEval(this.outputHeaders[i], scope)
+          if (result) {
+            let newRow = this.outputTable[row]
+            newRow.splice(i, 1, result)
+            this.outputTable.splice(row, 1, newRow)
+          } else {
+            let newRow = this.outputTable[row]
+            newRow.splice(i, 1, '?')
+            this.outputTable.splice(row, 1, newRow)
+          }
+        }
       }
     },
     changeHeader: function (index, type) {
@@ -211,58 +231,6 @@ Vue.component("math-table", {
       this.showContextMenu = false
     }
   },
-  computed: {
-    functionsOutput: {
-      get: function () {
-        return this.outputTable
-      },
-      set: function (row) {
-        // First get the whole scenes scope object
-        let scope = this.$root.getGlobalScope()
-
-        // Override the scope values with the ones from the table
-        for (let i = 0; i < this.inputHeaders.length; i++) {
-          scope[this.inputHeaders[i]] = this.inputTable[row][i]
-        }
-        
-        // For each output symbol
-        for (let i = 0; i < this.outputHeaders.length; i++) {
-          // Get the function string for it
-          let func = this.$root.getFunctionString(this.outputHeaders[i])
-
-          // If found do the evaluation
-          if (func) {
-            let g;
-            let outputValue = "?"
-            try {
-              let g = math.compile(func)
-              // Setting up a default value
-              
-
-              outputValue = g.eval(scope)
-              // a simple check for strange values
-              if (outputValue == "Infinity") {
-                outputValue = "?"
-              } else {
-                // formating so that the table doesn't fill up with reoccuring values
-                outputValue = math.format(outputValue, {precision: 4})
-              }
-            } catch (error) {
-              console.log("outputValue is not undefined because...");
-              //console.warn(error);
-            }
-            let newRow = this.outputTable[row]
-            newRow.splice(i, 1, outputValue)
-            this.outputTable.splice(row, 1, newRow)
-          } else {
-            let newRow = this.outputTable[row]
-            newRow.splice(i, 1, '?')
-            this.outputTable.splice(row, 1, newRow)
-          }
-        }
-      }
-    }
-  },
   template: `<div draggable="true"
   v-on:dragend="onDragEnd"
   v-on:dragstart="onDragStart"
@@ -290,7 +258,7 @@ Vue.component("math-table", {
       v-bind:key="index"
       v-on:click="changeHeader(index, 'output')">{{ value }}</th>
     </tr>
-    <tr v-for="(value, row) in functionsOutput"
+    <tr v-for="(value, row) in outputTable"
     v-bind:key="row">
       <td v-for="(item, col) in value"
       v-bind:key="col">{{item}}</td>
