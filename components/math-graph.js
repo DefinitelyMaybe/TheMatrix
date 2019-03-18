@@ -7,7 +7,7 @@ Vue.component("math-graph", {
   data: function () {
     return {
       // some defaults
-      graph: '', // htmlelement ref
+      graph: '',
       trace: [
         {
           'x': [],
@@ -79,13 +79,8 @@ Vue.component("math-graph", {
       this.layout.yaxis.title = this.initData.yaxis
     }
   },
-  beforeMount() {
-    
-  },
   mounted() {
-    this.graph = this.$refs.graph
-    this.updateTrace(this) // What in the heck??? why does scope change for this function?
-    Plotly.plot(this.graph, this.trace, this.layout, this.options);
+    this.update()
   },
   methods: {
     deleteObject: function () {
@@ -111,20 +106,10 @@ Vue.component("math-graph", {
     },
     update: function () {
       this.updateTrace(this)
-      Plotly.newPlot(this.graph, this.trace, this.layout)
+      Plotly.newPlot(this.getGraphDiv, this.trace, this.layout)
     },
     updateTrace: function (vueEl) {
       // Do not call Plotly.updateTrace() here. that would cause an infinite loop
-      //console.log("Graph updateTrace function called");
-      function evaluateFunction(funcString, scope) {
-        try {
-          return math.eval(funcString, scope)
-        } catch (error) {
-          console.log("Graph threw error.");
-          //console.log(error);
-        }
-        // if the above failed then we will return an empty array
-      }
       function getGraphRange() {
         // get the input range
         let range = vueEl.layout.xaxis.range
@@ -147,53 +132,57 @@ Vue.component("math-graph", {
         }
         return obj
       }
-      // get the type of graph first
-      let graphType = vueEl.trace[0].type
-      if (graphType == "scatter") {
+      if (vueEl.trace[0].type == "scatter") {
         // getting the function string using the yaxis label
         let axisLabels = getAxisLabels()
-        let func = vueEl.$root.getFunctionString(axisLabels.yaxis)
+        let funcName = axisLabels.yaxis
 
-        // If found do the evaluation
-        if (func) {
-          //console.log("Function found. Doing eval on scope");
-          let inputs = getGraphRange()
-          let realInputs = []
-          let realOutputs = []
-          let complexInputs = []
-          let complexOutputs = []
-          let scope = this.$root.getGlobalScope()
-          // now lets deal with complex numbers, naively
-          for (let i = 0; i < inputs.length; i++) {
-            scope[axisLabels.xaxis] = inputs[i]
-            let x = evaluateFunction(func, scope)
-            if (x) {
-              if (x.im) {
-                complexInputs.push(inputs[i])
-                complexOutputs.push(x.re)
-              } else {
-                realInputs.push(inputs[i])
-                realOutputs.push(x)
-              } 
-            }
+        let inputs = getGraphRange()
+        let realInputs = []
+        let realOutputs = []
+        let complexInputs = []
+        let complexOutputs = []
+        let scope = this.$root.getGlobalScope()
+
+        // for now we're dealing with complex numbers naively.
+        for (let i = 0; i < inputs.length; i++) {
+          scope[axisLabels.xaxis] = inputs[i]
+          let result = this.$root.getFunctionEval(funcName, scope)
+          if (result) {
+            if (result.im) {
+              complexInputs.push(inputs[i])
+              complexOutputs.push(result.re)
+            } else {
+              realInputs.push(inputs[i])
+              realOutputs.push(result)
+            } 
           }
-
-          // finally update the trace
-          vueEl.trace.splice(0, vueEl.trace.length)
-          vueEl.trace.push({
-            type: 'scatter',
-            name: 'real',
-            x: realInputs,
-            y: realOutputs
-          })
-          vueEl.trace.push({
-            type: 'scatter',
-            name: 'complex',
-            x: complexInputs,
-            y: complexOutputs
-          })
         }
+
+        // finally update the trace
+        vueEl.trace.splice(0, vueEl.trace.length)
+        vueEl.trace.push({
+          type: 'scatter',
+          name: 'real',
+          x: realInputs,
+          y: realOutputs
+        })
+        vueEl.trace.push({
+          type: 'scatter',
+          name: 'complex',
+          x: complexInputs,
+          y: complexOutputs
+        })
       }
+    }
+  },
+  computed: {
+    getGraphDiv: function () {
+      for (let i = 0; i < this.$el.children.length; i++) {
+        if (this.$el.children[i].id == 'graph') {
+          return this.$el.children[i]
+        }
+      }  
     }
   },
   template: `<div draggable="true"
@@ -203,8 +192,7 @@ Vue.component("math-graph", {
   v-on:contextmenu.prevent="onRightClick"
   v-bind:class="{ graph: true, selected: selected}"
   v-bind:style="objStyle">
-    <div ref="graph"
-    v-on:keyup="update"></div>
+    <div id="graph"></div>
     <ol v-on:contextmenu.prevent="0"
     v-bind:class="{menu: true}"
     v-show="showContextMenu && selected"
