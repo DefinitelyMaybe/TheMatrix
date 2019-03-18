@@ -1,4 +1,5 @@
 Vue.component("math-variable", {
+  mixins: [mixin_moveable],
   props: {
     initData: Object,
     selected: Boolean
@@ -10,13 +11,6 @@ Vue.component("math-variable", {
       value: 0,
 
       // styling and misc data
-      styleObj: {
-        'position': 'absolute',
-        'left': '0px',
-        'top': '0px',
-        'display': 'flex',
-        'flex-direction': 'row'
-      },
       showContextMenu: false,
       contextMenuStyle : {
         'position': 'absolute',
@@ -25,8 +19,6 @@ Vue.component("math-variable", {
         'top': '0px',
       },
       objHover: false,
-      dragOffsetX: 0,
-      dragOffsetY: 0
     }
   },
   created: function () {
@@ -34,12 +26,22 @@ Vue.component("math-variable", {
       //console.log(this.initData);
       this.name = this.initData.name
       this.value = this.initData.value
-      this.styleObj.left = this.initData.position[0]
-      this.styleObj.top = this.initData.position[1]
     }
   },
   methods: {
-    changeName: function () {
+    save: function () {
+      return {
+        "name": this.name,
+        "value": this.value,
+        "position": [this.objStyle.left, this.objStyle.top],
+        "type": 'math-variable',
+        "id": this.$attrs.id
+      }
+    },
+    deleteObject: function () {
+      this.$root.deleteObjByID(this.$attrs.id)
+    },
+    edit: function () {
       if (this.selected) {
         let x = prompt(`What would you like to rename ${this.name} to?`, this.name)
         if (x) {
@@ -69,31 +71,8 @@ Vue.component("math-variable", {
         this.onClick()
       }
     },
-    toObject: function () {
-      return {
-        "name": this.name,
-        "value": this.value,
-        "position": [this.styleObj.left, this.styleObj.top],
-        "type": 'math-variable',
-        "id": this.$attrs.id
-      }
-    },
-    deleteVariable: function () {
-      this.$root.deleteObjByID(this.$attrs.id)
-    },
-    onDragEnd: function (event) {
-      let x = event.x - this.dragOffsetX
-      let y = event.y - this.dragOffsetY
-      this.styleObj.left = `${x}px`
-      this.styleObj.top = `${y}px`
-      // updating the class appropriately
-      this.objHover = false
-    },
-    onDragStart: function (event) {
-      this.onClick()
-      this.dragOffsetX = event.offsetX
-      this.dragOffsetY = event.offsetY
-    },
+
+    // events
     onClick: function () {
       this.$root.selectObj(this.$attrs.id)
       this.showContextMenu = false
@@ -114,17 +93,17 @@ v-on:dragleave="objHover = false"
 v-on:click.prevent="onClick"
 v-on:contextmenu.prevent="onRightClick"
 
-v-bind:style="styleObj"
+v-bind:style="objStyle"
 v-bind:class="{variable:true, selected:selected, objHover:objHover}">
-  <p>{{name}}</p>
-  <p>=</p>
-  <p v-on:click="changeValue">{{value}}</p>
+  <span>{{name}}</span>
+  <span>=</span>
+  <span v-on:click="changeValue">{{value}}</span>
   <ol v-on:contextmenu.prevent="0"
   v-bind:class="{menu: true}"
   v-show="showContextMenu && selected"
   v-bind:style="contextMenuStyle">
-    <li v-on:click="changeName" v-bind:class="{menu: true}">Rename</li>
-    <li v-on:click="deleteVariable" v-bind:class="{menu: true}">Delete</li>
+    <li v-on:click="edit" v-bind:class="{menu: true}">Edit</li>
+    <li v-on:click="deleteObject" v-bind:class="{menu: true}">Delete</li>
   </ol>
 </div>`,
 })

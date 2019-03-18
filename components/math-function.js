@@ -1,25 +1,17 @@
 Vue.component("math-function", {
+  mixins: [mixin_moveable],
   props: {
     initData: Object,
     selected: Boolean
   },
   data: function () {
     return {
-      // the default function name
-      // used as a referrence for other functions
       name: "f",
-      expression: "x + 1",
+      expression: "",
       latex: 'x+1',
       mathq: '',
       
       // styling and misc data
-      styleObj: {
-        'position': 'absolute',
-        'left': '0px',
-        'top': '0px',
-        'display': 'flex',
-        'flex-direction': 'row'
-      },
       showContextMenu: false,
       contextMenuStyle : {
         'position': 'absolute',
@@ -27,9 +19,6 @@ Vue.component("math-function", {
         'left': '0px',
         'top': '0px',
       },
-      // For moving around on the scene
-      dragOffsetX: 0,
-      dragOffsetY: 0,
     }
   },
   created: function () {
@@ -37,8 +26,6 @@ Vue.component("math-function", {
       //console.log(this.initData);
       this.name = this.initData.name
       this.latex = this.initData.latex
-      this.styleObj.left = this.initData.position[0]
-      this.styleObj.top = this.initData.position[1]
     }
   },
   mounted () {
@@ -52,7 +39,19 @@ Vue.component("math-function", {
     this.mathq.latex(this.latex)
   },
   methods: {
-    renameFunction: function () {
+    save: function () {
+      return {
+        "name": this.name,
+        "latex": this.latex,
+        "position": [this.objStyle.left, this.objStyle.top],
+        "type": 'math-function',
+        "id": this.$attrs.id
+      }
+    },
+    deleteObject: function () {
+      this.$root.deleteObjByID(this.$attrs.id)
+    },
+    edit: function () {
       if (this.selected) {
         let newName = prompt("what would you like to change the name to?", this.name)
         if (newName && this.name != newName) {
@@ -61,16 +60,6 @@ Vue.component("math-function", {
         } 
       } else {
         this.onClick(event)
-      }
-    },
-    toObject: function () {
-      return {
-        "name": this.name,
-        "expression": this.expression,
-        "latex": this.latex,
-        "position": [this.styleObj.left, this.styleObj.top],
-        "type": 'math-function',
-        "id": this.$attrs.id
       }
     },
     spanEdit: function () {
@@ -206,20 +195,6 @@ Vue.component("math-function", {
 
       return newString
     },
-    deleteFunction: function () {
-      this.$root.deleteObjByID(this.$attrs.id)
-    },
-    onDragEnd: function (event) {
-      let x = event.x - this.dragOffsetX
-      let y = event.y - this.dragOffsetY
-      this.styleObj.left = `${x}px`
-      this.styleObj.top = `${y}px`
-    },
-    onDragStart: function (event) {
-      this.onClick()
-      this.dragOffsetX = event.offsetX
-      this.dragOffsetY = event.offsetY
-    },
     onClick: function () {
       this.$root.selectObj(this.$attrs.id)
       this.showContextMenu = false
@@ -235,7 +210,7 @@ Vue.component("math-function", {
   template: `<div draggable="true"
 v-on:dragend="onDragEnd"
 v-on:dragstart="onDragStart"
-v-bind:style="styleObj"
+v-bind:style="objStyle"
 v-bind:class="{ function: true, selected: selected}"
 
 v-on:click.prevent="onClick"
@@ -247,23 +222,8 @@ v-on:contextmenu.prevent="onRightClick">
   v-bind:class="{menu: true}"
   v-show="showContextMenu && selected"
   v-bind:style="contextMenuStyle">
-    <li v-on:click="renameFunction" v-bind:class="{menu: true}">Rename</li>
-    <li v-on:click="deleteFunction" v-bind:class="{menu: true}">Delete</li>
+    <li v-on:click="edit" v-bind:class="{menu: true}">Edit</li>
+    <li v-on:click="deleteObject" v-bind:class="{menu: true}">Delete</li>
   </ol>
 </div>`,
 })
-
-/*
-
-    changeExpression: function () {
-      if (this.selected) {
-        let newExpression = prompt("what would you like to change the name to?", this.expression)
-        if (newExpression && this.expression != newExpression) {
-          this.expression = newExpression
-          this.$root.updateTablesWithSymbol(this.name)
-        } 
-      } else {
-        this.onClick(event)
-      }
-    },
-*/

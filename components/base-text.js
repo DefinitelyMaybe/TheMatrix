@@ -1,21 +1,12 @@
-// Add links within text or as a separate object or both.
-
 Vue.component("base-text", {
+  mixins: [mixin_moveable],
   props: {
     initData: Object,
     selected: Boolean
   },
   data: function () {
     return {
-      // some default settings
       value: '',
-
-      // styling and misc data
-      styleObj: {
-        'position': 'absolute',
-        'left': '0px',
-        'top': '0px'
-      },
       textStyle: {
         'width': "300px",
         'height': "150px"
@@ -27,8 +18,6 @@ Vue.component("base-text", {
         'left': '0px',
         'top': '0px',
       },
-      dragOffsetX: 0,
-      dragOffsetY: 0
     }
   },
   created: function () {
@@ -37,34 +26,21 @@ Vue.component("base-text", {
       this.value = this.initData.value
       this.textStyle.width = this.initData.width
       this.textStyle.height = this.initData.height
-      this.styleObj.left = this.initData.position[0]
-      this.styleObj.top = this.initData.position[1]
     }
   },
   methods: {
-    toObject: function () {
+    save: function () {
       return {
         "value": this.value,
         "width": this.textStyle.width,
         "height": this.textStyle.height,
-        "position": [this.styleObj.left, this.styleObj.top],
+        "position": [this.objStyle.left, this.objStyle.top],
         "type": 'base-text',
         "id": this.$attrs.id
       }
     },
-    deleteText: function () {
+    deleteObject: function () {
       this.$root.deleteObjByID(this.$attrs.id)
-    },
-    onDragEnd: function (event) {
-      let x = event.x - this.dragOffsetX
-      let y = event.y - this.dragOffsetY
-      this.styleObj.left = `${x}px`
-      this.styleObj.top = `${y}px`
-    },
-    onDragStart: function (event) {
-      this.onClick()
-      this.dragOffsetX = event.offsetX
-      this.dragOffsetY = event.offsetY
     },
     onClick: function () {
       this.$root.selectObj(this.$attrs.id)
@@ -93,7 +69,7 @@ Vue.component("base-text", {
   v-on:click.prevent="onClick"
   v-on:mouseup="onResizeTextBox"
   v-on:contextmenu.prevent="onRightClick"
-  v-bind:style="styleObj">
+  v-bind:style="objStyle">
   <textarea v-bind:class="{text:true, selected:selected}"
   v-model:value="value" v-bind:style="textStyle">
   </textarea>
@@ -101,7 +77,7 @@ Vue.component("base-text", {
     v-bind:class="{menu: true}"
     v-show="showContextMenu && selected"
     v-bind:style="contextMenuStyle">
-      <li v-on:click="deleteText" v-bind:class="{menu: true}">Delete</li>
+      <li v-on:click="deleteObject" v-bind:class="{menu: true}">Delete</li>
   </ol>
 </div>`,
 })

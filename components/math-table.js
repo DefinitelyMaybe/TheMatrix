@@ -1,4 +1,5 @@
 Vue.component("math-table", {
+  mixins: [mixin_moveable],
   props: {
     initData: Object,
     selected: Boolean
@@ -12,21 +13,13 @@ Vue.component("math-table", {
       outputTable: [['?'], ['?'], ['?'], ['?'], ['?']],
       
       // styling and misc data
-      styleObj: {
-        'position': 'absolute',
-        'left': '0px',
-        'top': '0px'
-      },
       showContextMenu: false,
       contextMenuStyle: {
         'position': 'absolute',
         'width': '175px', // A particular solution to an ugly looking menu
         'left': '0px',
         'top': '0px'
-      },
-      addedWidth: 0,
-      dragOffsetX: 0,
-      dragOffsetY: 0
+      }
     }
   },
   created: function () {
@@ -36,11 +29,26 @@ Vue.component("math-table", {
       this.outputHeaders = this.initData.outputHeaders
       this.inputTable = this.initData.inputTable
       this.outputTable = this.initData.outputTable
-      this.styleObj.left = this.initData.position[0]
-      this.styleObj.top = this.initData.position[1]
     }
   },
   methods: {
+    deleteObject: function () {
+      this.$root.deleteObjByID(this.$attrs.id)
+    },
+    save: function () {
+      return {
+        "inputHeaders": this.inputHeaders,
+        "inputTable": this.inputTable,
+        "outputHeaders": this.outputHeaders,
+        "outputTable": this.outputTable,
+        "position": [this.objStyle.left, this.objStyle.top],
+        "type": 'math-table',
+        "id": this.$attrs.id
+      }
+    },
+    edit: function () {
+      console.log('empty edit function called.');
+    },
     evaluateAllRows: function () {
       //console.log("Evaluating...");
       for (let i = 0; i < this.inputTable.length; i++) {
@@ -211,33 +219,6 @@ Vue.component("math-table", {
       // in all cases close the context menu
       this.showContextMenu = false
     },
-    deleteTable: function () {
-      this.$root.deleteObjByID(this.$attrs.id)
-    },
-    toObject: function () {
-      return {
-        "inputHeaders": this.inputHeaders,
-        "inputTable": this.inputTable,
-        "outputHeaders": this.outputHeaders,
-        "outputTable": this.outputTable,
-        "position": [this.styleObj.left, this.styleObj.top],
-        "type": 'math-table',
-        "id": this.$attrs.id
-      }
-    },
-    onDragEnd: function (event) {
-      let x = event.x - this.dragOffsetX
-      let y = event.y - this.dragOffsetY
-      this.styleObj.left = `${x}px`
-      this.styleObj.top = `${y}px`
-    },
-    onDragStart: function (event) {
-      //console.log("onDragStart function says...");
-      //console.log(event);
-      this.onClick()
-      this.dragOffsetX = event.offsetX
-      this.dragOffsetY = event.offsetY
-    },
     onClick: function () {
       this.$root.selectObj(this.$attrs.id)
       this.showContextMenu = false
@@ -247,7 +228,6 @@ Vue.component("math-table", {
       //console.log(event);
       this.contextMenuStyle.left = `${event.layerX}px`
       this.contextMenuStyle.top = `${event.layerY}px`
-      this.addedWidth = event.layerX
       this.showContextMenu = true
     }
   },
@@ -309,7 +289,7 @@ Vue.component("math-table", {
   v-on:click.prevent="onClick"
   v-on:contextmenu.prevent="onRightClick"
   v-bind:class="{ tableContainer: true, selected: selected}"
-  v-bind:style="styleObj">
+  v-bind:style="objStyle">
     <table v-bind:class="{ table: true}">
       <tr>
         <th v-for="(value, index) in inputHeaders"
@@ -340,14 +320,9 @@ Vue.component("math-table", {
     v-bind:class="{menu: true}"
     v-show="showContextMenu && selected"
     v-bind:style="contextMenuStyle">
-      <li v-on:click="addToTable('input')" v-bind:class="{menu:true}">Add Input Column</li>
-      <li v-on:click="addToTable('output')" v-bind:class="{menu:true}">Add Output Column</li>
-      <li v-on:click="addToTable('row')" v-bind:class="{menu:true}">Add Row</li>
+      <li v-on:click="edit" v-bind:class="{menu:true}">Edit</li>
       <li v-bind:class="{menu: false}">----------</li>
-      <li v-on:click="deleteTable" v-bind:class="{menu: true}">Delete Table</li>
-      <li v-on:click="removeFromTable('row')" v-bind:class="{menu: true}">Delete Row</li>
-      <li v-on:click="removeFromTable('inputcolumn')" v-bind:class="{menu: true}">Delete Input Column</li>
-      <li v-on:click="removeFromTable('outputcolumn')" v-bind:class="{menu: true}">Delete Output Column</li>
+      <li v-on:click="deleteObject" v-bind:class="{menu: true}">Delete</li>
     </ol>
   </div>`,
 })
