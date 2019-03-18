@@ -35,24 +35,21 @@ const TheMatrix = new Vue({
   },
   created: function () {
     // for the moment we're going to manually bring our scene ids up to speed with the loaded scene
-    let x = 0
     for (let i = 0; i < DATA_objects.length; i++) {
+      // this bypasses the need to worry about objects connecting to each other.
+      DATA_objects[i].id = this.getNewObjectID()
       this.createObj(DATA_objects[i])
-      x += 1
     }
-    this.nextID = x
-    //console.log(x);
-    //console.log(this.nextID);
   },
   methods: {
     // Organizing the scene
     getNewObjectID: function () {
       let id = this.freeObjectID.pop()
       if (id == undefined) {
-        id = this.nextID
+        id = this.nextID.toString()
         this.nextID += 1
       }
-      return id.toString()
+      return id
     },
     getObjectByID: function (id) {
       for (let i = 0; i < this.sceneObjects.length; i++) {
@@ -248,7 +245,7 @@ const TheMatrix = new Vue({
     },
     deleteObjByID: function (id) {
       let x = this.getObjectByID(id)
-      //console.log(x);
+      console.log(id);
       this.sceneObjects.splice(x[1], 1)
 
       // and we must close the context menu once the operation finishes
@@ -263,8 +260,8 @@ const TheMatrix = new Vue({
     toJSON: function () {
       let output = []
       for (let i = 0; i < this.$children.length; i++) {
-        if (this.$children[i].toObject) {
-          output.push(this.$children[i].toObject())
+        if (this.$children[i].save) {
+          output.push(this.$children[i].save())
         }
       }
       return JSON.stringify(output)
