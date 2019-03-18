@@ -54,12 +54,11 @@ Vue.component("math-function", {
       }
     },
     spanEdit: function () {
-      //console.log("span edit");
       this.latex = this.mathq.latex()
       this.expression = this.expressionFromLatex(this.latex);
       this.$root.updateTablesWithSymbol(this.name)
       this.$root.updateGraphsWithSymbol(this.name)
-      console.log(`latex: ${this.latex}\nexpression: ${this.expression}`);
+      //console.log(`latex: ${this.latex}\nexpression: ${this.expression}`);
     },
     expressionFromLatex: function (latexString) {
       function indexOfMatchingBracket(string) {
@@ -185,6 +184,29 @@ Vue.component("math-function", {
       newString = newString.replace(/\\ /g, '')
 
       return newString
+    },
+    evaluate: function (scope) {
+      if (!scope) {
+        scope = this.$root.getGlobalScope()
+      }
+      try {
+        // best case is this all works without a hitch
+        let g = math.compile(this.expression)
+        let outputValue = g.eval(scope)
+        
+        // a simple check for strange values
+        if (outputValue == "Infinity") {
+          outputValue = "?"
+        } else {
+          // formating so that the table doesn't fill up with reoccuring values
+          outputValue = math.format(outputValue, {precision: 4})
+        }
+        return outputValue
+      } catch (error) {
+        //console.log("outputValue is not undefined because...");
+        //console.warn(error);
+        return undefined
+      }
     }
   },
   template: `<div draggable="true"
