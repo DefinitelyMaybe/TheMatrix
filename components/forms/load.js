@@ -17,7 +17,7 @@ Vue.component("form-load", {
       try {
         this.data = JSON.parse(this.data)
       } catch (error) {
-        console.error(error);
+        //console.error(error);
       }
       if (this.data != "") {
         for (let i = 0; i < this.data.length; i++) {
