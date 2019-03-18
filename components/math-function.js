@@ -195,7 +195,7 @@ v-bind:class="{ function: true, selected: selected}"
 
 v-on:click.prevent="onClick"
 v-on:contextmenu.prevent="onRightClick">
-  <p>{{name}}</p>
+  <p><b>{{name}}</b></p>
   <p>:</p>
   <span ref="quillspan" v-bind:class="{functionQuill: true}"></span>
   <ol v-on:contextmenu.prevent="0"

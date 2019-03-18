@@ -74,7 +74,7 @@ v-on:contextmenu.prevent="onRightClick"
 
 v-bind:style="objStyle"
 v-bind:class="{variable:true, selected:selected, objHover:objHover}">
-  <span>{{name}}</span>
+  <span><b>{{name}}</b></span>
   <span>=</span>
   <span v-on:click="changeValue">{{value}}</span>
   <ol v-on:contextmenu.prevent="0"
