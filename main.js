@@ -270,15 +270,14 @@ const TheMatrix = new Vue({
     },
 
     // Helper functions for maths sceneObjects
-    getFunctionString: function (symbol) {
-      //console.log(symbol);
-      // the idea here is to match the symbol to a function and return the function string
-      let x = this.getAllObjectsOfType('math-function')
-      for (let i = 0; i < x.length; i++) {
-        if (x[i].name == symbol) {
-          return x[i].expression
+    getFunctionEval: function (symbol, scope) {
+      let functions = this.getAllObjectsOfType('math-function')
+      for (let i = 0; i < functions.length; i++) {
+        if (functions[i].name == symbol) {
+          return functions[i].evaluate(scope)
         }
       }
+      return undefined
     },
     updateAllTables: function () {
       let tables = this.getAllObjectsOfType("math-table")
