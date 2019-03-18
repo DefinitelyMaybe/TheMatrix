@@ -2,8 +2,8 @@
 This project is about ... doing maths (and other bits&pieces) in the browser. Progress is slow but lets keep going.
 
 ### Whats happening atm?
-Well, theres just me working on different bits and pieces that I think are the appropriate next steps.
-It changes a lot currently so I'm not detailing it much here.
+Well, theres just me working on different bits and pieces that I think are the appropriate next steps. It changes a lot.
+
 Notes:
 remove selected class?
 graph zeros
@@ -17,6 +17,7 @@ matrices
   * i.e. arrow keys to move to different entires
   * allowing functions within entries?
   * Algorithmic initialization (i.e. matrix is too big to manually type all of the entires)
+Add links within text to other objects or web links.
 
 ### Where are you going with this? Why?
 Honourable mentions to Wolframalpha and Matlab. They're part of the inspiration but only half the story. The other half is my own frustations and use of very rigid but simple calculators scattered about the internet.
