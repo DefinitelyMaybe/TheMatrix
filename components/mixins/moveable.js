@@ -22,7 +22,6 @@ mixin_moveable = {
       this.objStyle.top = `${y}px`
     },
     onDragStart: function (event) {
-      this.onClick()
       this.dragOffsetX = event.layerX
       this.dragOffsetY = event.layerY
     },
