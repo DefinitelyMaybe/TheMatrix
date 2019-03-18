@@ -106,7 +106,7 @@ Vue.component("math-graph", {
     },
     update: function () {
       this.updateTrace(this)
-      Plotly.newPlot(this.getGraphDiv, this.trace, this.layout)
+      Plotly.newPlot(this.getGraphDiv, this.trace, this.layout, this.options)
     },
     updateTrace: function (vueEl) {
       // Do not call Plotly.updateTrace() here. that would cause an infinite loop
