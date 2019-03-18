@@ -356,9 +356,3 @@ v-bind:style="styleObj">
   </ol>
 </div>`
 })
-
-/*
-window.onload = function () {
-  console.log(MathQuill);
-}
-*/
