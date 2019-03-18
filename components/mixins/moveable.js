@@ -23,8 +23,8 @@ mixin_moveable = {
     },
     onDragStart: function (event) {
       this.onClick()
-      this.dragOffsetX = event.offsetX
-      this.dragOffsetY = event.offsetY
+      this.dragOffsetX = event.layerX
+      this.dragOffsetY = event.layerY
     },
   },
 }
