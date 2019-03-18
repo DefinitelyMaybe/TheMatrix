@@ -15,7 +15,6 @@ Vue.component("form-reset", {
       if (this.confirmation) {
         this.$root.deleteAllObjects()
       }
-      this.deleteForm()
     },
     deleteForm: function () {
       this.$root.deleteObjByID(this.$attrs.id)
