@@ -204,7 +204,7 @@ const TheMatrix = new Vue({
       }
     },
     mainMenu: function (event, type) {
-      console.log(type);
+      //console.log(type);
       switch (type) {
         case "load":
         {
