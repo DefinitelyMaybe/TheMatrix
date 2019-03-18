@@ -6,7 +6,6 @@ Vue.component("math-graph", {
   },
   data: function () {
     return {
-      // some defaults
       graph: '',
       trace: [
         {
