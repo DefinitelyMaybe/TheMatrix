@@ -1,5 +1,5 @@
 Vue.component("math-table", {
-  mixins: [mixin_moveable],
+  mixins: [mixin_moveable, mixin_contextmenu],
   props: {
     initData: Object,
     selected: Boolean
@@ -11,15 +11,6 @@ Vue.component("math-table", {
       inputTable: [[1], [2], [3], [4], [5]],
       outputHeaders: ['?'],
       outputTable: [['?'], ['?'], ['?'], ['?'], ['?']],
-      
-      // styling and misc data
-      showContextMenu: false,
-      contextMenuStyle: {
-        'position': 'absolute',
-        'width': '175px', // A particular solution to an ugly looking menu
-        'left': '0px',
-        'top': '0px'
-      }
     }
   },
   created: function () {
@@ -218,17 +209,6 @@ Vue.component("math-table", {
       }
       // in all cases close the context menu
       this.showContextMenu = false
-    },
-    onClick: function () {
-      this.$root.selectObj(this.$attrs.id)
-      this.showContextMenu = false
-    },
-    onRightClick: function (event) {
-      this.$root.selectObj(this.$attrs.id)
-      //console.log(event);
-      this.contextMenuStyle.left = `${event.layerX}px`
-      this.contextMenuStyle.top = `${event.layerY}px`
-      this.showContextMenu = true
     }
   },
   computed: {
@@ -321,7 +301,6 @@ Vue.component("math-table", {
     v-show="showContextMenu && selected"
     v-bind:style="contextMenuStyle">
       <li v-on:click="edit" v-bind:class="{menu:true}">Edit</li>
-      <li v-bind:class="{menu: false}">----------</li>
       <li v-on:click="deleteObject" v-bind:class="{menu: true}">Delete</li>
     </ol>
   </div>`,

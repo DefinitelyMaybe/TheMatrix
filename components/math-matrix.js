@@ -1,21 +1,12 @@
 Vue.component("math-matrix", {
-  mixins: [mixin_moveable],
+  mixins: [mixin_moveable, mixin_contextmenu],
   props: {
     initData: Object,
     selected: Boolean
   },
   data: function () {
     return {
-      entries: [[1,0,0],[0,1,0],[0,0,1]],
-
-      // styling and misc data
-      showContextMenu: false,
-      contextMenuStyle: {
-        'position': 'absolute',
-        'width': '175px',
-        'left': '0px',
-        'top': '0px'
-      }
+      entries: [[1,0,0],[0,1,0],[0,0,1]]
     }
   },
   created: function () {
@@ -66,20 +57,7 @@ Vue.component("math-matrix", {
       } else {
         this.onClick(event)
       }
-    },
-
-    // events
-    onClick: function () {
-      this.$root.selectObj(this.$attrs.id)
-      this.showContextMenu = false
-    },
-    onRightClick: function (event) {
-      this.$root.selectObj(this.$attrs.id)
-      //console.log(event);
-      this.contextMenuStyle.left = `${event.layerX}px`
-      this.contextMenuStyle.top = `${event.layerY}px`
-      this.showContextMenu = true
-    },
+    }
   },
   template: `<div draggable="true"
 v-on:dragend="onDragEnd"

@@ -1,5 +1,5 @@
 Vue.component("math-graph", {
-  mixins: [mixin_moveable],
+  mixins: [mixin_moveable, mixin_contextmenu],
   props: {
     initData: Object,
     selected: Boolean
@@ -66,15 +66,6 @@ Vue.component("math-graph", {
         //modeBarButtonsToRemove: ['toImage', 'lasso2d', 'zoom2d'],
         //staticPlot: true, //negates editibility
         //responsive: true // window resizing
-      },
-
-      // styling and misc data
-      showContextMenu: false,
-      contextMenuStyle: {
-        'position': 'absolute',
-        'width': '175px',
-        'left': '0px',
-        'top': '0px'
       }
     }
   },
@@ -88,8 +79,11 @@ Vue.component("math-graph", {
       this.layout.yaxis.title = this.initData.yaxis
     }
   },
+  beforeMount() {
+    
+  },
   mounted() {
-    this.graph = this.$refs.graph 
+    this.graph = this.$refs.graph
     this.updateTrace(this) // What in the heck??? why does scope change for this function?
     Plotly.plot(this.graph, this.trace, this.layout, this.options);
   },
@@ -200,20 +194,6 @@ Vue.component("math-graph", {
           })
         }
       }
-    },
-
-    // events
-    onClick: function () {
-      this.$root.selectObj(this.$attrs.id)
-      this.showContextMenu = false
-    },
-    onRightClick: function (event) {
-      this.$root.selectObj(this.$attrs.id)
-      //console.log(event);
-      this.contextMenuStyle.left = `${event.layerX}px`
-      this.contextMenuStyle.top = `${event.layerY}px`
-      this.addedWidth = event.layerX
-      this.showContextMenu = true
     }
   },
   template: `<div draggable="true"

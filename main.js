@@ -1,16 +1,8 @@
-// Global Scripts
-// mathjs - http://mathjs.org/
-// plotly - https://plot.ly/javascript/
-// mathquill - http://mathquill.com/ (requires JQuery)
-// lodash - https://lodash.com/ make js great again.
-
-
-// global varibles
-// Have a look at whats in the html file and then in the data folder.
 const MQ = MathQuill.getInterface(2);
 
 const TheMatrix = new Vue({
   el: '#VueContainer',
+  mixins: [mixin_contextmenu],
   data: {    
     nextID: 0, // The next ID to be used if there are no freeobjectIDs left
     freeObjectID: [], // if an object is ever removed. its id is added here
@@ -21,17 +13,10 @@ const TheMatrix = new Vue({
     globalScope: {},
 
     // Style and misc data
-    showContextMenu: false,
     styleObj: {
       width: '100%',
       height: '100%'
-    },
-    contextMenuStyle: {
-      position: 'absolute',
-      width: '175px',
-      left: '0px',
-      top: '0px'
-    },
+    }
   },
   created: function () {
     // for the moment we're going to manually bring our scene ids up to speed with the loaded scene
@@ -64,6 +49,7 @@ const TheMatrix = new Vue({
           return this.$children[i]
         }
       }
+      return undefined
     },
     getAllObjectsOfType: function (type) {
       let x = []
@@ -76,7 +62,6 @@ const TheMatrix = new Vue({
       return x
     },
     createObj: function (options) {
-      //console.log("creating an object");
       //console.log(options);
       switch (options.type) {
         case 'math-matrix':
@@ -245,7 +230,7 @@ const TheMatrix = new Vue({
     },
     deleteObjByID: function (id) {
       let x = this.getObjectByID(id)
-      console.log(id);
+      //console.log(id);
       this.sceneObjects.splice(x[1], 1)
 
       // and we must close the context menu once the operation finishes
@@ -267,12 +252,10 @@ const TheMatrix = new Vue({
       return JSON.stringify(output)
     },
 
-    // events
+    // overwriting the contextmenu functions as this is the root.
     selectObj: function (id) {
-      // if we just selected an obj, make sure we close the context menu
+      // if we just selected an obj, make sure we close the main context menu
       this.showContextMenu = false
-      //console.log("select obj function called");
-      //console.log(id);
       this.selectedObj = id
     },
     onClick: function () {

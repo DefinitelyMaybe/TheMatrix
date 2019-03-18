@@ -1,5 +1,5 @@
 Vue.component("base-text", {
-  mixins: [mixin_moveable],
+  mixins: [mixin_moveable, mixin_contextmenu],
   props: {
     initData: Object,
     selected: Boolean
@@ -10,14 +10,7 @@ Vue.component("base-text", {
       textStyle: {
         'width': "300px",
         'height': "150px"
-      },
-      showContextMenu: false,
-      contextMenuStyle : {
-        'position': 'absolute',
-        'width': '175px',
-        'left': '0px',
-        'top': '0px',
-      },
+      }
     }
   },
   created: function () {
@@ -41,16 +34,6 @@ Vue.component("base-text", {
     },
     deleteObject: function () {
       this.$root.deleteObjByID(this.$attrs.id)
-    },
-    onClick: function () {
-      this.$root.selectObj(this.$attrs.id)
-      this.showContextMenu = false
-    },
-    onRightClick: function (event) {
-      this.$root.selectObj(this.$attrs.id)
-      this.contextMenuStyle.left = `${event.layerX}px`
-      this.contextMenuStyle.top = `${event.layerY}px`
-      this.showContextMenu = true
     },
     onResizeTextBox: function (event) {
       // check whether the text box size changed

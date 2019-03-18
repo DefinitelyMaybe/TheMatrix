@@ -1,5 +1,5 @@
 Vue.component("math-function", {
-  mixins: [mixin_moveable],
+  mixins: [mixin_moveable, mixin_contextmenu],
   props: {
     initData: Object,
     selected: Boolean
@@ -9,16 +9,7 @@ Vue.component("math-function", {
       name: "f",
       expression: "",
       latex: 'x+1',
-      mathq: '',
-      
-      // styling and misc data
-      showContextMenu: false,
-      contextMenuStyle : {
-        'position': 'absolute',
-        'width': '175px',
-        'left': '0px',
-        'top': '0px',
-      },
+      mathq: ''
     }
   },
   created: function () {
@@ -194,18 +185,7 @@ Vue.component("math-function", {
       newString = newString.replace(/\\ /g, '')
 
       return newString
-    },
-    onClick: function () {
-      this.$root.selectObj(this.$attrs.id)
-      this.showContextMenu = false
-    },
-    onRightClick: function (event) {
-      this.$root.selectObj(this.$attrs.id)
-      //console.log(event);
-      this.contextMenuStyle.left = `${event.layerX}px`
-      this.contextMenuStyle.top = `${event.layerY}px`
-      this.showContextMenu = true
-    },
+    }
   },
   template: `<div draggable="true"
 v-on:dragend="onDragEnd"
