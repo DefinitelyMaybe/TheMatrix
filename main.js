@@ -3,7 +3,7 @@ const MQ = MathQuill.getInterface(2);
 const TheMatrix = new Vue({
   el: '#VueContainer',
   mixins: [mixin_contextmenu],
-  data: {    
+  data: {
     nextID: 0, // The next ID to be used if there are no freeobjectIDs left
     freeObjectID: [], // if an object is ever removed. its id is added here
     selectedObj: '', // The id of the currently selected object
@@ -188,14 +188,13 @@ const TheMatrix = new Vue({
           break;
       }
     },
-    mainMenu: function (event, type) {
-      //console.log(type);
+    mainMenu: function (type) {
       switch (type) {
         case "load":
         {
           this.createObj({
             type: "form-load",
-            position:[`${event.x}px`, `${event.y}px`]
+            position:[`${this.contextMenuStyle.left}`, `${this.contextMenuStyle.top}`]
           })
           break;
         }
@@ -203,7 +202,7 @@ const TheMatrix = new Vue({
         {
           this.createObj({
             type: "form-save",
-            position:[`${event.x}px`, `${event.y}px`]
+            position:[`${this.contextMenuStyle.left}`, `${this.contextMenuStyle.top}`]
           })
           break;
         }
@@ -211,7 +210,7 @@ const TheMatrix = new Vue({
         {
           this.createObj({
             type: "form-reset",
-            position:[`${event.x}px`, `${event.y}px`]
+            position:[`${this.contextMenuStyle.left}`, `${this.contextMenuStyle.top}`]
           })
           break;
         }   
@@ -220,7 +219,7 @@ const TheMatrix = new Vue({
           // default case is to create an object
           this.createObj({
             type: "form-create",
-            position:[`${event.x}px`, `${event.y}px`]
+            position:[`${this.contextMenuStyle.left}`, `${this.contextMenuStyle.top}`]
           })
           break;
         }
@@ -349,10 +348,10 @@ v-bind:style="styleObj">
   v-show="showContextMenu && selectedObj == ''"
   v-bind:style="contextMenuStyle"
   v-bind:class="{menu: true}">
-    <li v-on:click="mainMenu($event, 'load')" v-bind:class="{menu: true}">Load</li>
-    <li v-on:click="mainMenu($event, 'save')" v-bind:class="{menu: true}">Save</li>
+    <li v-on:click="mainMenu('load')" v-bind:class="{menu: true}">Load</li>
+    <li v-on:click="mainMenu('save')" v-bind:class="{menu: true}">Save</li>
     <li v-on:click="mainMenu" v-bind:class="{menu: true}">Create</li>
-    <li v-on:click="mainMenu($event, 'reset')" v-bind:class="{menu: true}">Reset</li>
+    <li v-on:click="mainMenu('reset')" v-bind:class="{menu: true}">Reset</li>
   </ol>
 </div>`
 })
