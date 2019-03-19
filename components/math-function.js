@@ -149,6 +149,28 @@ Vue.component("math-function", {
         string = firstHalf + trigf + lastHalf
         return string
       }
+      function parseLogFunctions(string) {
+        // assume a base
+        let base = 'e'
+        let i = string.lastIndexOf('\\ln')
+        if (i == -1) {
+          i = string.lastIndexOf('\\log')
+          base = '10'
+          if (string.slice(i, i+2) == '_{') {
+            // in this case we've got 
+          } else {
+            // but also check it wasn't another simple base
+            base = string.slice(i+1, i+2)
+          }
+        }
+        
+        // hardcoding the length of the match
+        let firstHalf = string.slice(0, i)
+        let lastHalf = string.slice(i + 4)
+
+        string = firstHalf + `log(${innerExpression}, ${base})` + lastHalf
+        return string
+      }
       // find \left( and \right)
       let newString = latexString.replace(/\\left\(/g, '(')
       newString = newString.replace(/\\right\)/g, ')')
@@ -178,6 +200,11 @@ Vue.component("math-function", {
       // basic trig functions
       while (newString.match(/\\sin/g) != null || newString.match(/\\cos/g) != null) {
         newString = parseTrigFunctions(newString)
+      }
+
+      // logs
+      while (newString.match(/\\ln/g) != null || newString.match(/\\log/g) != null) {
+        newString = parseLogFunctions(newString)
       }
       
       // spaces
