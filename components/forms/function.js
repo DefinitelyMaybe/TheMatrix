@@ -1,4 +1,7 @@
 Vue.component("form-function", {
+  props: {
+    initData: Object,
+  },
   data: function () {
     return {
       mathq: '',
@@ -9,10 +12,9 @@ Vue.component("form-function", {
   },
   created: function () {
     if (this.initData) {
-      //console.log(this.initData);
-      this.formData = this.initData.formData
-      this.styleObj.left = this.initData.position[0]
-      this.styleObj.top = this.initData.position[1]
+      console.log("checkout the function initialized by this.");
+      this.name = this.initData.name
+      this.latex = this.initData.latex
     }
   },
   mounted () {
@@ -28,10 +30,11 @@ Vue.component("form-function", {
   methods: {
     //form specific
     finishForm: function () {
-      this.$parent.finishForm({
-        name: this.name,
-        latex: this.latex
-      })
+      let obj = Object.assign({}, this.initData)
+      obj.name = this.name
+      obj.latex = this.latex
+
+      this.$parent.finishForm(obj)
     },
     spanEdit: function () {
       this.latex = this.mathq.latex()
