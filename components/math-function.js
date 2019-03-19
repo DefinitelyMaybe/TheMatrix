@@ -194,10 +194,8 @@ Vue.component("math-function", {
         let g = math.compile(this.expression)
         let outputValue = g.eval(scope)
         
-        // a simple check for strange values
-        if (outputValue == "Infinity") {
-          outputValue = "?"
-        } else {
+        // we must check that we didn't get any weird undefined values
+        if (outputValue) {
           // formating so that the table doesn't fill up with reoccuring values
           outputValue = math.format(outputValue, {precision: 4})
         }
