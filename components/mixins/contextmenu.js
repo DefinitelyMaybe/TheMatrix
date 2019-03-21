@@ -1,4 +1,4 @@
-mixin_contextmenu = {
+const mixin_contextmenu = {
   data: function () {
     return {
       showContextMenu: false,
