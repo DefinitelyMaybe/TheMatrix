@@ -11,6 +11,7 @@ Vue.component("math-variable", {
       value: 0,
 
       objHover: false,
+      editing: false
     }
   },
   created: function () {
@@ -35,14 +36,9 @@ Vue.component("math-variable", {
     },
     edit: function () {
       if (this.selected) {
-        let x = prompt(`What would you like to rename ${this.name} to?`, this.name)
-        if (x) {
-          this.$root.removeFromGlobalScope(this.name)
-          this.name = x
-          this.$root.updateGlobalScope(x, this.value)
-        } 
+        this.editing = true
       } else {
-        this.onClick()
+        this.onClick(event)
       }
     },
     changeValue: function () {
@@ -62,6 +58,19 @@ Vue.component("math-variable", {
       } else {
         this.onClick()
       }
+    },
+
+    finishForm: function (args) {
+      this.editing = false
+      this.name = args.name
+      this.value = args.value
+    },
+    onRightClick: function () {
+      this.$root.selectObj(this.$attrs.id)
+      this.contextMenuStyle.left = `${event.layerX}px`
+      this.contextMenuStyle.top = `${event.layerY}px`
+      this.showContextMenu = true
+      this.editing = false
     }
   },
   template: `<div draggable="true"
@@ -84,5 +93,10 @@ v-bind:class="{variable:true, selected:selected, objHover:objHover}">
     <li v-on:click="edit" v-bind:class="{menu: true}">Edit</li>
     <li v-on:click="deleteObject" v-bind:class="{menu: true}">Delete</li>
   </ol>
+  <component v-bind:is="'form-variable'"
+    v-bind:class="{CreateForm:true}"
+    v-if="editing && selected"
+    v-bind:initData="{name:name,value:value}"
+    v-bind:style="{position:'absolute', left:contextMenuStyle.left, top:contextMenuStyle.top}"></component>
 </div>`,
 })

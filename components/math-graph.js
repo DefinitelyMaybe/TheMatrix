@@ -7,6 +7,7 @@ Vue.component("math-graph", {
   data: function () {
     return {
       graph: '',
+      editing: false,
       trace: [
         {
           'x': [],
@@ -199,5 +200,10 @@ Vue.component("math-graph", {
       <li v-on:click="edit" v-bind:class="{menu: true}">Edit</li>
       <li v-on:click="deleteObject" v-bind:class="{menu: true}">Delete</li>
     </ol>
+    <component v-bind:is="'form-graph'"
+      v-bind:class="{CreateForm:true}"
+      v-if="editing && selected"
+      v-bind:initData="{inputHeaders:inputHeaders,outputHeaders:outputHeaders, inputTable:inputTable, outputTable:outputTable}"
+      v-bind:style="{position:'absolute', left:contextMenuStyle.left, top:contextMenuStyle.top}"></component>
   </div>`,
 })

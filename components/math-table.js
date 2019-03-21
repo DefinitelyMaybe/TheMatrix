@@ -11,6 +11,8 @@ Vue.component("math-table", {
       inputTable: [[1], [2], [3], [4], [5]],
       outputHeaders: ['?'],
       outputTable: [['?'], ['?'], ['?'], ['?'], ['?']],
+
+      editing: false
     }
   },
   created: function () {
@@ -39,7 +41,11 @@ Vue.component("math-table", {
       }
     },
     edit: function () {
-      console.log('empty edit function called.');
+      if (this.selected) {
+        this.editing = true
+      } else {
+        this.onClick(event)
+      }
     },
     evaluateAllRows: function () {
       for (let row = 0; row < this.inputTable.length; row++) {
@@ -229,6 +235,21 @@ Vue.component("math-table", {
       }
       // in all cases close the context menu
       this.showContextMenu = false
+    },
+    finishForm: function (args) {
+      this.editing = false
+      this.inputHeaders = args.inputHeaders 
+      this.outputHeaders = args.outputHeaders
+      this.inputTable = args.inputTable
+      this.outputTable = args.outputTable
+      this.evaluateAllRows()
+    },
+    onRightClick: function () {
+      this.$root.selectObj(this.$attrs.id)
+      this.contextMenuStyle.left = `${event.layerX}px`
+      this.contextMenuStyle.top = `${event.layerY}px`
+      this.showContextMenu = true
+      this.editing = false
     }
   },
   template: `<div draggable="true"
@@ -271,5 +292,10 @@ Vue.component("math-table", {
       <li v-on:click="edit" v-bind:class="{menu:true}">Edit</li>
       <li v-on:click="deleteObject" v-bind:class="{menu: true}">Delete</li>
     </ol>
+    <component v-bind:is="'form-table'"
+      v-bind:class="{CreateForm:true}"
+      v-if="editing && selected"
+      v-bind:initData="{inputHeaders:inputHeaders,outputHeaders:outputHeaders, inputTable:inputTable, outputTable:outputTable}"
+      v-bind:style="{position:'absolute', left:contextMenuStyle.left, top:contextMenuStyle.top}"></component>
   </div>`,
 })

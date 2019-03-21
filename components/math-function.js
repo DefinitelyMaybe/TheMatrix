@@ -9,7 +9,8 @@ Vue.component("math-function", {
       name: "f",
       expression: "",
       latex: 'x+1',
-      mathq: ''
+      mathq: '',
+      editing: false
     }
   },
   created: function () {
@@ -44,11 +45,7 @@ Vue.component("math-function", {
     },
     edit: function () {
       if (this.selected) {
-        let newName = prompt("what would you like to change the name to?", this.name)
-        if (newName && this.name != newName) {
-          this.name = newName
-          this.$root.updateTablesWithSymbol(this.name)
-        } 
+        this.editing = true
       } else {
         this.onClick(event)
       }
@@ -232,6 +229,20 @@ Vue.component("math-function", {
         //console.warn(error);
         return undefined
       }
+    },
+
+    finishForm: function (args) {
+      this.editing = false
+      this.name = args.name
+      this.latex = args.latex
+      this.mathq.latex(this.latex)
+    },
+    onRightClick: function () {
+      this.$root.selectObj(this.$attrs.id)
+      this.contextMenuStyle.left = `${event.layerX}px`
+      this.contextMenuStyle.top = `${event.layerY}px`
+      this.showContextMenu = true
+      this.editing = false
     }
   },
   template: `<div draggable="true"
@@ -252,5 +263,10 @@ v-on:contextmenu.prevent="onRightClick">
     <li v-on:click="edit" v-bind:class="{menu: true}">Edit</li>
     <li v-on:click="deleteObject" v-bind:class="{menu: true}">Delete</li>
   </ol>
+  <component v-bind:is="'form-function'"
+    v-bind:class="{CreateForm:true}"
+    v-if="editing && selected"
+    v-bind:initData="{name:name,latex:latex}"
+    v-bind:style="{position:'absolute', left:contextMenuStyle.left, top:contextMenuStyle.top}"></component>
 </div>`,
 })

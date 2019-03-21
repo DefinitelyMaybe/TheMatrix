@@ -6,7 +6,8 @@ Vue.component("math-matrix", {
   },
   data: function () {
     return {
-      entries: [[1,0,0],[0,1,0],[0,0,1]]
+      entries: [[1,0,0],[0,1,0],[0,0,1]],
+      editing: false
     }
   },
   created: function () {
@@ -75,6 +76,11 @@ v-on:contextmenu.prevent="onRightClick">
     <li v-on:click="deleteObject" v-bind:class="{menu: true}">Edit</li>
     <li v-on:click="deleteObject" v-bind:class="{menu: true}">Delete</li>
   </ol>
+  <component v-bind:is="'form-function'"
+    v-bind:class="{CreateForm:true}"
+    v-if="editing && selected"
+    v-bind:initData="{name:name,latex:latex}"
+    v-bind:style="contextMenuStyle"></component>
 </div>`,
 })
 
