@@ -1,4 +1,4 @@
-Vue.component("form-create", {
+Vue.component("object-create", {
   mixins: [mixin_moveable],
   props: {
     initData: Object,

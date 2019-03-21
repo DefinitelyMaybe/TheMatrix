@@ -1,4 +1,4 @@
-Vue.component("math-table", {
+Vue.component("object-table", {
   mixins: [mixin_moveable, mixin_contextmenu],
   props: {
     initData: Object,

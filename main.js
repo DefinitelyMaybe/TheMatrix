@@ -64,7 +64,7 @@ const TheMatrix = new Vue({
     createObj: function (options) {
       //console.log(options);
       switch (options.type) {
-        case 'math-matrix':
+        case 'object-matrix':
         {
           this.sceneObjects.push({
             id: options.id || this.getNewObjectID(),
@@ -74,7 +74,7 @@ const TheMatrix = new Vue({
           })
           break;
         }
-        case 'math-function':
+        case 'object-function':
         {
           this.sceneObjects.push({
             id: options.id || this.getNewObjectID(),
@@ -85,7 +85,7 @@ const TheMatrix = new Vue({
           })
           break;
         }
-        case 'math-variable':
+        case 'object-variable':
         {
           this.sceneObjects.push({
             id: options.id || this.getNewObjectID(),
@@ -106,7 +106,7 @@ const TheMatrix = new Vue({
           }
           break;
         }
-        case 'base-text':
+        case 'object-text':
         {
           this.sceneObjects.push({
             id: options.id || this.getNewObjectID(),
@@ -118,7 +118,7 @@ const TheMatrix = new Vue({
           })
           break;
         }
-        case 'math-table':
+        case 'object-table':
         {
           this.sceneObjects.push({
             id: options.id || this.getNewObjectID(),
@@ -131,7 +131,7 @@ const TheMatrix = new Vue({
           })
           break;
         }
-        case 'math-graph':
+        case 'object-graph':
         {
           this.sceneObjects.push({
             id: options.id || this.getNewObjectID(),
@@ -146,7 +146,7 @@ const TheMatrix = new Vue({
           })
           break;
         }
-        case 'form-create':
+        case 'object-create':
         {
           this.sceneObjects.push({
             id: options.id || this.getNewObjectID(),
@@ -155,7 +155,7 @@ const TheMatrix = new Vue({
           })
           break;
         }
-        case 'form-load':
+        case 'scene-load':
         {
           this.sceneObjects.push({
             id: options.id || this.getNewObjectID(),
@@ -164,7 +164,7 @@ const TheMatrix = new Vue({
           })
           break;
         }
-        case 'form-save':
+        case 'scene-save':
         {
           this.sceneObjects.push({
             id: options.id || this.getNewObjectID(),
@@ -173,7 +173,7 @@ const TheMatrix = new Vue({
           })
           break;
         }
-        case 'form-reset':
+        case 'scene-reset':
         {
           this.sceneObjects.push({
             id: options.id || this.getNewObjectID(),
@@ -271,7 +271,7 @@ const TheMatrix = new Vue({
 
     // Helper functions for maths sceneObjects
     getFunctionEval: function (symbol, scope) {
-      let functions = this.getAllObjectsOfType('math-function')
+      let functions = this.getAllObjectsOfType('object-function')
       for (let i = 0; i < functions.length; i++) {
         if (functions[i].name == symbol) {
           return functions[i].evaluate(scope)
@@ -280,14 +280,14 @@ const TheMatrix = new Vue({
       return undefined
     },
     updateAllTables: function () {
-      let tables = this.getAllObjectsOfType("math-table")
+      let tables = this.getAllObjectsOfType("object-table")
       for (let i = 0; i < tables.length; i++) {
         tables[i].evaluateAllRows()
       }
     },
     updateTablesWithSymbol: function (symbol) {
       //console.log(`updating tables with: ${symbol}`);
-      let tables = this.getAllObjectsOfType("math-table")
+      let tables = this.getAllObjectsOfType("object-table")
       for (let i = 0; i < tables.length; i++) {
         // first does the table have the symbol
         if (tables[i].outputHeaders.includes(symbol)) {
@@ -298,7 +298,7 @@ const TheMatrix = new Vue({
     },
     updateGraphsWithSymbol: function (symbol) {
       //console.log(`updating graphs with: ${symbol}`);
-      let graphs = this.getAllObjectsOfType("math-graph")
+      let graphs = this.getAllObjectsOfType("object-graph")
       for (let i = 0; i < graphs.length; i++) {
         // first does the table have the symbol
         if (graphs[i].layout.yaxis.title == symbol || graphs[i].layout.yaxis.title.text == symbol) {
@@ -325,7 +325,7 @@ const TheMatrix = new Vue({
       return Object.assign({}, this.globalScope)
     },
     updateAllGraphs: function() {
-      let graphs = this.getAllObjectsOfType('math-graph')
+      let graphs = this.getAllObjectsOfType('object-graph')
       for (let i = 0; i < graphs.length; i++) {
         graphs[i].update()
       }

@@ -1,4 +1,4 @@
-Vue.component("math-graph", {
+Vue.component("object-graph", {
   mixins: [mixin_moveable, mixin_contextmenu],
   props: {
     initData: Object,
@@ -92,7 +92,7 @@ Vue.component("math-graph", {
         "position": [this.objStyle.left, this.objStyle.top],
         "width": this.layout.width,
         "height": this.layout.height,
-        "type": 'math-graph',
+        "type": 'object-graph',
         "id": this.$attrs.id,
         "xaxis": this.layout.xaxis.title.text,
         "yaxis": this.layout.yaxis.title.text

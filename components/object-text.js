@@ -1,4 +1,4 @@
-Vue.component("base-text", {
+Vue.component("object-text", {
   mixins: [mixin_moveable, mixin_contextmenu],
   props: {
     initData: Object,

@@ -1,4 +1,4 @@
-Vue.component("form-load", {
+Vue.component("scene-load", {
   mixins: [mixin_moveable],
   props: {
     initData: Object,

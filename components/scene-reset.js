@@ -1,4 +1,4 @@
-Vue.component("form-save", {
+Vue.component("scene-reset", {
   mixins: [mixin_moveable],
   props: {
     initData: Object,
@@ -6,16 +6,15 @@ Vue.component("form-save", {
   },
   data: function () {
     return {
-      data: ""
+      confirmation: false
     }
-  },
-  created: function () {
-    this.data = this.$root.toJSON()
   },
   methods: {
     //form specific
     finishForm: function (args) {
-      this.deleteForm()
+      if (this.confirmation) {
+        this.$root.deleteAllObjects()
+      }
     },
     deleteForm: function () {
       this.$root.deleteObjByID(this.$attrs.id)
@@ -28,10 +27,9 @@ Vue.component("form-save", {
   v-bind:class="{CreateForm:true,selected:selected}"
   v-bind:style="objStyle">
   <form onsubmit="return false">
-    <i>Everything was saved into the textbox.</i><br>
-    <textarea v-model="data" v-bind:style="{width:'300px'}"></textarea><br>
-    <i>copy, paste the textbox's contents into load.</i><br>
-    <button v-on:click="finishForm">Close</button>
+    <label for="object">Are you sure you want to reset the scene?</label>
+    <input type="checkbox" v-model="confirmation"></input><br>
+    <button v-on:click="finishForm">Finish</button>
   </form>
 </div>`,
 })

@@ -2,21 +2,21 @@ DATA_objects = [{
   "name": "z",
   "value": 5,
   "position": ["68px", "253px"],
-  "type": "math-variable",
+  "type": "object-variable",
   "id": "0"
 }, {
   "name": "f",
   "expression": "2cos(((x)/(3)))",
   "latex": "2\\cos\\left(\\frac{x}{3}\\right)",
   "position": ["50px", "64px"],
-  "type": "math-function",
+  "type": "object-function",
   "id": "1"
 }, {
   "name": "g",
   "expression": "10z^(2-x)",
   "latex": "10z^{2-x}",
   "position": ["53px", "167px"],
-  "type": "math-function",
+  "type": "object-function",
   "id": "2"
 }, {
   "inputHeaders": ["x", "y"],
@@ -36,13 +36,13 @@ DATA_objects = [{
     ["-0.1914", "0.08"]
   ],
   "position": ["214px", "55px"],
-  "type": "math-table",
+  "type": "object-table",
   "id": "3"
 }, {
   "position": ["65px", "335px"],
   "width": 700,
   "height": 500,
-  "type": "math-graph",
+  "type": "object-graph",
   "id": "4",
   "xaxis": "x",
   "yaxis": "f"
