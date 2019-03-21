@@ -1,4 +1,4 @@
-mixin_moveable = {
+const mixin_moveable = {
   data: function () {
     return {
       objStyle: {
