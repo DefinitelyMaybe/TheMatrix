@@ -1,4 +1,7 @@
 Vue.component("form-variable", {
+  props: {
+    initData: Object
+  },
   data: function () {
     return {
       name: "x",
@@ -7,10 +10,8 @@ Vue.component("form-variable", {
   },
   created: function () {
     if (this.initData) {
-      //console.log(this.initData);
-      this.formData = this.initData.formData
-      this.styleObj.left = this.initData.position[0]
-      this.styleObj.top = this.initData.position[1]
+      this.name = this.initData.name
+      this.value = this.initData.value
     }
   },
   methods: {
