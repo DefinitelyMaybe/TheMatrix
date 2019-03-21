@@ -12,7 +12,6 @@ Vue.component("form-function", {
   },
   created: function () {
     if (this.initData) {
-      console.log("checkout the function initialized by this.");
       this.name = this.initData.name
       this.latex = this.initData.latex
     }
@@ -48,7 +47,7 @@ Vue.component("form-function", {
   v-bind:class="{formQuill: true}"
   v-show="!importFunc"></span><br v-show="!importFunc">
   <label>Import latex</label>
-  <input type="checkbox" v-model="importFunc"></input><br>
+  <input type="checkbox" v-model="importFunc" v-on:click="importFunc = !importFunc"></input><br>
   <template v-if="importFunc">
     <i>paste latex into textbox</i><br>
     <textarea v-model="latex"></textarea>
