@@ -77,6 +77,7 @@ Vue.component("math-graph", {
       this.layout.xaxis.range = this.initData.xrange
       this.layout.yaxis.range = this.initData.yrange
       this.layout.yaxis.title = this.initData.yaxis
+      this.layout.xaxis.title = this.initData.xaxis
     }
   },
   mounted() {
@@ -98,10 +99,10 @@ Vue.component("math-graph", {
       }
     },
     edit: function () {
-      let func = prompt("What's the name of the new function you'd like to graph?", this.layout.yaxis.title.text)
-      if (func) {
-        this.layout.yaxis.title.text = func
-        this.update()
+      if (this.selected) {
+        this.editing = true
+      } else {
+        this.onClick(event)
       }
     },
     update: function () {
@@ -174,6 +175,25 @@ Vue.component("math-graph", {
           y: complexOutputs
         })
       }
+    },
+
+    finishForm: function (args) {
+      this.editing = false
+      //width:layout.width,height:layout.height, xrange:layout.xaxis.range, yrange:layout.yaxis.range
+      this.layout.width = args.width
+      this.layout.height = args.height
+      this.layout.xaxis.range = args.xrange
+      this.layout.yaxis.range = args.yrange
+      this.layout.yaxis.title = args.yaxis
+      this.layout.xaxis.title = args.xaxis
+      this.update()
+    },
+    onRightClick: function () {
+      this.$root.selectObj(this.$attrs.id)
+      this.contextMenuStyle.left = `${event.layerX}px`
+      this.contextMenuStyle.top = `${event.layerY}px`
+      this.showContextMenu = true
+      this.editing = false
     }
   },
   computed: {
@@ -203,7 +223,9 @@ Vue.component("math-graph", {
     <component v-bind:is="'form-graph'"
       v-bind:class="{CreateForm:true}"
       v-if="editing && selected"
-      v-bind:initData="{inputHeaders:inputHeaders,outputHeaders:outputHeaders, inputTable:inputTable, outputTable:outputTable}"
+      v-bind:initData="{width:layout.width,height:layout.height,
+        xrange:layout.xaxis.range, yrange:layout.yaxis.range,
+        yaxis:layout.yaxis.title.text, xaxis:layout.xaxis.title.text}"
       v-bind:style="{position:'absolute', left:contextMenuStyle.left, top:contextMenuStyle.top}"></component>
   </div>`,
 })
