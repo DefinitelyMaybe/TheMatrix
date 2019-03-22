@@ -42,7 +42,7 @@ const TheMatrix = new Vue({
     getObjectByID: function (id) {
       for (let i = 0; i < this.sceneObjects.length; i++) {
         if (this.sceneObjects[i].id == id) {
-          return [this.sceneObjects[i], i]
+          return this.sceneObjects[i]
         }
       }
     },
@@ -231,11 +231,13 @@ const TheMatrix = new Vue({
       this.showContextMenu = false
     },
     deleteObjByID: function (id) {
-      let x = this.getObjectByID(id)
-      //console.log(id);
-      this.sceneObjects.splice(x[1], 1)
-
-      // and we must close the context menu once the operation finishes
+      let x = 0
+      for (let i = 0; i < this.sceneObjects.length; i++) {
+        if (this.sceneObjects[i].id == id) {
+          x = i
+        }
+      }
+      this.sceneObjects.splice(x, 1)
       this.showContextMenu = false
     },
     deleteAllObjects: function () {
@@ -243,6 +245,7 @@ const TheMatrix = new Vue({
       this.sceneObjects.splice(0, this.sceneObjects.length, [])
       this.nextID = 0
       this.freeObjectID = []
+      this.editing = false
     },
     toJSON: function () {
       let output = []
@@ -254,18 +257,24 @@ const TheMatrix = new Vue({
       return JSON.stringify(output)
     },
     editObject: function (id) {
-      this.editData = this.getObjectByID(id)[0]
-      console.log("editing some object")
-      console.log(this.editData)
+      this.editData = this.getObjectByID(id)
       if (this.editing) {
-        console.log("We need to update the object");
+        // there was already an object being edited
+        this.$refs.editObject.updateForm(this.editData)
       } else {
         this.editing = true
       }
     },
     finishObjectEdit: function (args) {
-      console.log("finished editing some object");
-      console.log(args);
+      // remember where it was
+      let oldPosition = this.getObjectByID(args.id).position
+      // remove the old object
+      this.deleteObjByID(args.id)
+      // and then remake it
+      args.position = oldPosition
+      delete args.id
+
+      this.createObj(args)
       this.editing = false
     },
 
@@ -359,7 +368,7 @@ v-bind:style="styleObj">
     v-bind:is="obj.type"
     v-bind:type="obj.type"
     v-bind:selected="obj.id === selectedObj"></component>
-  <object-edit v-bind:class="{CreateForm:true}" v-if="editing" v-bind:initData="editData"></object-edit>
+  <object-edit v-bind:class="{CreateForm:true}" ref="editObject" v-if="editing" v-bind:initData="editData"></object-edit>
   <ol v-on:contextmenu.prevent="onRightClick"
   v-show="showContextMenu && selectedObj == ''"
   v-bind:style="contextMenuStyle"
