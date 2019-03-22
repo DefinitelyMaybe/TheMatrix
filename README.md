@@ -5,7 +5,6 @@ This project is about ... doing maths (and other bits&pieces) in the browser. Pr
 Well, theres just me working on different bits and pieces that I think are the appropriate next steps. It changes a lot.
 
 Notes:
-editing objects z-ordering.
 graph zeros.
 scene size vs view + object position on view
 mathfields/text
