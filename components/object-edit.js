@@ -6,34 +6,57 @@ Vue.component("object-edit", {
     },
     data: function () {
       return {
-        confirmation: false
+        id: '',
+        type: ''
       }
+    },
+    created() {
+      console.log("created called");
+      this.id = this.initData.id
+      this.type = this.initData.type
     },
     methods: {
       //form specific
       finishForm: function (args) {
-        console.log("WIP");
+        console.log("edit has finished. cleaning up");
+        this.$root.finishObjectEdit(args)
       },
-      deleteForm: function () {
-        this.$root.deleteObjByID(this.$attrs.id)
+      editForm: function () {
+        console.log("edit switch to appropriate form")
+        switch (this.type) {
+          case 'object-table':
+          {
+            //inputHeaders:inputHeaders,outputHeaders:outputHeaders, inputTable:inputTable, outputTable:outputTable
+            return 'form-table'
+          }
+          case 'object-graph':
+          {
+            /*{width:layout.width,height:layout.height,
+              xrange:layout.xaxis.range, yrange:layout.yaxis.range,
+              yaxis:layout.yaxis.title.text, xaxis:layout.xaxis.title.text}*/
+            return 'form-graph'
+          }
+          case 'object-variable':
+          {
+            // name:name,value:value
+            return 'form-variable'
+          }
+          default:
+          {
+            // name:name,latex:latex
+            return 'form-function'
+          }
+        }
       },
-      editform: function () {
-        let form = this.getObjectByID(this.selectedObj)
-        console.log("trying to find form.type to select the right form")
-        console.log(form)
-        return "object-function"
-      },
+      updateForm: function () {
+        console.log(this.initData);
+      }
     },
     template: `<div draggable="true"
     v-on:dragend="onDragEnd"
     v-on:dragstart="onDragStart"
-  
     v-bind:class="{CreateForm:true,selected:selected}"
     v-bind:style="objStyle">
-    <component v-bind:is="editform"
-        v-bind:class="{CreateForm:true}"
-        v-if="editing && selected"
-        v-bind:initData="{name:name,latex:latex}"
-        v-bind:style="{position:'absolute', left:contextMenuStyle.left, top:contextMenuStyle.top}"></component>
+    <component v-bind:is="editForm()" v-bind:initData="initData"></component>
   </div>`,
   })
