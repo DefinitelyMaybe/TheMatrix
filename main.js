@@ -9,6 +9,9 @@ const TheMatrix = new Vue({
     selectedObj: '', // The id of the currently selected object
     sceneObjects: [],
 
+    editing: false,
+    editData:{},
+
     // maths globals
     globalScope: {},
 
@@ -193,7 +196,7 @@ const TheMatrix = new Vue({
         case "load":
         {
           this.createObj({
-            type: "form-load",
+            type: "scene-load",
             position:[`${this.contextMenuStyle.left}`, `${this.contextMenuStyle.top}`]
           })
           break;
@@ -201,7 +204,7 @@ const TheMatrix = new Vue({
         case "save":
         {
           this.createObj({
-            type: "form-save",
+            type: "scene-save",
             position:[`${this.contextMenuStyle.left}`, `${this.contextMenuStyle.top}`]
           })
           break;
@@ -209,7 +212,7 @@ const TheMatrix = new Vue({
         case "reset":
         {
           this.createObj({
-            type: "form-reset",
+            type: "scene-reset",
             position:[`${this.contextMenuStyle.left}`, `${this.contextMenuStyle.top}`]
           })
           break;
@@ -218,7 +221,7 @@ const TheMatrix = new Vue({
         {
           // default case is to create an object
           this.createObj({
-            type: "form-create",
+            type: "object-create",
             position:[`${this.contextMenuStyle.left}`, `${this.contextMenuStyle.top}`]
           })
           break;
@@ -250,6 +253,21 @@ const TheMatrix = new Vue({
       }
       return JSON.stringify(output)
     },
+    editObject: function (id) {
+      this.editData = this.getObjectByID(id)[0]
+      console.log("editing some object")
+      console.log(this.editData)
+      if (this.editing) {
+        console.log("We need to update the object");
+      } else {
+        this.editing = true
+      }
+    },
+    finishObjectEdit: function (args) {
+      console.log("finished editing some object");
+      console.log(args);
+      this.editing = false
+    },
 
     // overwriting the contextmenu functions as this is the root.
     selectObj: function (id) {
@@ -258,8 +276,7 @@ const TheMatrix = new Vue({
       this.selectedObj = id
     },
     onClick: function () {
-      this.selectObj('')
-      this.showContextMenu = false
+      this.selectObj('')      
     },
     onRightClick: function (event) {
       this.selectObj('')
@@ -336,13 +353,13 @@ v-on:click.self.prevent="selectObj('')"
 v-on:contextmenu.self.prevent="onRightClick"
 v-bind:style="styleObj">
   <component v-for="(obj, key) in sceneObjects"
-  v-bind:key="obj.id"
-  v-bind:id="obj.id"
-  v-bind:initData="obj"
-  v-bind:is="obj.type"
-  v-bind:type="obj.type"
-  v-bind:selected="obj.id === selectedObj">
-  </component>
+    v-bind:key="obj.id"
+    v-bind:id="obj.id"
+    v-bind:initData="obj"
+    v-bind:is="obj.type"
+    v-bind:type="obj.type"
+    v-bind:selected="obj.id === selectedObj"></component>
+  <object-edit v-bind:class="{CreateForm:true}" v-if="editing" v-bind:initData="editData"></object-edit>
   <ol v-on:contextmenu.prevent="onRightClick"
   v-show="showContextMenu && selectedObj == ''"
   v-bind:style="contextMenuStyle"
