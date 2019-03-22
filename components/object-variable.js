@@ -40,30 +40,7 @@ Vue.component("object-variable", {
         this.onClick(event)
       }
     },
-    changeValue: function () {
-      if (this.selected) {
-        let x = prompt(`What would you like to change the value to?`, this.value)
-        if (x) {
-          let num = parseFloat(x)
-          if (num == x) {
-            this.value = num
-            this.$root.updateGlobalScope(this.name, this.value)
-          } else {
-            console.warn("Only using numbers for variables at this point");
-            this.value = '?'
-            this.$root.updateGlobalScope(this.name, this.value)
-          }
-        } 
-      } else {
-        this.onClick()
-      }
-    },
 
-    finishForm: function (args) {
-      this.editing = false
-      this.name = args.name
-      this.value = args.value
-    },
     onRightClick: function () {
       this.$root.selectObj(this.$attrs.id)
       this.contextMenuStyle.left = `${event.layerX}px`
@@ -84,7 +61,7 @@ v-bind:style="objStyle"
 v-bind:class="{variable:true, selected:selected, objHover:objHover}">
   <span><b>{{name}}</b></span>
   <span>=</span>
-  <span v-on:click="changeValue">{{value}}</span>
+  <span>{{value}}</span>
   <ol v-on:contextmenu.prevent="0"
   v-bind:class="{menu: true}"
   v-show="showContextMenu && selected"

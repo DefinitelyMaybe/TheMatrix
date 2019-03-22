@@ -230,12 +230,6 @@ Vue.component("object-function", {
       }
     },
 
-    finishForm: function (args) {
-      this.editing = false
-      this.name = args.name
-      this.latex = args.latex
-      this.mathq.latex(this.latex)
-    },
     onRightClick: function () {
       this.$root.selectObj(this.$attrs.id)
       this.contextMenuStyle.left = `${event.layerX}px`

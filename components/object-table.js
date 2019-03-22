@@ -11,8 +11,6 @@ Vue.component("object-table", {
       inputTable: [[1], [2], [3], [4], [5]],
       outputHeaders: ['?'],
       outputTable: [['?'], ['?'], ['?'], ['?'], ['?']],
-
-      editing: false
     }
   },
   created: function () {
@@ -73,177 +71,6 @@ Vue.component("object-table", {
         }
       }
     },
-    changeHeader: function (index, type) {
-      // select the table before getting tableInput from user
-      if (this.selected) {
-        switch (type) {
-          case 'input':
-            {
-              let newHeader = prompt("Change the header?", this.inputHeaders[index])
-              this.inputHeaders.splice(index, 1, newHeader)
-            }
-            break;
-          case 'output':
-            {
-              let newHeader = prompt("Change the header?", this.outputHeaders[index])
-              if (newHeader) {
-                this.outputHeaders.splice(index, 1, newHeader)
-                this.$root.updateTablesWithSymbol(newHeader) 
-              }
-            }
-            break;
-          default:
-            {
-              console.log("Default case of changeHeader method");
-            }
-            break;
-        } 
-      } else {
-        this.onClick(event)
-      }
-    },
-    changeInput: function (pos) {
-      //console.log("trying to change an input");
-      // select the table before getting input from user
-      if (this.selected) {
-        //console.log(pos);
-        let row = pos[0]
-        let col = pos[1]
-        let userInput = prompt("Change the input?", this.inputTable[row][col])
-        try {
-          let newValue = parseFloat(userInput)
-          // update the array
-          let newRow = this.inputTable[row]
-          newRow.splice(col, 1, newValue)
-          this.inputTable.splice(row, 1, newRow)
-          // this is the weirdest looking piece of code ever but...
-          // this is how you invoke the setter function of the computed property
-          this.functionsOutput = row // this throws an error
-        } catch (error) {
-          // check back here later. this output didn't seem to ever be invoked.
-          console.warn("For the moment, inputs must be numbers.");
-          console.warn(error);
-        }
-      } else {
-        this.onClick(event)
-      }
-    },
-    removeInputColumn: function (index) {
-      if (this.inputHeaders.length > 1) {
-        this.inputHeaders.splice(index, 1)
-        for (let i = 0; i < this.inputTable.length; i++) {
-          this.inputTable[i].splice(index, 1)
-        }
-      } else {
-        console.warn('Not removing column because table is too small');
-      }
-    },
-    removeOutputColumn: function (index) {
-      if (this.outputHeaders.length > 1) {
-        this.outputHeaders.splice(index, 1)
-        for (let i = 0; i < this.outputTable.length; i++) {
-          this.outputTable[i].splice(index, 1)
-        } 
-      } else {
-        console.warn('Not removing column because table is too small');
-      }
-    },
-    addToTable: function (arg) {
-      switch (arg) {
-        case 'input':
-          {
-            // get the data for the currently selected table
-            this.inputHeaders.push('x')
-            // then we'll add in some default values to the table
-            for (let i = 0; i < this.inputTable.length; i++) {
-              this.inputTable[i].push(i);
-            }
-          }
-          break;
-        case 'output':
-          {
-            this.outputHeaders.push('?')
-            // then we'll add in some default values to the table
-            for (let i = 0; i < this.inputTable.length; i++) {
-              this.outputTable[i].push("?");
-            }
-          }
-          break;
-        case 'row':
-          {
-            console.log("Add row to tables");
-          }
-          break;
-        default:
-          break;
-      }
-      // in all cases close the context menu
-      this.showContextMenu = false
-    },
-    removeFromTable: function (arg) {
-      switch (arg) {
-        case 'row':
-          {
-            //console.log("Remove row from table");
-            let rowX = prompt("Which row would you like to delete", '1')
-            if (rowX) {
-              try {
-                let intX = parseInt(rowX)
-                if (intX == rowX) {
-                  intX -= 1 // someone would say delete the 1st row,
-                  // not delete the 0th row. A small difference between maths and programming
-                  if (this.inputTable.length > 1) {
-                    this.inputTable.splice(intX, 1)
-                    this.outputTable.splice(intX, 1)
-                  } else {
-                    console.warn('Not removing row because table is too small');
-                  }
-                }
-              } catch (error) {
-                console.warn("Could parseInt because...");
-                console.warn(error);
-              }
-            }
-          }
-          break;
-        case 'inputcolumn':
-          {
-            //console.log("Remove column from table");
-            let colX = prompt("What number column would you like to delete", '1')
-            if (colX) {
-              let intX = parseInt(colX)
-              if (intX == colX) {
-                this.removeInputColumn(intX - 1)
-              }
-            }
-          }
-          break;
-        case 'outputcolumn':
-          {
-            //console.log("Remove column from table");
-            let colX = prompt("What number column would you like to delete", '1')
-            if (colX) {
-              let intX = parseInt(colX)
-              if (intX == colX) {
-                this.removeOutputColumn(intX - 1)
-              }
-            }
-          }
-          break;
-        default:
-          break;
-      }
-      // in all cases close the context menu
-      this.showContextMenu = false
-    },
-    finishForm: function (args) {
-      this.editing = false
-      this.inputHeaders = args.inputHeaders 
-      this.outputHeaders = args.outputHeaders
-      this.inputTable = args.inputTable
-      this.outputTable = args.outputTable
-      this.evaluateAllRows()
-    },
     onRightClick: function () {
       this.$root.selectObj(this.$attrs.id)
       this.contextMenuStyle.left = `${event.layerX}px`
@@ -268,8 +95,7 @@ Vue.component("object-table", {
       <tr v-for="(value, row) in inputTable"
       v-bind:key="row">
         <td v-for="(item, col) in value"
-        v-bind:key="col"
-        v-on:click="changeInput([row, col])">{{item}}</td>
+        v-bind:key="col">{{item}}</td>
       </tr>
     </table>
     <p>:</p>

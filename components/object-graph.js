@@ -176,17 +176,6 @@ Vue.component("object-graph", {
       }
     },
 
-    finishForm: function (args) {
-      this.editing = false
-      //width:layout.width,height:layout.height, xrange:layout.xaxis.range, yrange:layout.yaxis.range
-      this.layout.width = args.width
-      this.layout.height = args.height
-      this.layout.xaxis.range = args.xrange
-      this.layout.yaxis.range = args.yrange
-      this.layout.yaxis.title = args.yaxis
-      this.layout.xaxis.title = args.xaxis
-      this.update()
-    },
     onRightClick: function () {
       this.$root.selectObj(this.$attrs.id)
       this.contextMenuStyle.left = `${event.layerX}px`
