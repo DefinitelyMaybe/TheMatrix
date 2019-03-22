@@ -7,49 +7,46 @@ Vue.component("object-edit", {
     data: function () {
       return {
         id: '',
-        type: ''
+        type: '',
+        objData: {}
       }
     },
     created() {
-      console.log("created called");
       this.id = this.initData.id
       this.type = this.initData.type
+      this.objData = this.initData
     },
     methods: {
       //form specific
       finishForm: function (args) {
-        console.log("edit has finished. cleaning up");
+        args.id = this.id
+        args.type = this.type
         this.$root.finishObjectEdit(args)
       },
       editForm: function () {
-        console.log("edit switch to appropriate form")
         switch (this.type) {
           case 'object-table':
           {
-            //inputHeaders:inputHeaders,outputHeaders:outputHeaders, inputTable:inputTable, outputTable:outputTable
             return 'form-table'
           }
           case 'object-graph':
           {
-            /*{width:layout.width,height:layout.height,
-              xrange:layout.xaxis.range, yrange:layout.yaxis.range,
-              yaxis:layout.yaxis.title.text, xaxis:layout.xaxis.title.text}*/
             return 'form-graph'
           }
           case 'object-variable':
           {
-            // name:name,value:value
             return 'form-variable'
           }
           default:
           {
-            // name:name,latex:latex
             return 'form-function'
           }
         }
       },
-      updateForm: function () {
-        console.log(this.initData);
+      updateForm: function (arg) {
+        this.objData = arg
+        this.id = arg.id
+        this.type = arg.type
       }
     },
     template: `<div draggable="true"
@@ -57,6 +54,6 @@ Vue.component("object-edit", {
     v-on:dragstart="onDragStart"
     v-bind:class="{CreateForm:true,selected:selected}"
     v-bind:style="objStyle">
-    <component v-bind:is="editForm()" v-bind:initData="initData"></component>
+    <component v-bind:is="editForm()" v-bind:initData="objData"></component>
   </div>`,
   })
