@@ -6,8 +6,7 @@ Vue.component("object-matrix", {
   },
   data: function () {
     return {
-      entries: [[1,0,0],[0,1,0],[0,0,1]],
-      editing: false
+      entries: [[1,0,0],[0,1,0],[0,0,1]]
     }
   },
   created: function () {

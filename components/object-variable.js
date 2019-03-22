@@ -10,8 +10,7 @@ Vue.component("object-variable", {
       name: 'x',
       value: 0,
 
-      objHover: false,
-      editing: false
+      objHover: false
     }
   },
   created: function () {
@@ -36,7 +35,7 @@ Vue.component("object-variable", {
     },
     edit: function () {
       if (this.selected) {
-        this.editing = true
+        this.$root.editObject(this.$attrs.id)
       } else {
         this.onClick(event)
       }
@@ -93,10 +92,5 @@ v-bind:class="{variable:true, selected:selected, objHover:objHover}">
     <li v-on:click="edit" v-bind:class="{menu: true}">Edit</li>
     <li v-on:click="deleteObject" v-bind:class="{menu: true}">Delete</li>
   </ol>
-  <component v-bind:is="'form-variable'"
-    v-bind:class="{CreateForm:true}"
-    v-if="editing && selected"
-    v-bind:initData="{name:name,value:value}"
-    v-bind:style="{position:'absolute', left:contextMenuStyle.left, top:contextMenuStyle.top}"></component>
 </div>`,
 })

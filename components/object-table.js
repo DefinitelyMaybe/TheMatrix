@@ -42,7 +42,7 @@ Vue.component("object-table", {
     },
     edit: function () {
       if (this.selected) {
-        this.editing = true
+        this.$root.editObject(this.$attrs.id)
       } else {
         this.onClick(event)
       }
@@ -292,10 +292,5 @@ Vue.component("object-table", {
       <li v-on:click="edit" v-bind:class="{menu:true}">Edit</li>
       <li v-on:click="deleteObject" v-bind:class="{menu: true}">Delete</li>
     </ol>
-    <component v-bind:is="'form-table'"
-      v-bind:class="{CreateForm:true}"
-      v-if="editing && selected"
-      v-bind:initData="{inputHeaders:inputHeaders,outputHeaders:outputHeaders, inputTable:inputTable, outputTable:outputTable}"
-      v-bind:style="{position:'absolute', left:contextMenuStyle.left, top:contextMenuStyle.top}"></component>
   </div>`,
 })

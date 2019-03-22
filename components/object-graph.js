@@ -7,7 +7,6 @@ Vue.component("object-graph", {
   data: function () {
     return {
       graph: '',
-      editing: false,
       trace: [
         {
           'x': [],
@@ -100,7 +99,7 @@ Vue.component("object-graph", {
     },
     edit: function () {
       if (this.selected) {
-        this.editing = true
+        this.$root.editObject(this.$attrs.id)
       } else {
         this.onClick(event)
       }
@@ -220,12 +219,5 @@ Vue.component("object-graph", {
       <li v-on:click="edit" v-bind:class="{menu: true}">Edit</li>
       <li v-on:click="deleteObject" v-bind:class="{menu: true}">Delete</li>
     </ol>
-    <component v-bind:is="'form-graph'"
-      v-bind:class="{CreateForm:true}"
-      v-if="editing && selected"
-      v-bind:initData="{width:layout.width,height:layout.height,
-        xrange:layout.xaxis.range, yrange:layout.yaxis.range,
-        yaxis:layout.yaxis.title.text, xaxis:layout.xaxis.title.text}"
-      v-bind:style="{position:'absolute', left:contextMenuStyle.left, top:contextMenuStyle.top}"></component>
   </div>`,
 })

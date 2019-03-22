@@ -10,7 +10,6 @@ Vue.component("object-function", {
       expression: "",
       latex: 'x+1',
       mathq: '',
-      editing: false
     }
   },
   created: function () {
@@ -45,7 +44,7 @@ Vue.component("object-function", {
     },
     edit: function () {
       if (this.selected) {
-        this.editing = true
+        this.$root.editObject(this.$attrs.id)
       } else {
         this.onClick(event)
       }
@@ -263,10 +262,5 @@ v-on:contextmenu.prevent="onRightClick">
     <li v-on:click="edit" v-bind:class="{menu: true}">Edit</li>
     <li v-on:click="deleteObject" v-bind:class="{menu: true}">Delete</li>
   </ol>
-  <component v-bind:is="'form-function'"
-    v-bind:class="{CreateForm:true}"
-    v-if="editing && selected"
-    v-bind:initData="{name:name,latex:latex}"
-    v-bind:style="{position:'absolute', left:contextMenuStyle.left, top:contextMenuStyle.top}"></component>
 </div>`,
 })
