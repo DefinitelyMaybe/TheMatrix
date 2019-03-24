@@ -10,7 +10,7 @@ Vue.component("form-table", {
       inputCount: 1,
       inputHeaders: ["x"],
       outputCount: 1,
-      outputNames: ["f"],
+      outputHeaders: ["f"],
 
       rowCount: 5,
       colStep: [1],
@@ -23,6 +23,10 @@ Vue.component("form-table", {
       //console.log(this.initData);
       this.outputCount = this.initData.outputHeaders.length
       this.outputHeaders = this.initData.outputHeaders
+      this.inputCount = this.initData.inputHeaders.length
+      this.inputHeaders = this.initData.inputHeaders
+
+      this.rowCount = this.initData.inputTable.length
     }
   },
   methods: {
@@ -48,14 +52,13 @@ Vue.component("form-table", {
       }
       this.inputTable = newTable
       this.inputHeaders = newTableHeader
-      console.log(this);
     },
     finishForm: function () {
       this.recomputeTables()
       this.$parent.finishForm({
         inputHeaders: this.inputHeaders,
         inputTable: this.inputTable,
-        outputHeaders: this.outputNames,
+        outputHeaders: this.outputHeaders,
         outputTable: this.outputTable,
       })
     }
@@ -79,8 +82,8 @@ Vue.component("form-table", {
     <input type="number" v-model="outputCount"></input><br>
     
     <label>Name the variables:</label><br>
-    <template v-for="(item, index) in outputNames">
-      <input type="text" v-model="outputNames[index]" v-bind:key="index"></input><br>
+    <template v-for="(item, index) in outputHeaders">
+      <input type="text" v-model="outputHeaders[index]" v-bind:key="index"></input><br>
     </template>
   <button v-on:click="finishForm">Finish</button>
 </form>`,
