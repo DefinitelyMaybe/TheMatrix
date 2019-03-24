@@ -6,35 +6,57 @@ Vue.component("form-table", {
     return {
       importData: false,
       importedData: "",
-      inputVarCount: 1,
-      inputNames: ["x"],
-      outputFuncCount: 1,
+
+      inputCount: 1,
+      inputHeaders: ["x"],
+      outputCount: 1,
       outputNames: ["f"],
 
       rowCount: 5,
-      varStep: [1],
-      inputRanges: [[1], [2], [3], [4], [5]],
-      outputValues: [["?"], ["?"], ["?"], ["?"], ["?"]],
+      colStep: [1],
+      inputTable: [],
+      outputTable: [],
     }
   },
   created: function () {
     if (this.initData) {
-      console.log(this.initData);
-      this.outputFuncCount = this.initData.outputHeaders.length
+      //console.log(this.initData);
+      this.outputCount = this.initData.outputHeaders.length
       this.outputHeaders = this.initData.outputHeaders
     }
   },
   methods: {
     recomputeTables: function () {
-      
+      // first
+      let newTable = []
+      let newTableHeader = []
+      for (let col = 0; col < this.inputCount; col++) {
+        // the following line may not be needed later on
+        newTableHeader.push('x')
+        // get the starting value
+        let x = 1
+        // get the step value
+        let step = 1
+        for (let row = 0; row < this.rowCount; row++) {
+          // make sure the tables is setup for inserts
+          if (col == 0) {
+            newTable.push([])
+          }
+          newTable[row][col] = x
+          x += step
+        }
+      }
+      this.inputTable = newTable
+      this.inputHeaders = newTableHeader
+      console.log(this);
     },
     finishForm: function () {
       this.recomputeTables()
       this.$parent.finishForm({
-        inputHeaders: this.inputNames,
-        inputTable: this.inputRanges,
+        inputHeaders: this.inputHeaders,
+        inputTable: this.inputTable,
         outputHeaders: this.outputNames,
-        outputTable: this.outputValues,
+        outputTable: this.outputTable,
       })
     }
   },
@@ -48,13 +70,13 @@ Vue.component("form-table", {
   </template>
   <template v-if="!importData">
     <label>How many input variables would you like:</label>
-    <input type="number" v-model="inputVarCount"></input><br>
+    <input type="number" v-model="inputCount"></input><br>
     <label>How many rows:</label>
     <input type="number" v-model="rowCount"></input><br>
   </template>
   <span><b>Outputs:</b></span><br>
   <label>How many output functions would you like:</label>
-    <input type="number" v-model="outputFuncCount"></input><br>
+    <input type="number" v-model="outputCount"></input><br>
     
     <label>Name the variables:</label><br>
     <template v-for="(item, index) in outputNames">
