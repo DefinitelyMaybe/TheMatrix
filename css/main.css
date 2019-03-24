@@ -85,6 +85,8 @@ li.menu:hover {
   font-size: 17px;
   border: none;
   resize: none;
+  padding: 2px;
+  background: white;
   border: 1px dashed black;
   cursor: pointer;
 }
