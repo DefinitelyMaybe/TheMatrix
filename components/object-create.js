@@ -31,47 +31,57 @@ Vue.component("object-create", {
       //console.log(args);
       switch (this.type) {
         case 'Variable':
+        {
           this.$root.createObj({
-            type: "math-variable",
+            type: "object-variable",
             position: [this.objStyle.left, this.objStyle.top],
             value: args.value
           })
           break
+        }
         case 'Graph':
+        {
           this.$root.createObj({
-            type: "math-graph",
+            type: "object-graph",
             position: [this.objStyle.left, this.objStyle.top],
             xaxis: args.xaxis,
             yaxis: args.yaxis,
             xrange: args.xrange,
-            yrange: args.yrange,
+            yrange: args.yrange
           })
           break
+        }
         case 'Table':
+        { 
           this.$root.createObj({
-            type: "math-table",
+            type: "object-table",
             position: [this.objStyle.left, this.objStyle.top],
-            inputHeaders: this.inputHeaders,
-            inputTable: this.inputTable,
-            outputHeaders: this.outputHeaders,
-            outputTable: this.outputTable
+            inputHeaders: args.inputHeaders,
+            inputTable: args.inputTable,
+            outputHeaders: args.outputHeaders,
+            outputTable: args.outputTable
           })
           break
+        }
         case 'Text':
+        { 
           this.$root.createObj({
-            type: "base-text",
+            type: "object-text",
             position: [this.objStyle.left, this.objStyle.top],
           })
           break
+        }
         default:
+        {
           // default case is Function
           this.$root.createObj({
-            type: 'math-function',
+            type: 'object-function',
             position: [this.objStyle.left, this.objStyle.top],
             name: args.name,
             latex: args.latex
           })
           break
+        }
       }
       this.deleteForm()
     },
