@@ -42,16 +42,14 @@ Vue.component("form-function", {
   template: `<form onsubmit="return false">
   <label>Name:</label>
   <input type="text" v-model="name"></input><br>
-  <label v-show="!importFunc">Function:</label>
-  <span ref="quillspan"
-  v-bind:class="{formQuill: true}"
-  v-show="!importFunc"></span><br v-show="!importFunc">
   <label>Import latex</label>
   <input type="checkbox" v-model="importFunc" v-on:click="importFunc = !importFunc"></input><br>
   <template v-if="importFunc">
     <i>paste latex into textbox</i><br>
     <textarea v-model="latex"></textarea>
-  </template><br>
+  </template>
+  <label v-show="!importFunc">Function:</label>
+  <span ref="quillspan" v-show="!importFunc" v-bind:class="{formQuill: true}"></span><br v-show="!importFunc">
   <button v-on:click="finishForm">Finish</button>
 </form>`,
 })
