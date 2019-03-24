@@ -12,6 +12,7 @@ Vue.component("form-table", {
       outputCount: 1,
       outputHeaders: ["f"],
 
+      initValues: [0],
       rowCount: 5,
       colStep: [1],
       inputTable: [],
@@ -25,8 +26,21 @@ Vue.component("form-table", {
       this.outputHeaders = this.initData.outputHeaders
       this.inputCount = this.initData.inputHeaders.length
       this.inputHeaders = this.initData.inputHeaders
+      this.inputTable = this.initData.inputTable
 
+      this.initValues = this.initData.inputTable[0]
       this.rowCount = this.initData.inputTable.length
+      try {
+        for (let i = 0; i < this.inputHeaders.length; i++) {
+          this.colStep.push(parseFloat(this.inputTable[1][i]) - parseFloat(this.inputTable[0][i]))
+        }
+      } catch (error) {
+        console.error(error);
+        this.colStep = []
+        for (let i = 0; i < this.inputHeaders.length; i++) {
+          this.colStep.push(1)
+        }
+      }
     }
   },
   methods: {
@@ -36,18 +50,18 @@ Vue.component("form-table", {
       let newTableHeader = []
       for (let col = 0; col < this.inputCount; col++) {
         // the following line may not be needed later on
-        newTableHeader.push('x')
+        newTableHeader.push(this.inputHeaders[col])
         // get the starting value
-        let x = 1
+        let x = parseFloat(this.initValues[col])
         // get the step value
-        let step = 1
+        let step = this.colStep[col]
         for (let row = 0; row < this.rowCount; row++) {
           // make sure the tables is setup for inserts
           if (col == 0) {
             newTable.push([])
           }
-          newTable[row][col] = x
-          x += step
+          newTable[row][col] = math.format(x, {precision: 4})
+          x += parseFloat(step)
         }
       }
       this.inputTable = newTable
@@ -61,6 +75,30 @@ Vue.component("form-table", {
         outputHeaders: this.outputHeaders,
         outputTable: this.outputTable,
       })
+    },
+    addVariable: function () {
+      this.inputHeaders.push('x')
+      this.initValues.push(1)
+      this.colStep.push(1)
+      this.inputCount += 1
+    },
+    removeVariable: function () {
+      if (this.inputHeaders.length >= 2) {
+        this.inputHeaders.splice(-1, 1)
+        this.initValues.splice(-1,1)
+        this.colStep.splice(-1, 1)
+        this.inputCount -= 1
+      }
+    },
+    addFunction: function () {
+      this.outputCount += 1
+      this.outputHeaders.push('f')
+    },
+    removeFunction: function () {
+      if (this.outputCount >= 2) {
+        this.outputCount -= 1
+        this.outputHeaders.splice(-1, 1)
+      }
     }
   },
   template: `<form onsubmit="return false">
@@ -72,19 +110,25 @@ Vue.component("form-table", {
     <textarea v-model="importedData"></textarea><br>
   </template>
   <template v-if="!importData">
-    <label>How many input variables would you like:</label>
-    <input type="number" v-model="inputCount"></input><br>
     <label>How many rows:</label>
     <input type="number" v-model="rowCount"></input><br>
+    <button type="button" v-on:click="addVariable">Add</button><button type="button" v-on:click="removeVariable">Remove</button><br>
+    <template v-for="(item, index) in inputHeaders">
+      <label>Variable:</label>
+      <input type="text" v-model="inputHeaders[index]"></input><br>
+      <label>Start:</label>
+      <input type="number" v-model="initValues[index]"></input><br>
+      <label>Step:</label>
+      <input type="number" v-model="colStep[index]"></input><br>
+    </template>
   </template>
   <span><b>Outputs:</b></span><br>
-  <label>How many output functions would you like:</label>
-    <input type="number" v-model="outputCount"></input><br>
+  <button type="button" v-on:click="addFunction">Add</button><button type="button" v-on:click="removeFunction">Remove</button><br>
     
-    <label>Name the variables:</label><br>
-    <template v-for="(item, index) in outputHeaders">
-      <input type="text" v-model="outputHeaders[index]" v-bind:key="index"></input><br>
-    </template>
+  <label>Name the variables:</label><br>
+  <template v-for="(item, index) in outputHeaders">
+    <input type="text" v-model="outputHeaders[index]"></input><br>
+  </template>
   <button v-on:click="finishForm">Finish</button>
 </form>`,
 })
