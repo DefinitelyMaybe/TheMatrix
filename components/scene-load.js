@@ -14,17 +14,17 @@ Vue.component("scene-load", {
   methods: {
     //form specific
     finishForm: function () {
+      this.deleteForm()
       try {
         this.data = JSON.parse(this.data)
+        if (this.data != "") {
+          for (let i = 0; i < this.data.length; i++) {
+            this.$root.createObj(this.data[i])
+          }
+        }
       } catch (error) {
         //console.error(error);
       }
-      if (this.data != "") {
-        for (let i = 0; i < this.data.length; i++) {
-          this.$root.createObj(this.data[i])
-        }
-      }
-      this.deleteForm()
     },
     deleteForm: function () {
       this.$root.deleteObjByID(this.$attrs.id)
