@@ -22,7 +22,7 @@ Vue.component("object-matrix", {
       return {
         "entries": this.entries,
         "position": [this.styleObj.left, this.styleObj.top],
-        "type": 'math-matrix',
+        "type": 'object-matrix',
         "id": this.$attrs.id
       }
     },

@@ -34,7 +34,7 @@ Vue.component("object-table", {
         "outputHeaders": this.outputHeaders,
         "outputTable": this.outputTable,
         "position": [this.objStyle.left, this.objStyle.top],
-        "type": 'math-table',
+        "type": 'object-table',
         "id": this.$attrs.id
       }
     },

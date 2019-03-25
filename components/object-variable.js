@@ -26,7 +26,7 @@ Vue.component("object-variable", {
         "name": this.name,
         "value": this.value,
         "position": [this.objStyle.left, this.objStyle.top],
-        "type": 'math-variable',
+        "type": 'object-variable',
         "id": this.$attrs.id
       }
     },

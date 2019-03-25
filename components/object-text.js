@@ -28,7 +28,7 @@ Vue.component("object-text", {
         "width": this.textStyle.width,
         "height": this.textStyle.height,
         "position": [this.objStyle.left, this.objStyle.top],
-        "type": 'base-text',
+        "type": 'object-text',
         "id": this.$attrs.id
       }
     },

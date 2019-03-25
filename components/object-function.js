@@ -35,7 +35,7 @@ Vue.component("object-function", {
         "name": this.name,
         "latex": this.latex,
         "position": [this.objStyle.left, this.objStyle.top],
-        "type": 'math-function',
+        "type": 'object-function',
         "id": this.$attrs.id
       }
     },
@@ -177,6 +177,9 @@ Vue.component("object-function", {
 
       // replace any cdot's (which is multiply)
       newString = newString.replace(/\\cdot/g, '*')
+
+      // replace pi
+      newString = newString.replace(/\\pi/g, 'pi')
 
       // division requires some extra work
       while (newString.match(/\\frac{/g) != null) {
