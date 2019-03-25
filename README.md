@@ -1,5 +1,5 @@
 # Welcome
-This project is about ... doing maths (and other bits&pieces) in the browser. Progress is slow but lets keep going.
+This project is about doing maths (and other bits&pieces) in the browser. Progress is slow but lets keep going.
 
 ### Whats happening atm?
 Well, theres just me working on different bits and pieces that I think are the appropriate next steps. It changes a lot.
