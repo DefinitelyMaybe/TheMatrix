@@ -46,22 +46,6 @@ Vue.component("object-graph", {
         //linkText: "edit",
         //save button?
         //showSendToCloud: true,
-        //lanuage
-        //locale: 'fr'
-        /*modeBarButtons: [
-          // Can also do custom buttons too
-          // https://codepen.io/etpinard/pen/pLOMXR?editors=0010
-          // custom buttons look like this: 
-          [
-            {
-              name: 'click me',
-              click: function(gd) {
-                Plotly.relayout(gd, 'title', 'click number: ' + tempC++)
-              }
-            }
-          ],
-          ['autoScale2d']
-        ],*/
         //modeBarButtonsToRemove: ['toImage', 'lasso2d', 'zoom2d'],
         //staticPlot: true, //negates editibility
         //responsive: true // window resizing
@@ -94,7 +78,9 @@ Vue.component("object-graph", {
         "type": 'object-graph',
         "id": this.$attrs.id,
         "xaxis": this.layout.xaxis.title.text,
-        "yaxis": this.layout.yaxis.title.text
+        "yaxis": this.layout.yaxis.title.text,
+        "xrange": this.layout.xaxis.range,
+        "yrange": this.layout.yaxis.range
       }
     },
     edit: function () {
