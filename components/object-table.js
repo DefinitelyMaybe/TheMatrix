@@ -93,8 +93,7 @@ Vue.component("object-table", {
     <table v-bind:class="{ table: true}">
       <tr>
         <th v-for="(value, index) in inputHeaders"
-        v-bind:key="index"
-        v-on:click="changeHeader(index, 'input')">{{ value }}</th>
+        v-bind:key="index">{{ value }}</th>
       </tr>
       <tr v-for="(value, row) in inputTable"
       v-bind:key="row">
@@ -106,8 +105,7 @@ Vue.component("object-table", {
     <table v-bind:class="{ table: true}">
     <tr>
       <th v-for="(value, index) in outputHeaders"
-      v-bind:key="index"
-      v-on:click="changeHeader(index, 'output')">{{ value }}</th>
+      v-bind:key="index">{{ value }}</th>
     </tr>
     <tr v-for="(value, index) in outputTable"
     v-bind:key="index">
