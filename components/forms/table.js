@@ -30,6 +30,7 @@ Vue.component("form-table", {
 
       this.initValues = this.initData.inputTable[0]
       this.rowCount = this.initData.inputTable.length
+      this.colStep = []
       try {
         for (let i = 0; i < this.inputHeaders.length; i++) {
           this.colStep.push(parseFloat(this.inputTable[1][i]) - parseFloat(this.inputTable[0][i]))
