@@ -14,6 +14,8 @@ matrices
   * allowing functions within entries?
   * Algorithmic initialization (i.e. matrix is too big to manually type all of the entires)
 Add links within text to other objects or web links.
+Reusing components: https://vuecomponents.com/
+ * http://vue-js-toggle-button.yev.io/
 
 ### Where are you going with this? Why?
 Honourable mentions to Wolframalpha and Matlab. They're part of the inspiration but only half the story. The other half is my own frustations and use of very rigid but simple calculators scattered about the internet.
