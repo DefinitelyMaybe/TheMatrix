@@ -70,7 +70,7 @@ const TheMatrix = new Vue({
         case 'object-matrix':
         {
           this.sceneObjects.push({
-            id: options.id || this.getNewObjectID(),
+            id: this.getNewObjectID(),
             type: options.type,
             position: options.position,
             entries: options.entries
@@ -80,7 +80,7 @@ const TheMatrix = new Vue({
         case 'object-function':
         {
           this.sceneObjects.push({
-            id: options.id || this.getNewObjectID(),
+            id: this.getNewObjectID(),
             type: options.type,
             position: options.position,
             name: options.name,
@@ -91,7 +91,7 @@ const TheMatrix = new Vue({
         case 'object-variable':
         {
           this.sceneObjects.push({
-            id: options.id || this.getNewObjectID(),
+            id: this.getNewObjectID(),
             type: options.type,
             position: options.position,
             name: options.name || 'x',
@@ -112,7 +112,7 @@ const TheMatrix = new Vue({
         case 'object-text':
         {
           this.sceneObjects.push({
-            id: options.id || this.getNewObjectID(),
+            id: this.getNewObjectID(),
             type: options.type,
             position: options.position,
             width: options.width,
@@ -124,7 +124,7 @@ const TheMatrix = new Vue({
         case 'object-table':
         {
           this.sceneObjects.push({
-            id: options.id || this.getNewObjectID(),
+            id: this.getNewObjectID(),
             type: options.type,
             position: options.position,
             inputHeaders: options.inputHeaders || ['x'],
@@ -137,7 +137,7 @@ const TheMatrix = new Vue({
         case 'object-graph':
         {
           this.sceneObjects.push({
-            id: options.id || this.getNewObjectID(),
+            id: this.getNewObjectID(),
             type: options.type,
             position: options.position,
             width: options.width,
@@ -152,7 +152,7 @@ const TheMatrix = new Vue({
         case 'object-create':
         {
           this.sceneObjects.push({
-            id: options.id || this.getNewObjectID(),
+            id: this.getNewObjectID(),
             type: options.type,
             position: options.position
           })
@@ -161,7 +161,7 @@ const TheMatrix = new Vue({
         case 'scene-load':
         {
           this.sceneObjects.push({
-            id: options.id || this.getNewObjectID(),
+            id: this.getNewObjectID(),
             type: options.type,
             position: options.position
           })
@@ -170,7 +170,7 @@ const TheMatrix = new Vue({
         case 'scene-save':
         {
           this.sceneObjects.push({
-            id: options.id || this.getNewObjectID(),
+            id: this.getNewObjectID(),
             type: options.type,
             position: options.position
           })
@@ -179,7 +179,7 @@ const TheMatrix = new Vue({
         case 'scene-reset':
         {
           this.sceneObjects.push({
-            id: options.id || this.getNewObjectID(),
+            id: this.getNewObjectID(),
             type: options.type,
             position: options.position
           })
@@ -238,6 +238,7 @@ const TheMatrix = new Vue({
         }
       }
       this.sceneObjects.splice(x, 1)
+      this.freeObjectID.push(`${x}`)
       this.showContextMenu = false
     },
     deleteAllObjects: function () {
@@ -369,6 +370,12 @@ v-bind:style="styleObj">
     v-bind:type="obj.type"
     v-bind:selected="obj.id === selectedObj"></component>
   <object-edit v-bind:class="{CreateForm:true}" ref="editObject" v-if="editing" v-bind:initData="editData"></object-edit>
+  <base-menu>
+    <button>Load</button>
+    <button>Save</button>
+    <button>Create</button>
+    <button>Reset</button>
+  </base-menu>
   <ol v-on:contextmenu.prevent="onRightClick"
   v-show="showContextMenu && selectedObj == ''"
   v-bind:style="contextMenuStyle"
