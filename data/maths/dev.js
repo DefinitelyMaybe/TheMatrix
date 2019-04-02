@@ -31,6 +31,17 @@ DATA_objects = [{
     ["-0.1914", "0.08"]
   ],
   "position": ["575px", "94px"],
+  "type": "object-function-table",
+}, {
+  "headers": ["x", "y"],
+  "table": [
+    [1, 2],
+    [2, 3],
+    [3, 4],
+    [4, 5],
+    [5, 6]
+  ],
+  "position": ["700px", "100px"],
   "type": "object-table",
 }, {
   "position": ["65px", "335px"],
