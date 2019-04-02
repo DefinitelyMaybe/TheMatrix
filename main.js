@@ -12,6 +12,8 @@ const TheMatrix = new Vue({
     editing: false,
     editData:{},
 
+    dialog: false,
+
     // maths globals
     globalScope: {},
 
@@ -124,6 +126,17 @@ const TheMatrix = new Vue({
             id: this.getNewObjectID(),
             type: options.type,
             position: options.position,
+            headers: options.headers || ['x'],
+            table: options.table || [[1],[2],[3],[4],[5]]
+          })
+          break;
+        }
+        case 'object-function-table':
+        {
+          this.sceneObjects.push({
+            id: this.getNewObjectID(),
+            type: options.type,
+            position: options.position,
             inputHeaders: options.inputHeaders || ['x'],
             inputTable: options.inputTable || [[1],[2],[3],[4],[5]],
             outputHeaders: options.outputHeaders || ['?'],
@@ -189,6 +202,7 @@ const TheMatrix = new Vue({
       }
     },
     mainMenu: function (type) {
+      this.dialog = true
       switch (type) {
         case "load":
         {
@@ -304,14 +318,14 @@ const TheMatrix = new Vue({
       return undefined
     },
     updateAllTables: function () {
-      let tables = this.getAllObjectsOfType("object-table")
+      let tables = this.getAllObjectsOfType("object-function-table")
       for (let i = 0; i < tables.length; i++) {
         tables[i].evaluateAllRows()
       }
     },
     updateTablesWithSymbol: function (symbol) {
       //console.log(`updating tables with: ${symbol}`);
-      let tables = this.getAllObjectsOfType("object-table")
+      let tables = this.getAllObjectsOfType("object-function-table")
       for (let i = 0; i < tables.length; i++) {
         // first does the table have the symbol
         if (tables[i].outputHeaders.includes(symbol)) {
@@ -356,22 +370,27 @@ const TheMatrix = new Vue({
     }
   },
   template: `<div v-bind:style="styleObj">
-  <component v-for="(obj, key) in sceneObjects"
-    v-bind:key="obj.id"
-    v-bind:id="obj.id"
-    v-bind:initData="obj"
-    v-bind:is="obj.type"
-    v-bind:type="obj.type"
-    v-bind:selected="obj.id === selectedObj">
-  </component>
-  <object-edit v-bind:class="{CreateForm:true}" ref="editObject" v-if="editing" v-bind:initData="editData">
-  </object-edit>
   <main-menu>
     <button v-on:click="mainMenu('load')">Load</button>
     <button v-on:click="mainMenu('save')">Save</button>
     <button v-on:click="mainMenu">Create</button>
     <button v-on:click="mainMenu('reset')">Reset</button>
   </main-menu>
+  <main v-bind:style="styleObj" v-on:click="dialog=false">
+    <component v-for="(obj, key) in sceneObjects"
+      v-bind:key="obj.id"
+      v-bind:id="obj.id"
+      v-bind:initData="obj"
+      v-bind:is="obj.type"
+      v-bind:type="obj.type"
+      v-bind:selected="obj.id === selectedObj">
+    </component>
+    <object-edit v-bind:class="{CreateForm:true}" ref="editObject" v-if="editing" v-bind:initData="editData">
+    </object-edit>
+    <main-dialog v-bind:open="dialog">
+      hello world
+    <main-dialog>
+  </main>
 </div>`
 })
 
