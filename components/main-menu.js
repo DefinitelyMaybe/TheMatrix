@@ -1,4 +1,4 @@
-Vue.component("base-menu", {
+Vue.component("main-menu", {
   data: function () {
     return {
       isSideBarOpen: false
