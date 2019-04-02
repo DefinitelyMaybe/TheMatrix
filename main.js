@@ -22,10 +22,7 @@ const TheMatrix = new Vue({
     }
   },
   created: function () {
-    // for the moment we're going to manually bring our scene ids up to speed with the loaded scene
     for (let i = 0; i < DATA_objects.length; i++) {
-      // this bypasses the need to worry about objects connecting to each other.
-      DATA_objects[i].id = this.getNewObjectID()
       this.createObj(DATA_objects[i])
     }
   },
@@ -358,32 +355,28 @@ const TheMatrix = new Vue({
       }
     }
   },
-  template: `<div ondragover="event.preventDefault()"
-v-on:click.self.prevent="selectObj('')"
-v-on:contextmenu.self.prevent="onRightClick"
-v-bind:style="styleObj">
+  template: `<div v-bind:style="styleObj">
   <component v-for="(obj, key) in sceneObjects"
     v-bind:key="obj.id"
     v-bind:id="obj.id"
     v-bind:initData="obj"
     v-bind:is="obj.type"
     v-bind:type="obj.type"
-    v-bind:selected="obj.id === selectedObj"></component>
-  <object-edit v-bind:class="{CreateForm:true}" ref="editObject" v-if="editing" v-bind:initData="editData"></object-edit>
-  <base-menu>
-    <button>Load</button>
-    <button>Save</button>
-    <button>Create</button>
-    <button>Reset</button>
-  </base-menu>
-  <ol v-on:contextmenu.prevent="onRightClick"
-  v-show="showContextMenu && selectedObj == ''"
-  v-bind:style="contextMenuStyle"
-  v-bind:class="{menu: true}">
-    <li v-on:click="mainMenu('load')" v-bind:class="{menu: true}">Load</li>
-    <li v-on:click="mainMenu('save')" v-bind:class="{menu: true}">Save</li>
-    <li v-on:click="mainMenu" v-bind:class="{menu: true}">Create</li>
-    <li v-on:click="mainMenu('reset')" v-bind:class="{menu: true}">Reset</li>
-  </ol>
+    v-bind:selected="obj.id === selectedObj">
+  </component>
+  <object-edit v-bind:class="{CreateForm:true}" ref="editObject" v-if="editing" v-bind:initData="editData">
+  </object-edit>
+  <main-menu>
+    <button v-on:click="mainMenu('load')">Load</button>
+    <button v-on:click="mainMenu('save')">Save</button>
+    <button v-on:click="mainMenu">Create</button>
+    <button v-on:click="mainMenu('reset')">Reset</button>
+  </main-menu>
 </div>`
 })
+
+/*
+ondragover="event.preventDefault()"
+v-on:click.self.prevent="selectObj('')"
+v-on:contextmenu.self.prevent="onRightClick"
+*/
