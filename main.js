@@ -13,15 +13,17 @@ const TheMatrix = new Vue({
     editData:{},
 
     dialog: false,
+    currentDialog: "dialog-create",
 
     // maths globals
     globalScope: {},
 
     // Style and misc data
     styleObj: {
-      width: '100%',
-      height: '100%'
-    }
+      background: 'white',
+      'flex-grow': 100,
+      overflow: 'scroll',
+    },
   },
   created: function () {
     for (let i = 0; i < DATA_objects.length; i++) {
@@ -159,42 +161,6 @@ const TheMatrix = new Vue({
           })
           break;
         }
-        case 'object-create':
-        {
-          this.sceneObjects.push({
-            id: this.getNewObjectID(),
-            type: options.type,
-            position: options.position
-          })
-          break;
-        }
-        case 'scene-load':
-        {
-          this.sceneObjects.push({
-            id: this.getNewObjectID(),
-            type: options.type,
-            position: options.position
-          })
-          break;
-        }
-        case 'scene-save':
-        {
-          this.sceneObjects.push({
-            id: this.getNewObjectID(),
-            type: options.type,
-            position: options.position
-          })
-          break;
-        }
-        case 'scene-reset':
-        {
-          this.sceneObjects.push({
-            id: this.getNewObjectID(),
-            type: options.type,
-            position: options.position
-          })
-          break;
-        }
         default:
           console.warn("The default creation case hasn't created anything with:");
           console.log(options);
@@ -206,35 +172,22 @@ const TheMatrix = new Vue({
       switch (type) {
         case "load":
         {
-          this.createObj({
-            type: "scene-load",
-            position:[`${this.contextMenuStyle.left}`, `${this.contextMenuStyle.top}`]
-          })
+          this.currentDialog = "dialog-load"
           break;
         }
         case "save":
         {
-          this.createObj({
-            type: "scene-save",
-            position:[`${this.contextMenuStyle.left}`, `${this.contextMenuStyle.top}`]
-          })
+          this.currentDialog = "dialog-save"
           break;
         }
         case "reset":
         {
-          this.createObj({
-            type: "scene-reset",
-            position:[`${this.contextMenuStyle.left}`, `${this.contextMenuStyle.top}`]
-          })
+          this.currentDialog = "dialog-reset"
           break;
         }   
         default:
         {
-          // default case is to create an object
-          this.createObj({
-            type: "object-create",
-            position:[`${this.contextMenuStyle.left}`, `${this.contextMenuStyle.top}`]
-          })
+          this.currentDialog = "dialog-create"
           break;
         }
       }
@@ -369,14 +322,14 @@ const TheMatrix = new Vue({
       }
     }
   },
-  template: `<div v-bind:style="styleObj">
+  template: `<main>
   <main-menu>
     <button v-on:click="mainMenu('load')">Load</button>
     <button v-on:click="mainMenu('save')">Save</button>
     <button v-on:click="mainMenu">Create</button>
     <button v-on:click="mainMenu('reset')">Reset</button>
   </main-menu>
-  <main v-bind:style="styleObj" v-on:click="dialog=false">
+  <div v-bind:style="styleObj" v-on:click="dialog=false">
     <component v-for="(obj, key) in sceneObjects"
       v-bind:key="obj.id"
       v-bind:id="obj.id"
@@ -387,11 +340,9 @@ const TheMatrix = new Vue({
     </component>
     <object-edit v-bind:class="{CreateForm:true}" ref="editObject" v-if="editing" v-bind:initData="editData">
     </object-edit>
-    <main-dialog v-bind:open="dialog">
-      hello world
-    <main-dialog>
-  </main>
-</div>`
+  </div>
+  <main-pages></main-pages>
+</main>`
 })
 
 /*
