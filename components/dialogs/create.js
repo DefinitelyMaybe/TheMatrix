@@ -1,9 +1,5 @@
-Vue.component("object-create", {
+Vue.component("dialog-create", {
   mixins: [mixin_moveable],
-  props: {
-    initData: Object,
-    selected: Boolean
-  },
   data: function () {
     return {
       type: "Function"
@@ -84,17 +80,9 @@ Vue.component("object-create", {
         }
       }
       this.deleteForm()
-    },
-    deleteForm: function () {
-      this.$root.deleteObjByID(this.$attrs.id)
     }
   },
-  template: `<div draggable="true"
-  v-on:dragend="onDragEnd"
-  v-on:dragstart="onDragStart"
-
-  v-bind:class="{CreateForm:true,selected:selected}"
-  v-bind:style="objStyle">
+  template: `<dialog>
   <form onsubmit="return false">
     <label for="object">What would you like to create?</label>
     <select type="text" v-model="type">
@@ -108,5 +96,5 @@ Vue.component("object-create", {
       <component v-bind:is="subform(type)"></component>
     </keep-alive>
   </form>
-</div>`,
+</dialog>`,
 })
