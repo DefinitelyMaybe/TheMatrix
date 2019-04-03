@@ -16,6 +16,10 @@ matrices
 Add links within text to other objects or web links.
 Reusing components: https://vuecomponents.com/
  * http://vue-js-toggle-button.yev.io/
+Move away from tables into functions, matrices and latex
+ * Not caring about storing data
+ * Provide the translation into ascii for a coder to copy paste into their dev work.
+ * give a thing a latex equation -> get the translation
 
 ### Where are you going with this? Why?
 Honourable mentions to Wolframalpha and Matlab. They're part of the inspiration but only half the story. The other half is my own frustations and use of very rigid but simple calculators scattered about the internet.
