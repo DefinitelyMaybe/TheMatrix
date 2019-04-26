@@ -1,3 +1,7 @@
+const Vue = require('vue')
+const mixin_moveable = require("../mixins/moveable.js")
+const mixin_contextmenu = require("../mixins/contextmenu.js")
+
 Vue.component("object-text", {
   mixins: [mixin_moveable, mixin_contextmenu],
   props: {
@@ -46,7 +50,28 @@ Vue.component("object-text", {
       }
     }
   },
-  template: `<div draggable="true"
+  render: function (createElement) {
+    // code
+    return createElement('div', {
+      attrs: {
+        draggable:"true"
+      },
+      on: {
+        dragend: this.onDragEnd,
+        dragstart: this.onDragStart,
+      },
+      style: this.$data.objStyle
+    }, [
+      createElement('textarea', {
+        class: {
+          text: true,
+          selected: this.$props.selected
+        }
+      },
+      this.$data.value)
+    ])
+  }
+  /*template: `<div draggable="true"
   v-on:dragend="onDragEnd"
   v-on:dragstart="onDragStart"
   v-on:click.prevent="onClick"
@@ -62,5 +87,5 @@ Vue.component("object-text", {
     v-bind:style="contextMenuStyle">
       <li v-on:click="deleteObject" v-bind:class="{menu: true}">Delete</li>
   </ol>
-</div>`,
+</div>`,*/
 })
