@@ -53,3 +53,5 @@ DATA_objects = [{
   "xrange": [-10, 10],
   "yrange": [-10, 10]
 }]
+
+module.exports = DATA_objects
