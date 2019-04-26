@@ -2,27 +2,32 @@
 <html>
 <head>
   <meta charset="utf-8">
-  <link rel="shortcut icon" href="favicon.png" type="image/x-icon">
+  <link rel="shortcut icon" href="icons/favicon.png" type="image/x-icon">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>The Dev Space</title>
   <link rel="stylesheet" href="./css/mathquill.css">
-  <!--link rel="stylesheet" type="text/css" media="screen" href="./css/main.css">
-  <link rel="stylesheet" type="text/css" media="screen" href="./css/burgermenu.css"-->
+  <!--link rel="stylesheet" type="text/css" media="screen" href="./css/main.css"-->
   <link rel="stylesheet" type="text/css" media="screen" href="./css/min.css">
-  <script src="libs/math.js"></script>
-  <script src="libs/vue.js"></script>
-  <script src="libs/plotly.min.js"></script>
-  <script src="libs/JQuery.js"></script>
-  <script src="libs/mathquill.js"></script>
-  <script src="libs/lodash.js"></script>
-  <!--script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@1.0.0/dist/tf.min.js"></script-->
 </head>
 <body>
   <!-- The top level wrapper div-->
   <div id="VueContainer"></div>
 
+  <!-- For Vue devtools-->
+  <script src="http://localhost:8098"></script>
+  <script>
+    require("./renderer.js")
+  </script>
+
+  <!-- Global libs -->
+  <!--script src="libs/math.js"></script>
+  <script src="libs/vue.js"></script>
+  <script src="libs/plotly.min.js"></script>
+  <script src="libs/JQuery.js"></script>
+  <script src="libs/mathquill.js"></script>
+  <script src="libs/lodash.js"></script--->
+
   <!-- Global includes -->
-  <script src="./components/mixins/moveable.js"></script>
+  <!--script src="./components/mixins/moveable.js"></script>
   <script src="./components/mixins/contextmenu.js"></script>
   <script src="./components/main-menu.js"></script>
   <script src="./components/dialogs/create.js"></script>
@@ -42,13 +47,13 @@
   <script src="./components/objects/table.js"></script>
   <script src="./components/objects/table-old.js"></script>
   <script src="./components/objects/text.js"></script>
-  <script src="./components/objects/variable.js"></script>
+  <script src="./components/objects/variable.js"></script-->
 
   <!-- To make this simplier to start with, the following bits of data are held in scripts -->
   <!-- Hopefully, they can be turned back into .json files one day -->
-  <script src="./data/maths/dev.js"></script>
+  <!--script src="./data/maths/dev.js"></script-->
 
   <!-- The main scripts -->
-  <script src="main.js"></script>
+  <!--script src="main.js"></script-->
 </body>
 </html>
