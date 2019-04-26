@@ -1,4 +1,4 @@
-const mixin_contextmenu = {
+module.exports = {
   data: function () {
     return {
       showContextMenu: false,

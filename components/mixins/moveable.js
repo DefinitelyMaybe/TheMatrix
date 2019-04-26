@@ -1,4 +1,4 @@
-const mixin_moveable = {
+module.exports = {
   data: function () {
     return {
       objStyle: {
