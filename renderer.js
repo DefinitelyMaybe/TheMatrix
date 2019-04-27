@@ -2,6 +2,12 @@ const Vue = require('vue')
 const DATA_objects = require("./data/maths/dev.js")
 
 require("./components/objects/text.js")
+require("./components/objects/function.js")
+require("./components/objects/graph.js")
+require("./components/objects/matrix.js")
+require("./components/objects/table.js")
+require("./components/objects/table-old.js")
+require("./components/objects/variable.js")
 
 /*require("./libs/math.js")
 require("./libs/vue.js")
@@ -25,12 +31,6 @@ require("./components/forms/variable.js")
 require("./components/forms/graph.js")
 require("./components/forms/table.js")
 require("./components/forms/text.js")
-require("./components/objects/function.js")
-require("./components/objects/graph.js")
-require("./components/objects/matrix.js")
-require("./components/objects/table.js")
-require("./components/objects/table-old.js")
-require("./components/objects/variable.js")
 */
 
 const TheMatrix = new Vue({
@@ -359,25 +359,29 @@ const TheMatrix = new Vue({
     //A function as per normal
     //console.log(createElement);
     //console.log(this.$data);
+    sceneObjects = []
+    for (let i = 0; i < this.$data.sceneObjects.length; i++) {
+      const element = this.$data.sceneObjects[i];
+
+      // push onto the array
+      sceneObjects.push(createElement('component', {
+        key: element.key,
+        props: {
+          initData: element,
+          selected: element.id === this.$data.selectedObj
+        },
+        attrs: {
+          id: element.id
+        },
+        is: element.type,
+        type: element.type,
+      }))
+    }
     // content holder
     return createElement('main', {
       // any attributes/additions/bindings?
       class: 'test'
-    }, [
-      // scene objects
-      createElement('component', {
-        key: "0",
-        props: {
-          initData: {value:"some text", width:300,height:300},
-          selected: false
-        },
-        attrs: {
-          id: "0"
-        },
-        is: "object-text",
-        type: "object-text",
-      })
-    ])
+    }, sceneObjects)
   }
 })
 
