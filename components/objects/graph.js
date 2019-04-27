@@ -1,3 +1,7 @@
+const Vue = require('vue')
+const mixin_moveable = require('../mixins/moveable')
+const mixin_contextmenu = require('../mixins/contextmenu')
+
 Vue.component("object-graph", {
   mixins: [mixin_moveable, mixin_contextmenu],
   props: {
