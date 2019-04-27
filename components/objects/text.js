@@ -64,7 +64,6 @@ Vue.component("object-text", {
     }, [
       createElement('textarea', {
         class: {
-          text: true,
           selected: this.$props.selected
         }
       },
