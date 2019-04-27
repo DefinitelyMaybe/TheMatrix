@@ -10,8 +10,7 @@
 
 (function() {
 
-var jQuery = window.jQuery,
-  undefined,
+var jQuery = require('jquery'),
   mqCmdId = 'mathquill-command-id',
   mqBlockId = 'mathquill-block-id',
   min = Math.min,
@@ -4923,3 +4922,5 @@ for (var key in MQ1) (function(key, val) {
 }(key, MQ1[key]));
 
 }());
+
+module.exports = MathQuill.getInterface(2)
