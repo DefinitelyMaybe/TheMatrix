@@ -1,3 +1,7 @@
+const Vue = require('vue')
+const mixin_moveable = require('../mixins/moveable')
+const mixin_contextmenu = require('../mixins/contextmenu')
+
 Vue.component("object-table", {
   mixins: [mixin_moveable, mixin_contextmenu],
   props: {
@@ -32,7 +36,36 @@ Vue.component("object-table", {
       this.cursorPos.splice(0, 2, [row, col])
     }
   },
-  template: `<table draggable="true"
+  render: function (createElement) {
+    //code
+    return createElement('table', {
+      attrs: {
+        draggable:"true"
+      },
+      on: {
+        dragend: this.onDragEnd,
+        dragstart: this.onDragStart,
+      },
+      style: this.$data.objStyle
+    }, [
+      createElement('tr', this.headers.map(function (header, i) {
+        createElement('th',{
+          key: i,
+          on: {
+            //click: this.setCursorPosition(0, i)
+          }
+        }, header)
+      }))
+      /*this.table.map(function (tableRow, row) {
+        return createElement('tr', tableRow.map(function (data, col) {
+          return createElement('td', {
+            
+          })
+        }))
+      })*/
+    ])
+  }
+  /*template: `<table draggable="true"
   v-on:dragend="onDragEnd"
   v-on:dragstart="onDragStart"
   v-bind:style="objStyle">
@@ -42,5 +75,5 @@ Vue.component("object-table", {
   <tr v-for="(value, row) in table" v-bind:key="row">
     <td v-for="(item, col) in value" v-bind:key="col" v-on:click="setCursorPosition(row + 1, col)">{{item}}</td>
   </tr>
-</table>`,
+</table>`,*/
 })
