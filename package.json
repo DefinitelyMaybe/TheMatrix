@@ -8,7 +8,7 @@
   "dependencies": {
     "electron": "^4.1.4",
     "jquery": "^3.4.0",
-    "plotly": "^1.0.6",
+    "plotly.js-dist": "^1.47.4",
     "vue": "^2.6.10"
   },
   "scripts": {
