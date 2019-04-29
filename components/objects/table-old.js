@@ -1,3 +1,7 @@
+const Vue = require('vue')
+const mixin_moveable = require('../mixins/moveable')
+const mixin_contextmenu = require('../mixins/contextmenu')
+
 Vue.component("object-function-table", {
     mixins: [mixin_moveable, mixin_contextmenu],
     props: {
@@ -83,7 +87,26 @@ Vue.component("object-function-table", {
         this.editing = false
       }
     },
-    template: `<div draggable="true"
+    render: function (createElement) {
+      //code
+      return createElement('div', {
+        attrs: {
+          draggable:"true"
+        },
+        on: {
+          dragend: this.onDragEnd,
+          dragstart: this.onDragStart,
+        },
+        style: this.$data.objStyle
+      }, [
+        createElement('span', createElement('b', this.$data.name + ":")),
+        createElement('span', {
+          ref:"quillspan",
+          class:{functionQuill:true}
+        })
+      ])
+    }
+    /*template: `<div draggable="true"
     v-on:dragend="onDragEnd"
     v-on:dragstart="onDragStart"
     v-on:click.prevent="onClick"
@@ -120,5 +143,5 @@ Vue.component("object-function-table", {
         <li v-on:click="edit" v-bind:class="{menu:true}">Edit</li>
         <li v-on:click="deleteObject" v-bind:class="{menu: true}">Delete</li>
       </ol>
-    </div>`,
+    </div>`,*/
   })
