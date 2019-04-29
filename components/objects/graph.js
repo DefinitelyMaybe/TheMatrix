@@ -1,6 +1,8 @@
 const Vue = require('vue')
 const mixin_moveable = require('../mixins/moveable')
 const mixin_contextmenu = require('../mixins/contextmenu')
+const Plotly = require("plotly.js-dist")
+const _ = require("../../libs/lodash.js")
 
 Vue.component("object-graph", {
   mixins: [mixin_moveable, mixin_contextmenu],
@@ -165,7 +167,6 @@ Vue.component("object-graph", {
         })
       }
     },
-
     onRightClick: function () {
       this.$root.selectObj(this.$attrs.id)
       this.contextMenuStyle.left = `${event.layerX}px`
@@ -183,7 +184,26 @@ Vue.component("object-graph", {
       }  
     }
   },
-  template: `<div draggable="true"
+  render: function (createElement) {
+    //code
+    return createElement('div', {
+      attrs: {
+        draggable:"true"
+      },
+      on: {
+        dragend: this.onDragEnd,
+        dragstart: this.onDragStart,
+      },
+      style: this.$data.objStyle
+    }, [
+      createElement('div', {
+        attrs: {
+          id:"graph"
+        }
+      })
+    ])
+  }
+  /*template: `<div draggable="true"
   v-on:dragend="onDragEnd"
   v-on:dragstart="onDragStart"
   v-on:click.prevent="onClick"
@@ -198,5 +218,5 @@ Vue.component("object-graph", {
       <li v-on:click="edit" v-bind:class="{menu: true}">Edit</li>
       <li v-on:click="deleteObject" v-bind:class="{menu: true}">Delete</li>
     </ol>
-  </div>`,
+  </div>`,*/
 })
