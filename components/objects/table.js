@@ -38,6 +38,26 @@ Vue.component("object-table", {
   },
   render: function (createElement) {
     //code
+    tableRows = []
+    headerRow = []
+    for (let i = 0; i < this.headers.length; i++) {
+      const header = this.headers[i];
+      headerRow.push(createElement('th',{
+        key: i,
+        on: {
+          //click: this.setCursorPosition(0, i)
+        }
+      }, header))
+    }
+    tableRows.push(createElement('tr', headerRow))
+    for (let i = 0; i < this.table.length; i++) {
+      row = []
+      for (let j = 0; j < this.table[i].length; j++) {
+        const value = this.table[i][j];
+        row.push(createElement('td', value))
+      }
+      tableRows.push(createElement('tr', row))
+    }
     return createElement('table', {
       attrs: {
         draggable:"true"
@@ -47,23 +67,7 @@ Vue.component("object-table", {
         dragstart: this.onDragStart,
       },
       style: this.$data.objStyle
-    }, [
-      createElement('tr', this.headers.map(function (header, i) {
-        createElement('th',{
-          key: i,
-          on: {
-            //click: this.setCursorPosition(0, i)
-          }
-        }, header)
-      }))
-      /*this.table.map(function (tableRow, row) {
-        return createElement('tr', tableRow.map(function (data, col) {
-          return createElement('td', {
-            
-          })
-        }))
-      })*/
-    ])
+    }, tableRows)
   }
   /*template: `<table draggable="true"
   v-on:dragend="onDragEnd"
