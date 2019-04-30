@@ -258,7 +258,7 @@ Vue.component("object-function", {
       },
       style: this.$data.objStyle
     }, [
-      createElement('span', createElement('b', `${this.$data.name}:`)),
+      createElement('span', [createElement('b', `${this.$data.name}:`)]),
       createElement('span', {
         ref:"quillspan",
         class:{functionQuill:true}
