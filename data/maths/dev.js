@@ -1,4 +1,4 @@
-DATA_objects = [{
+module.exports = [{
   "name": "z",
   "value": 5,
   "position": ["188px", "208px"],
@@ -43,15 +43,4 @@ DATA_objects = [{
   ],
   "position": ["700px", "100px"],
   "type": "object-table",
-}, {
-  "position": ["65px", "335px"],
-  "width": 700,
-  "height": 500,
-  "type": "object-graph",
-  "xaxis": "x",
-  "yaxis": "f",
-  "xrange": [-10, 10],
-  "yrange": [-10, 10]
 }]
-
-module.exports = DATA_objects
