@@ -6,7 +6,7 @@
   "author": "https://github.com/DefinitelyMaybe",
   "private": true,
   "dependencies": {
-    "electron": "^4.1.4",
+    "electron": "^7.2.4",
     "jquery": "^3.5.0",
     "plotly.js-dist": "^1.47.4",
     "vue": "^2.6.10"
