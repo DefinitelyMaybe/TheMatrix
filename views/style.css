@@ -4,6 +4,7 @@ html, body {
 
 body {
   display: flex;
+  flex-direction: column;
   background: rgb(255, 255, 255);
   /*overflow: hidden;*/
   margin: 0px;
