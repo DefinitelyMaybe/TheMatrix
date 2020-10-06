@@ -1,34 +1,17 @@
 # Welcome
-This project is about doing maths (and other bits&pieces) in the browser. Progress is slow but lets keep going.
 
-### Whats happening atm?
-Well, theres just me working on different bits and pieces that I think are the appropriate next steps. It changes a lot.
+This project is about the creating the interface between you and some really cool&helpful maths/calculations, (maybe other bits&pieces if there's time), all within the browser.
 
-Notes:
-graph zeros.
-scene size vs view + object position on view
-mathfields/text
-matrices
- * Making editing them via the gui, super easy.
-  * i.e. arrow keys to move to different entires
-  * allowing functions within entries?
-  * Algorithmic initialization (i.e. matrix is too big to manually type all of the entires)
-Add links within text to other objects or web links.
-Reusing components: https://vuecomponents.com/
- * http://vue-js-toggle-button.yev.io/
-Move away from tables into functions, matrices and latex
- * Not caring about storing data
- * Provide the translation into ascii for a coder to copy paste into their dev work.
- * give a thing a latex equation -> get the translation
+# The Project
 
-### Where are you going with this? Why?
-Honourable mentions to Wolframalpha and Matlab. They're part of the inspiration but only half the story. The other half is my own frustations and use of very rigid but simple calculators scattered about the internet.
+Roughly splits into two parts. An editor to create an interface and links to existing interfaces.
 
-My notes:
-A project to jump into could be the heat equation! i.e. this is how you model for heat, here are a bunch of tables with all of the values for different materials, here are some setups of the equation for specific contexts.
-useful links:
-https://en.wikipedia.org/wiki/Heat_equation
-https://en.wikipedia.org/wiki/Thermal_diffusivity
-
-### How can I help?
-Make something cool. Save it and then share it with others.
+* Form
+  * Add number inputs
+  * Add sliders for values
+  * Add links
+  * Pretty functions
+  * Select from list
+  * Visualizations
+    * 2D Graphs
+    * 3D Graphs
