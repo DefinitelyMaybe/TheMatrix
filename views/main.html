@@ -4,10 +4,49 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>The Matrix</title>
+  <link rel="stylesheet" href="./style.css">
 </head>
 <body>
-  <main>
-  </main>
+  <div>
+    <label for="interestRate">Interest Rate</label>
+    <input type="number" name="interestRate" id="interestRate" min="0" max="100" value="1.5">
+  </div>
+
+  <div>
+    <label for="period">Period</label>
+    <select name="peroid" id="peroid">
+      <option value="0">Yearly</option>
+      <option value="1">Monthly</option>
+      <option value="1">Weekly</option>
+      <option value="1">Daily</option>
+    </select>
+
+  </div>
+
+  <div>
+    <label for="initialAmount">Initial Amount</label>
+    <input type="number" name="initialAmount" id="initialAmount" value="100">
+  </div>
+
+  <div>
+    <label for="extraContributions">Extra Contributions?</label>
+    <input type="checkbox" name="extraContributions" id="extraContributions">
+    <div hidden>asdasd</div>
+  </div>
+
+  <div>
+    <label for="term">Total time</label>
+    <input type="number" name="term" id="term" value="0">
+  </div>
+
+  <div>
+    <br>
+    graph of input
+    <br>
+  </div>
+  
+  <p id="result">result: 101</p>
+
   <script type="module" src="./js/main.js"></script>
 </body>
 </html>
