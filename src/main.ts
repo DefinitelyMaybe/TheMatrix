@@ -44,6 +44,7 @@ document.addEventListener("change", () => {
 })
 
 function compute() {
+  // https://money.stackexchange.com/questions/16507/calculate-future-value-with-recurring-deposits/26187
   let newValue = NaN
   if (extraAmount.getAttribute("hidden")) {
     console.log("no extra contributions");
