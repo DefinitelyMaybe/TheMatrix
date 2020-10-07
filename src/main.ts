@@ -50,10 +50,9 @@ function compute() {
   } else {
     const twoT = (1 + periodInterestRate) ** (periodsPerYear * totalPeriods)
     newValue = initialAmount * twoT + extra * ((twoT-1)/(periodInterestRate)) * (1 + periodInterestRate)
-    console.log(newValue);
   }
   if (newValue) {
-    resultValue = Math.round(newValue * 1000 ) / 1000
+    resultValue = Math.round(newValue * 100 ) / 100
     result.innerHTML = `result: ${resultValue}`
   }
 }
