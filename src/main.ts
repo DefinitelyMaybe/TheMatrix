@@ -3,55 +3,70 @@
 // https://github.com/c3js/c3
 
 // variables used in calculation
-// default values
+let yearlyInterestRate = 0.0
+let initialAmount = 0.0
+let incuredInterestRate = 0.0
+let interestCalculationsPerYear = 0.0
+let totalYears = 0.0
+let totalIncuredInterestEvents = 0.0
+let extra = 0.0
 let resultValue = 0.0
-
-let interestRate = 0.01
-let initialAmount = 0.01
-let periodInterestRate = 0.01 // interestRate / peroidsPerYear
-let periodsPerYear = 12
-let totalPeriods = 1
-let extra = 10.0
 
 // All inputs
 const yearlyInterestRateInput = document.querySelector("input#interestRate")! as HTMLInputElement
-const peroidInput = document.querySelector("select#peroid")! as HTMLSelectElement
-const initialAmountInput = document.querySelector("input#interestRate")! as HTMLInputElement
-const extraContributionsInput = document.querySelector("input#extraContributions")!
-const extraAmountInput = document.querySelector("div#extraAmount")!
-const termInput = document.querySelector("input#term")! as HTMLInputElement
-const termInputNumber = document.querySelector("label#termNumberLabel")!
+const interestPerInput = document.querySelector("select#peroid")! as HTMLSelectElement
+const initialAmountInput = document.querySelector("input#initialAmount")! as HTMLInputElement
+const extraContributionsInput = document.querySelector("input#extraContributions")! as HTMLInputElement
+const extraAmountInput = document.querySelector("input#extraAmount")! as HTMLInputElement
+const totalYearsInput = document.querySelector("input#term")! as HTMLInputElement
+const totalYearsInputNumber = document.querySelector("label#termNumberLabel")!
 const resultOutput = document.querySelector("output#result")!
 
 // functionality
 function compute() {
   // https://money.stackexchange.com/questions/16507/calculate-future-value-with-recurring-deposits/26187
   let newValue = NaN
-  if (extraAmountInput.getAttribute("hidden")) {
-    newValue = initialAmount * (1 + periodInterestRate) ** totalPeriods
+  const changeFormula = extraContributionsInput.checked
+  if (!changeFormula) {
+    newValue = initialAmount * (1 + incuredInterestRate) ** totalIncuredInterestEvents
   } else {
-    const twoT = (1 + periodInterestRate) ** (periodsPerYear * totalPeriods)
-    newValue = initialAmount * twoT + extra * ((twoT-1)/(periodInterestRate)) * (1 + periodInterestRate)
+    const twoT = (1 + incuredInterestRate) ** (interestCalculationsPerYear * totalIncuredInterestEvents)
+    newValue = initialAmount * twoT + extra * ((twoT-1)/(incuredInterestRate)) * (1 + incuredInterestRate)
   }
+  // checking for valid results
   if (newValue) {
+    // formatting
     resultValue = Math.round(newValue * 100 ) / 100
+    // updating html
     resultOutput.innerHTML = `result: $${resultValue}`
   }
 }
 
 // attach listeners to html elements
 yearlyInterestRateInput.addEventListener("change", () => {
-  interestRate = parseFloat(yearlyInterestRateInput.value);
+  yearlyInterestRate = parseFloat(yearlyInterestRateInput.value);
   const max = parseFloat(yearlyInterestRateInput.getAttribute("max")!)
   const min = parseFloat(yearlyInterestRateInput.getAttribute("min")!)
-  if (interestRate > max) {
-    interestRate = max
-    yearlyInterestRateInput.value = interestRate.toString()
-  } else if (interestRate < min) {
-    interestRate = min
-    yearlyInterestRateInput.value = interestRate.toString()
+  if (yearlyInterestRate > max) {
+    yearlyInterestRate = max
+    yearlyInterestRateInput.value = yearlyInterestRate.toString()
+  } else if (yearlyInterestRate < min) {
+    yearlyInterestRate = min
+    yearlyInterestRateInput.value = yearlyInterestRate.toString()
   }
-  periodInterestRate = interestRate / periodsPerYear
+  // convert to [0, 1.0] range
+  yearlyInterestRate = yearlyInterestRate / 100
+  incuredInterestRate = yearlyInterestRate / interestCalculationsPerYear
+})
+
+interestPerInput.addEventListener("change", () => {
+  interestCalculationsPerYear = parseInt(interestPerInput.value)
+  incuredInterestRate = yearlyInterestRate / interestCalculationsPerYear
+  totalIncuredInterestEvents = interestCalculationsPerYear * totalYears
+})
+
+initialAmountInput.addEventListener("change", () => {
+  initialAmount = parseFloat(initialAmountInput.value)
 })
 
 extraContributionsInput.addEventListener("click", (e: any) => {
@@ -62,15 +77,12 @@ extraContributionsInput.addEventListener("click", (e: any) => {
   }
 })
 
-termInput.addEventListener("change", () => {
-  totalPeriods = parseFloat(termInput.value)
-  termInputNumber.innerHTML = termInput.value
+totalYearsInput.addEventListener("change", () => {
+  totalYears = parseFloat(totalYearsInput.value)
+  totalYearsInputNumber.innerHTML = totalYearsInput.value
+  totalIncuredInterestEvents = interestCalculationsPerYear * totalYears
 })
 
-peroidInput.addEventListener("change", () => {
-  periodsPerYear = parseInt(peroidInput.value)
-  periodInterestRate = interestRate / periodsPerYear
-})
 
 // setup global events
 document.addEventListener("change", () => {
@@ -78,11 +90,15 @@ document.addEventListener("change", () => {
 })
 
 window.addEventListener("load", () => {
-  // either set values to loaded values
-  // or init the defaults
+  // sync values
+  yearlyInterestRate = parseFloat(yearlyInterestRateInput.value) / 100
+  interestCalculationsPerYear = parseInt(interestPerInput.value)
   initialAmount = parseFloat(initialAmountInput.value)
-  periodsPerYear = parseInt(peroidInput.value)
-  termInputNumber.innerHTML = `${termInput.value}`
+  extra = parseFloat(extraAmountInput.value)
+  totalYears = parseInt(totalYearsInput.value)
+  incuredInterestRate = yearlyInterestRate / interestCalculationsPerYear
+  totalIncuredInterestEvents = interestCalculationsPerYear * totalYears
+  totalYearsInputNumber.innerHTML = `${totalYearsInput.value}`
   compute()
 })
 
