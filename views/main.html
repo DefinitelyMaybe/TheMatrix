@@ -8,21 +8,21 @@
 </head>
 <body>
   <div>
-    <label for="interestRate">Interest Rate</label>
+    <label for="interestRate">Yearly Interest Rate</label>
     <input type="number" name="interestRate" id="interestRate" min="0" max="100" value="1.5">
+    <label for="peroid">%</label>
   </div>
 
   <div>
     <label for="period">Interest Paid:</label>
     <select name="peroid" id="peroid">
-      <option value="0">Yearly</option>
-      <option value="1">Monthly</option>
+      <option value="12">Monthly</option>
+      <option value="1">Yearly</option>
     </select>
-
   </div>
 
   <div>
-    <label for="initialAmount">Initial Amount:</label>
+    <label for="initialAmount">Initial Amount: $</label>
     <input type="number" name="initialAmount" id="initialAmount" value="100">
   </div>
 
@@ -30,24 +30,25 @@
     <label for="extraContributions">Extra Contributions?</label>
     <input type="checkbox" name="extraContributions" id="extraContributions">
     <div id="extraAmount" hidden="true">
-      <label for="extraAmount">-Amount:</label>
+      <label for="extraAmount">- Amount: $</label>
       <input type="number" name="extraAmount" id="extraAmount" value="10">
     </div>
   </div>
 
   <div>
-    <label for="term">Total time</label>
+    <label for="term">Total years</label>
     <input type="range" name="term" id="term" value="1" min="0" max="10">
+    <label for="term" id="termNumberLabel"></label>
   </div>
 
   <div>
     <br>
-    <output>graph of input</output>
+    <output>"graph of input"</output>
     <br>
     <br>
   </div>
   
-  <output id="result">result: 101</output>
+  <output id="result">result: 0.0</output>
 
   <script type="module" src="./js/main.js"></script>
 </body>
