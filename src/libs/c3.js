@@ -1,5 +1,5 @@
 /* @license C3.js v0.7.18 | (c) C3 Team and other contributors | http://c3js.org/ */
-import * as d3 from './d3.js';
+import * as d3 from "./d3.js";
 
 function ChartInternal(api) {
   var $$ = this;
@@ -7,11 +7,7 @@ function ChartInternal(api) {
   // When bundling esm output. Beware of changing this line.
   // TODO: Maybe we should check that the modification by rollup-plugin-modify
   // is valid during unit tests.
-  $$.d3 = window.d3
-    ? window.d3
-    : typeof require !== 'undefined'
-    ? require('d3')
-    : undefined;
+  $$.d3 = d3;
   $$.api = api;
   $$.config = $$.getDefaultConfig();
   $$.data = {};
@@ -1483,9 +1479,7 @@ ChartInternal.prototype.initParams = function() {
   $$.color = $$.generateColor();
   $$.levelColor = $$.generateLevelColor();
 
-  $$.dataTimeParse = (config.data_xLocaltime ? d3.timeParse : d3.utcParse)(
-    $$.config.data_xFormat
-  );
+  $$.dataTimeParse = (config.data_xLocaltime ? d3.timeParse : d3.utcParse); //($$.config.data_xFormat)
   $$.axisTimeFormat = config.axis_x_localtime ? d3.timeFormat : d3.utcFormat;
   $$.defaultAxisTimeFormat = function(date) {
     if (date.getMilliseconds()) {
