@@ -1,6 +1,7 @@
 import {
   emptyDirSync,
   ensureFileSync,
+  walkSync,
 } from "https://deno.land/std/fs/mod.ts";
 
 const BUILD = "build/";
@@ -25,6 +26,18 @@ Deno.writeTextFileSync(`${BUILD}main.html`, html);
 console.log("copying css files");
 const css = Deno.readTextFileSync(`${VIEWS}style.css`);
 Deno.writeTextFileSync(`${BUILD}style.css`, css);
+
+// copy libs
+for await (const entry of walkSync("./src/libs")) {
+  if (entry.isFile) {
+    entry.path = entry.path.replaceAll("\\", "/")
+    const splitPath = entry.path.split("src/");
+    const path = splitPath[splitPath.length - 1];
+    const buildPath = `${BUILDJAVASCRIPT}${path}`;
+    ensureFileSync(buildPath)
+    Deno.writeTextFileSync(buildPath, Deno.readTextFileSync(entry.path))
+  }
+}
 
 // compile src scripts with deno
 console.log("compiling from main...");
