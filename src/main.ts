@@ -1,6 +1,8 @@
 /// <reference lib="dom" />
 // graph library
-// https://github.com/c3js/c3
+import * as c3 from "./libs/c3.js";
+
+console.log(c3);
 
 // variables used in calculation
 let yearlyInterestRate = 0.0
