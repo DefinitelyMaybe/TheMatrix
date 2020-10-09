@@ -1,9 +1,5 @@
 // https://d3js.org v6.2.0 Copyright 2020 Mike Bostock
-(function (global, factory) {
-typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports) :
-typeof define === 'function' && define.amd ? define(['exports'], factory) :
-(global = typeof globalThis !== 'undefined' ? globalThis : global || self, factory(global.d3 = global.d3 || {}));
-}(this, (function (exports) { 'use strict';
+'use strict';
 
 var version = "6.2.0";
 
@@ -18998,543 +18994,541 @@ function zoom() {
   return zoom;
 }
 
-exports.Adder = Adder;
-exports.Delaunay = Delaunay;
-exports.FormatSpecifier = FormatSpecifier;
-exports.Voronoi = Voronoi;
-exports.active = active;
-exports.arc = arc;
-exports.area = area$3;
-exports.areaRadial = areaRadial;
-exports.ascending = ascending;
-exports.autoType = autoType;
-exports.axisBottom = axisBottom;
-exports.axisLeft = axisLeft;
-exports.axisRight = axisRight;
-exports.axisTop = axisTop;
-exports.bin = bin;
-exports.bisect = bisectRight;
-exports.bisectCenter = bisectCenter;
-exports.bisectLeft = bisectLeft;
-exports.bisectRight = bisectRight;
-exports.bisector = bisector;
-exports.blob = blob;
-exports.brush = brush;
-exports.brushSelection = brushSelection;
-exports.brushX = brushX;
-exports.brushY = brushY;
-exports.buffer = buffer;
-exports.chord = chord;
-exports.chordDirected = chordDirected;
-exports.chordTranspose = chordTranspose;
-exports.cluster = cluster;
-exports.color = color;
-exports.contourDensity = density;
-exports.contours = contours;
-exports.count = count;
-exports.create = create;
-exports.creator = creator;
-exports.cross = cross;
-exports.csv = csv$1;
-exports.csvFormat = csvFormat;
-exports.csvFormatBody = csvFormatBody;
-exports.csvFormatRow = csvFormatRow;
-exports.csvFormatRows = csvFormatRows;
-exports.csvFormatValue = csvFormatValue;
-exports.csvParse = csvParse;
-exports.csvParseRows = csvParseRows;
-exports.cubehelix = cubehelix;
-exports.cumsum = cumsum;
-exports.curveBasis = basis$2;
-exports.curveBasisClosed = basisClosed$1;
-exports.curveBasisOpen = basisOpen;
-exports.curveBundle = bundle;
-exports.curveCardinal = cardinal;
-exports.curveCardinalClosed = cardinalClosed;
-exports.curveCardinalOpen = cardinalOpen;
-exports.curveCatmullRom = catmullRom;
-exports.curveCatmullRomClosed = catmullRomClosed;
-exports.curveCatmullRomOpen = catmullRomOpen;
-exports.curveLinear = curveLinear;
-exports.curveLinearClosed = linearClosed;
-exports.curveMonotoneX = monotoneX;
-exports.curveMonotoneY = monotoneY;
-exports.curveNatural = natural;
-exports.curveStep = step;
-exports.curveStepAfter = stepAfter;
-exports.curveStepBefore = stepBefore;
-exports.descending = descending;
-exports.deviation = deviation;
-exports.difference = difference;
-exports.disjoint = disjoint;
-exports.dispatch = dispatch;
-exports.drag = drag;
-exports.dragDisable = dragDisable;
-exports.dragEnable = yesdrag;
-exports.dsv = dsv;
-exports.dsvFormat = dsvFormat;
-exports.easeBack = backInOut;
-exports.easeBackIn = backIn;
-exports.easeBackInOut = backInOut;
-exports.easeBackOut = backOut;
-exports.easeBounce = bounceOut;
-exports.easeBounceIn = bounceIn;
-exports.easeBounceInOut = bounceInOut;
-exports.easeBounceOut = bounceOut;
-exports.easeCircle = circleInOut;
-exports.easeCircleIn = circleIn;
-exports.easeCircleInOut = circleInOut;
-exports.easeCircleOut = circleOut;
-exports.easeCubic = cubicInOut;
-exports.easeCubicIn = cubicIn;
-exports.easeCubicInOut = cubicInOut;
-exports.easeCubicOut = cubicOut;
-exports.easeElastic = elasticOut;
-exports.easeElasticIn = elasticIn;
-exports.easeElasticInOut = elasticInOut;
-exports.easeElasticOut = elasticOut;
-exports.easeExp = expInOut;
-exports.easeExpIn = expIn;
-exports.easeExpInOut = expInOut;
-exports.easeExpOut = expOut;
-exports.easeLinear = linear$1;
-exports.easePoly = polyInOut;
-exports.easePolyIn = polyIn;
-exports.easePolyInOut = polyInOut;
-exports.easePolyOut = polyOut;
-exports.easeQuad = quadInOut;
-exports.easeQuadIn = quadIn;
-exports.easeQuadInOut = quadInOut;
-exports.easeQuadOut = quadOut;
-exports.easeSin = sinInOut;
-exports.easeSinIn = sinIn;
-exports.easeSinInOut = sinInOut;
-exports.easeSinOut = sinOut;
-exports.every = every;
-exports.extent = extent;
-exports.filter = filter;
-exports.forceCenter = center$1;
-exports.forceCollide = collide;
-exports.forceLink = link;
-exports.forceManyBody = manyBody;
-exports.forceRadial = radial;
-exports.forceSimulation = simulation;
-exports.forceX = x$2;
-exports.forceY = y$2;
-exports.formatDefaultLocale = defaultLocale;
-exports.formatLocale = formatLocale;
-exports.formatSpecifier = formatSpecifier;
-exports.fsum = fsum;
-exports.geoAlbers = albers;
-exports.geoAlbersUsa = albersUsa;
-exports.geoArea = area$1;
-exports.geoAzimuthalEqualArea = azimuthalEqualArea;
-exports.geoAzimuthalEqualAreaRaw = azimuthalEqualAreaRaw;
-exports.geoAzimuthalEquidistant = azimuthalEquidistant;
-exports.geoAzimuthalEquidistantRaw = azimuthalEquidistantRaw;
-exports.geoBounds = bounds;
-exports.geoCentroid = centroid;
-exports.geoCircle = circle;
-exports.geoClipAntimeridian = clipAntimeridian;
-exports.geoClipCircle = clipCircle;
-exports.geoClipExtent = extent$1;
-exports.geoClipRectangle = clipRectangle;
-exports.geoConicConformal = conicConformal;
-exports.geoConicConformalRaw = conicConformalRaw;
-exports.geoConicEqualArea = conicEqualArea;
-exports.geoConicEqualAreaRaw = conicEqualAreaRaw;
-exports.geoConicEquidistant = conicEquidistant;
-exports.geoConicEquidistantRaw = conicEquidistantRaw;
-exports.geoContains = contains$1;
-exports.geoDistance = distance;
-exports.geoEqualEarth = equalEarth;
-exports.geoEqualEarthRaw = equalEarthRaw;
-exports.geoEquirectangular = equirectangular;
-exports.geoEquirectangularRaw = equirectangularRaw;
-exports.geoGnomonic = gnomonic;
-exports.geoGnomonicRaw = gnomonicRaw;
-exports.geoGraticule = graticule;
-exports.geoGraticule10 = graticule10;
-exports.geoIdentity = identity$5;
-exports.geoInterpolate = interpolate$2;
-exports.geoLength = length$2;
-exports.geoMercator = mercator;
-exports.geoMercatorRaw = mercatorRaw;
-exports.geoNaturalEarth1 = naturalEarth1;
-exports.geoNaturalEarth1Raw = naturalEarth1Raw;
-exports.geoOrthographic = orthographic;
-exports.geoOrthographicRaw = orthographicRaw;
-exports.geoPath = index$2;
-exports.geoProjection = projection;
-exports.geoProjectionMutator = projectionMutator;
-exports.geoRotation = rotation;
-exports.geoStereographic = stereographic;
-exports.geoStereographicRaw = stereographicRaw;
-exports.geoStream = geoStream;
-exports.geoTransform = transform;
-exports.geoTransverseMercator = transverseMercator;
-exports.geoTransverseMercatorRaw = transverseMercatorRaw;
-exports.gray = gray;
-exports.greatest = greatest;
-exports.greatestIndex = greatestIndex;
-exports.group = group;
-exports.groups = groups;
-exports.hcl = hcl;
-exports.hierarchy = hierarchy;
-exports.histogram = bin;
-exports.hsl = hsl;
-exports.html = html;
-exports.image = image;
-exports.index = index;
-exports.indexes = indexes;
-exports.interpolate = interpolate;
-exports.interpolateArray = array$2;
-exports.interpolateBasis = basis$1;
-exports.interpolateBasisClosed = basisClosed;
-exports.interpolateBlues = Blues;
-exports.interpolateBrBG = BrBG;
-exports.interpolateBuGn = BuGn;
-exports.interpolateBuPu = BuPu;
-exports.interpolateCividis = cividis;
-exports.interpolateCool = cool;
-exports.interpolateCubehelix = cubehelix$2;
-exports.interpolateCubehelixDefault = cubehelix$3;
-exports.interpolateCubehelixLong = cubehelixLong;
-exports.interpolateDate = date;
-exports.interpolateDiscrete = discrete;
-exports.interpolateGnBu = GnBu;
-exports.interpolateGreens = Greens;
-exports.interpolateGreys = Greys;
-exports.interpolateHcl = hcl$2;
-exports.interpolateHclLong = hclLong;
-exports.interpolateHsl = hsl$2;
-exports.interpolateHslLong = hslLong;
-exports.interpolateHue = hue$1;
-exports.interpolateInferno = inferno;
-exports.interpolateLab = lab$1;
-exports.interpolateMagma = magma;
-exports.interpolateNumber = interpolateNumber;
-exports.interpolateNumberArray = numberArray;
-exports.interpolateObject = object;
-exports.interpolateOrRd = OrRd;
-exports.interpolateOranges = Oranges;
-exports.interpolatePRGn = PRGn;
-exports.interpolatePiYG = PiYG;
-exports.interpolatePlasma = plasma;
-exports.interpolatePuBu = PuBu;
-exports.interpolatePuBuGn = PuBuGn;
-exports.interpolatePuOr = PuOr;
-exports.interpolatePuRd = PuRd;
-exports.interpolatePurples = Purples;
-exports.interpolateRainbow = rainbow;
-exports.interpolateRdBu = RdBu;
-exports.interpolateRdGy = RdGy;
-exports.interpolateRdPu = RdPu;
-exports.interpolateRdYlBu = RdYlBu;
-exports.interpolateRdYlGn = RdYlGn;
-exports.interpolateReds = Reds;
-exports.interpolateRgb = interpolateRgb;
-exports.interpolateRgbBasis = rgbBasis;
-exports.interpolateRgbBasisClosed = rgbBasisClosed;
-exports.interpolateRound = interpolateRound;
-exports.interpolateSinebow = sinebow;
-exports.interpolateSpectral = Spectral;
-exports.interpolateString = interpolateString;
-exports.interpolateTransformCss = interpolateTransformCss;
-exports.interpolateTransformSvg = interpolateTransformSvg;
-exports.interpolateTurbo = turbo;
-exports.interpolateViridis = viridis;
-exports.interpolateWarm = warm;
-exports.interpolateYlGn = YlGn;
-exports.interpolateYlGnBu = YlGnBu;
-exports.interpolateYlOrBr = YlOrBr;
-exports.interpolateYlOrRd = YlOrRd;
-exports.interpolateZoom = interpolateZoom;
-exports.interrupt = interrupt;
-exports.intersection = intersection;
-exports.interval = interval$1;
-exports.isoFormat = formatIso;
-exports.isoParse = parseIso;
-exports.json = json;
-exports.lab = lab;
-exports.lch = lch;
-exports.least = least;
-exports.leastIndex = leastIndex;
-exports.line = line;
-exports.lineRadial = lineRadial$1;
-exports.linkHorizontal = linkHorizontal;
-exports.linkRadial = linkRadial;
-exports.linkVertical = linkVertical;
-exports.local = local;
-exports.map = map;
-exports.matcher = matcher;
-exports.max = max;
-exports.maxIndex = maxIndex;
-exports.mean = mean;
-exports.median = median;
-exports.merge = merge;
-exports.min = min;
-exports.minIndex = minIndex;
-exports.namespace = namespace;
-exports.namespaces = namespaces;
-exports.nice = nice;
-exports.now = now;
-exports.pack = index$3;
-exports.packEnclose = enclose;
-exports.packSiblings = siblings;
-exports.pairs = pairs;
-exports.partition = partition;
-exports.path = path;
-exports.permute = permute;
-exports.pie = pie;
-exports.piecewise = piecewise;
-exports.pointRadial = pointRadial;
-exports.pointer = pointer;
-exports.pointers = pointers;
-exports.polygonArea = area$2;
-exports.polygonCentroid = centroid$1;
-exports.polygonContains = contains$2;
-exports.polygonHull = hull;
-exports.polygonLength = length$3;
-exports.precisionFixed = precisionFixed;
-exports.precisionPrefix = precisionPrefix;
-exports.precisionRound = precisionRound;
-exports.quadtree = quadtree;
-exports.quantile = quantile;
-exports.quantileSorted = quantileSorted;
-exports.quantize = quantize;
-exports.quickselect = quickselect;
-exports.radialArea = areaRadial;
-exports.radialLine = lineRadial$1;
-exports.randomBates = bates;
-exports.randomBernoulli = bernoulli;
-exports.randomBeta = beta;
-exports.randomBinomial = binomial;
-exports.randomCauchy = cauchy;
-exports.randomExponential = exponential$1;
-exports.randomGamma = gamma$1;
-exports.randomGeometric = geometric;
-exports.randomInt = int;
-exports.randomIrwinHall = irwinHall;
-exports.randomLcg = lcg$1;
-exports.randomLogNormal = logNormal;
-exports.randomLogistic = logistic;
-exports.randomNormal = normal;
-exports.randomPareto = pareto;
-exports.randomPoisson = poisson;
-exports.randomUniform = uniform;
-exports.randomWeibull = weibull;
-exports.range = sequence;
-exports.reduce = reduce;
-exports.reverse = reverse;
-exports.rgb = rgb;
-exports.ribbon = ribbon$1;
-exports.ribbonArrow = ribbonArrow;
-exports.rollup = rollup;
-exports.rollups = rollups;
-exports.scaleBand = band;
-exports.scaleDiverging = diverging;
-exports.scaleDivergingLog = divergingLog;
-exports.scaleDivergingPow = divergingPow;
-exports.scaleDivergingSqrt = divergingSqrt;
-exports.scaleDivergingSymlog = divergingSymlog;
-exports.scaleIdentity = identity$7;
-exports.scaleImplicit = implicit;
-exports.scaleLinear = linear$2;
-exports.scaleLog = log$1;
-exports.scaleOrdinal = ordinal;
-exports.scalePoint = point;
-exports.scalePow = pow$2;
-exports.scaleQuantile = quantile$1;
-exports.scaleQuantize = quantize$1;
-exports.scaleRadial = radial$1;
-exports.scaleSequential = sequential;
-exports.scaleSequentialLog = sequentialLog;
-exports.scaleSequentialPow = sequentialPow;
-exports.scaleSequentialQuantile = sequentialQuantile;
-exports.scaleSequentialSqrt = sequentialSqrt;
-exports.scaleSequentialSymlog = sequentialSymlog;
-exports.scaleSqrt = sqrt$1;
-exports.scaleSymlog = symlog;
-exports.scaleThreshold = threshold;
-exports.scaleTime = time;
-exports.scaleUtc = utcTime;
-exports.scan = scan;
-exports.schemeAccent = Accent;
-exports.schemeBlues = scheme$l;
-exports.schemeBrBG = scheme;
-exports.schemeBuGn = scheme$9;
-exports.schemeBuPu = scheme$a;
-exports.schemeCategory10 = category10;
-exports.schemeDark2 = Dark2;
-exports.schemeGnBu = scheme$b;
-exports.schemeGreens = scheme$m;
-exports.schemeGreys = scheme$n;
-exports.schemeOrRd = scheme$c;
-exports.schemeOranges = scheme$q;
-exports.schemePRGn = scheme$1;
-exports.schemePaired = Paired;
-exports.schemePastel1 = Pastel1;
-exports.schemePastel2 = Pastel2;
-exports.schemePiYG = scheme$2;
-exports.schemePuBu = scheme$e;
-exports.schemePuBuGn = scheme$d;
-exports.schemePuOr = scheme$3;
-exports.schemePuRd = scheme$f;
-exports.schemePurples = scheme$o;
-exports.schemeRdBu = scheme$4;
-exports.schemeRdGy = scheme$5;
-exports.schemeRdPu = scheme$g;
-exports.schemeRdYlBu = scheme$6;
-exports.schemeRdYlGn = scheme$7;
-exports.schemeReds = scheme$p;
-exports.schemeSet1 = Set1;
-exports.schemeSet2 = Set2;
-exports.schemeSet3 = Set3;
-exports.schemeSpectral = scheme$8;
-exports.schemeTableau10 = Tableau10;
-exports.schemeYlGn = scheme$i;
-exports.schemeYlGnBu = scheme$h;
-exports.schemeYlOrBr = scheme$j;
-exports.schemeYlOrRd = scheme$k;
-exports.select = select;
-exports.selectAll = selectAll;
-exports.selection = selection;
-exports.selector = selector;
-exports.selectorAll = selectorAll;
-exports.shuffle = shuffle;
-exports.shuffler = shuffler;
-exports.some = some;
-exports.sort = sort;
-exports.stack = stack;
-exports.stackOffsetDiverging = diverging$1;
-exports.stackOffsetExpand = expand;
-exports.stackOffsetNone = none$1;
-exports.stackOffsetSilhouette = silhouette;
-exports.stackOffsetWiggle = wiggle;
-exports.stackOrderAppearance = appearance;
-exports.stackOrderAscending = ascending$3;
-exports.stackOrderDescending = descending$2;
-exports.stackOrderInsideOut = insideOut;
-exports.stackOrderNone = none$2;
-exports.stackOrderReverse = reverse$1;
-exports.stratify = stratify;
-exports.style = styleValue;
-exports.subset = subset;
-exports.sum = sum;
-exports.superset = superset;
-exports.svg = svg;
-exports.symbol = symbol;
-exports.symbolCircle = circle$2;
-exports.symbolCross = cross$2;
-exports.symbolDiamond = diamond;
-exports.symbolSquare = square$1;
-exports.symbolStar = star;
-exports.symbolTriangle = triangle;
-exports.symbolWye = wye;
-exports.symbols = symbols;
-exports.text = text;
-exports.thresholdFreedmanDiaconis = freedmanDiaconis;
-exports.thresholdScott = scott;
-exports.thresholdSturges = thresholdSturges;
-exports.tickFormat = tickFormat;
-exports.tickIncrement = tickIncrement;
-exports.tickStep = tickStep;
-exports.ticks = ticks;
-exports.timeDay = day;
-exports.timeDays = days;
-exports.timeFormatDefaultLocale = defaultLocale$1;
-exports.timeFormatLocale = formatLocale$1;
-exports.timeFriday = friday;
-exports.timeFridays = fridays;
-exports.timeHour = hour;
-exports.timeHours = hours;
-exports.timeInterval = newInterval;
-exports.timeMillisecond = millisecond;
-exports.timeMilliseconds = milliseconds;
-exports.timeMinute = minute;
-exports.timeMinutes = minutes;
-exports.timeMonday = monday;
-exports.timeMondays = mondays;
-exports.timeMonth = month;
-exports.timeMonths = months;
-exports.timeSaturday = saturday;
-exports.timeSaturdays = saturdays;
-exports.timeSecond = second;
-exports.timeSeconds = seconds;
-exports.timeSunday = sunday;
-exports.timeSundays = sundays;
-exports.timeThursday = thursday;
-exports.timeThursdays = thursdays;
-exports.timeTuesday = tuesday;
-exports.timeTuesdays = tuesdays;
-exports.timeWednesday = wednesday;
-exports.timeWednesdays = wednesdays;
-exports.timeWeek = sunday;
-exports.timeWeeks = sundays;
-exports.timeYear = year;
-exports.timeYears = years;
-exports.timeout = timeout$1;
-exports.timer = timer;
-exports.timerFlush = timerFlush;
-exports.transition = transition;
-exports.transpose = transpose;
-exports.tree = tree;
-exports.treemap = index$4;
-exports.treemapBinary = binary;
-exports.treemapDice = treemapDice;
-exports.treemapResquarify = resquarify;
-exports.treemapSlice = treemapSlice;
-exports.treemapSliceDice = sliceDice;
-exports.treemapSquarify = squarify;
-exports.tsv = tsv$1;
-exports.tsvFormat = tsvFormat;
-exports.tsvFormatBody = tsvFormatBody;
-exports.tsvFormatRow = tsvFormatRow;
-exports.tsvFormatRows = tsvFormatRows;
-exports.tsvFormatValue = tsvFormatValue;
-exports.tsvParse = tsvParse;
-exports.tsvParseRows = tsvParseRows;
-exports.union = union;
-exports.utcDay = utcDay;
-exports.utcDays = utcDays;
-exports.utcFriday = utcFriday;
-exports.utcFridays = utcFridays;
-exports.utcHour = utcHour;
-exports.utcHours = utcHours;
-exports.utcMillisecond = millisecond;
-exports.utcMilliseconds = milliseconds;
-exports.utcMinute = utcMinute;
-exports.utcMinutes = utcMinutes;
-exports.utcMonday = utcMonday;
-exports.utcMondays = utcMondays;
-exports.utcMonth = utcMonth;
-exports.utcMonths = utcMonths;
-exports.utcSaturday = utcSaturday;
-exports.utcSaturdays = utcSaturdays;
-exports.utcSecond = second;
-exports.utcSeconds = seconds;
-exports.utcSunday = utcSunday;
-exports.utcSundays = utcSundays;
-exports.utcThursday = utcThursday;
-exports.utcThursdays = utcThursdays;
-exports.utcTuesday = utcTuesday;
-exports.utcTuesdays = utcTuesdays;
-exports.utcWednesday = utcWednesday;
-exports.utcWednesdays = utcWednesdays;
-exports.utcWeek = utcSunday;
-exports.utcWeeks = utcSundays;
-exports.utcYear = utcYear;
-exports.utcYears = utcYears;
-exports.variance = variance;
-exports.version = version;
-exports.window = defaultView;
-exports.xml = xml;
-exports.zip = zip;
-exports.zoom = zoom;
-exports.zoomIdentity = identity$9;
-exports.zoomTransform = transform$1;
-
-Object.defineProperty(exports, '__esModule', { value: true });
-
-})));
+export {
+  Adder as Adder,
+  Delaunay as Delaunay,
+  FormatSpecifier as FormatSpecifier,
+  Voronoi as Voronoi,
+  active as active,
+  arc as arc,
+  area as area$3,
+  areaRadial as areaRadial,
+  ascending as ascending,
+  autoType as autoType,
+  axisBottom as axisBottom,
+  axisLeft as axisLeft,
+  axisRight as axisRight,
+  axisTop as axisTop,
+  bin as bin,
+  bisect as bisectRight,
+  bisectCenter as bisectCenter,
+  bisectLeft as bisectLeft,
+  bisectRight as bisectRight,
+  bisector as bisector,
+  blob as blob,
+  brush as brush,
+  brushSelection as brushSelection,
+  brushX as brushX,
+  brushY as brushY,
+  buffer as buffer,
+  chord as chord,
+  chordDirected as chordDirected,
+  chordTranspose as chordTranspose,
+  cluster as cluster,
+  color as color,
+  contourDensity as density,
+  contours as contours,
+  count as count,
+  create as create,
+  creator as creator,
+  cross as cross,
+  csv as csv$1,
+  csvFormat as csvFormat,
+  csvFormatBody as csvFormatBody,
+  csvFormatRow as csvFormatRow,
+  csvFormatRows as csvFormatRows,
+  csvFormatValue as csvFormatValue,
+  csvParse as csvParse,
+  csvParseRows as csvParseRows,
+  cubehelix as cubehelix,
+  cumsum as cumsum,
+  curveBasis as basis$2,
+  curveBasisClosed as basisClosed$1,
+  curveBasisOpen as basisOpen,
+  curveBundle as bundle,
+  curveCardinal as cardinal,
+  curveCardinalClosed as cardinalClosed,
+  curveCardinalOpen as cardinalOpen,
+  curveCatmullRom as catmullRom,
+  curveCatmullRomClosed as catmullRomClosed,
+  curveCatmullRomOpen as catmullRomOpen,
+  curveLinear as curveLinear,
+  curveLinearClosed as linearClosed,
+  curveMonotoneX as monotoneX,
+  curveMonotoneY as monotoneY,
+  curveNatural as natural,
+  curveStep as step,
+  curveStepAfter as stepAfter,
+  curveStepBefore as stepBefore,
+  descending as descending,
+  deviation as deviation,
+  difference as difference,
+  disjoint as disjoint,
+  dispatch as dispatch,
+  drag as drag,
+  dragDisable as dragDisable,
+  dragEnable as yesdrag,
+  dsv as dsv,
+  dsvFormat as dsvFormat,
+  easeBack as backInOut,
+  easeBackIn as backIn,
+  easeBackInOut as backInOut,
+  easeBackOut as backOut,
+  easeBounce as bounceOut,
+  easeBounceIn as bounceIn,
+  easeBounceInOut as bounceInOut,
+  easeBounceOut as bounceOut,
+  easeCircle as circleInOut,
+  easeCircleIn as circleIn,
+  easeCircleInOut as circleInOut,
+  easeCircleOut as circleOut,
+  easeCubic as cubicInOut,
+  easeCubicIn as cubicIn,
+  easeCubicInOut as cubicInOut,
+  easeCubicOut as cubicOut,
+  easeElastic as elasticOut,
+  easeElasticIn as elasticIn,
+  easeElasticInOut as elasticInOut,
+  easeElasticOut as elasticOut,
+  easeExp as expInOut,
+  easeExpIn as expIn,
+  easeExpInOut as expInOut,
+  easeExpOut as expOut,
+  easeLinear as linear$1,
+  easePoly as polyInOut,
+  easePolyIn as polyIn,
+  easePolyInOut as polyInOut,
+  easePolyOut as polyOut,
+  easeQuad as quadInOut,
+  easeQuadIn as quadIn,
+  easeQuadInOut as quadInOut,
+  easeQuadOut as quadOut,
+  easeSin as sinInOut,
+  easeSinIn as sinIn,
+  easeSinInOut as sinInOut,
+  easeSinOut as sinOut,
+  every as every,
+  extent as extent,
+  filter as filter,
+  forceCenter as center$1,
+  forceCollide as collide,
+  forceLink as link,
+  forceManyBody as manyBody,
+  forceRadial as radial,
+  forceSimulation as simulation,
+  forceX as x$2,
+  forceY as y$2,
+  formatDefaultLocale as defaultLocale,
+  formatLocale as formatLocale,
+  formatSpecifier as formatSpecifier,
+  fsum as fsum,
+  geoAlbers as albers,
+  geoAlbersUsa as albersUsa,
+  geoArea as area$1,
+  geoAzimuthalEqualArea as azimuthalEqualArea,
+  geoAzimuthalEqualAreaRaw as azimuthalEqualAreaRaw,
+  geoAzimuthalEquidistant as azimuthalEquidistant,
+  geoAzimuthalEquidistantRaw as azimuthalEquidistantRaw,
+  geoBounds as bounds,
+  geoCentroid as centroid,
+  geoCircle as circle,
+  geoClipAntimeridian as clipAntimeridian,
+  geoClipCircle as clipCircle,
+  geoClipExtent as extent$1,
+  geoClipRectangle as clipRectangle,
+  geoConicConformal as conicConformal,
+  geoConicConformalRaw as conicConformalRaw,
+  geoConicEqualArea as conicEqualArea,
+  geoConicEqualAreaRaw as conicEqualAreaRaw,
+  geoConicEquidistant as conicEquidistant,
+  geoConicEquidistantRaw as conicEquidistantRaw,
+  geoContains as contains$1,
+  geoDistance as distance,
+  geoEqualEarth as equalEarth,
+  geoEqualEarthRaw as equalEarthRaw,
+  geoEquirectangular as equirectangular,
+  geoEquirectangularRaw as equirectangularRaw,
+  geoGnomonic as gnomonic,
+  geoGnomonicRaw as gnomonicRaw,
+  geoGraticule as graticule,
+  geoGraticule10 as graticule10,
+  geoIdentity as identity$5,
+  geoInterpolate as interpolate$2,
+  geoLength as length$2,
+  geoMercator as mercator,
+  geoMercatorRaw as mercatorRaw,
+  geoNaturalEarth1 as naturalEarth1,
+  geoNaturalEarth1Raw as naturalEarth1Raw,
+  geoOrthographic as orthographic,
+  geoOrthographicRaw as orthographicRaw,
+  geoPath as index$2,
+  geoProjection as projection,
+  geoProjectionMutator as projectionMutator,
+  geoRotation as rotation,
+  geoStereographic as stereographic,
+  geoStereographicRaw as stereographicRaw,
+  geoStream as geoStream,
+  geoTransform as transform,
+  geoTransverseMercator as transverseMercator,
+  geoTransverseMercatorRaw as transverseMercatorRaw,
+  gray as gray,
+  greatest as greatest,
+  greatestIndex as greatestIndex,
+  group as group,
+  groups as groups,
+  hcl as hcl,
+  hierarchy as hierarchy,
+  histogram as bin,
+  hsl as hsl,
+  html as html,
+  image as image,
+  index as index,
+  indexes as indexes,
+  interpolate as interpolate,
+  interpolateArray as array$2,
+  interpolateBasis as basis$1,
+  interpolateBasisClosed as basisClosed,
+  interpolateBlues as Blues,
+  interpolateBrBG as BrBG,
+  interpolateBuGn as BuGn,
+  interpolateBuPu as BuPu,
+  interpolateCividis as cividis,
+  interpolateCool as cool,
+  interpolateCubehelix as cubehelix$2,
+  interpolateCubehelixDefault as cubehelix$3,
+  interpolateCubehelixLong as cubehelixLong,
+  interpolateDate as date,
+  interpolateDiscrete as discrete,
+  interpolateGnBu as GnBu,
+  interpolateGreens as Greens,
+  interpolateGreys as Greys,
+  interpolateHcl as hcl$2,
+  interpolateHclLong as hclLong,
+  interpolateHsl as hsl$2,
+  interpolateHslLong as hslLong,
+  interpolateHue as hue$1,
+  interpolateInferno as inferno,
+  interpolateLab as lab$1,
+  interpolateMagma as magma,
+  interpolateNumber as interpolateNumber,
+  interpolateNumberArray as numberArray,
+  interpolateObject as object,
+  interpolateOrRd as OrRd,
+  interpolateOranges as Oranges,
+  interpolatePRGn as PRGn,
+  interpolatePiYG as PiYG,
+  interpolatePlasma as plasma,
+  interpolatePuBu as PuBu,
+  interpolatePuBuGn as PuBuGn,
+  interpolatePuOr as PuOr,
+  interpolatePuRd as PuRd,
+  interpolatePurples as Purples,
+  interpolateRainbow as rainbow,
+  interpolateRdBu as RdBu,
+  interpolateRdGy as RdGy,
+  interpolateRdPu as RdPu,
+  interpolateRdYlBu as RdYlBu,
+  interpolateRdYlGn as RdYlGn,
+  interpolateReds as Reds,
+  interpolateRgb as interpolateRgb,
+  interpolateRgbBasis as rgbBasis,
+  interpolateRgbBasisClosed as rgbBasisClosed,
+  interpolateRound as interpolateRound,
+  interpolateSinebow as sinebow,
+  interpolateSpectral as Spectral,
+  interpolateString as interpolateString,
+  interpolateTransformCss as interpolateTransformCss,
+  interpolateTransformSvg as interpolateTransformSvg,
+  interpolateTurbo as turbo,
+  interpolateViridis as viridis,
+  interpolateWarm as warm,
+  interpolateYlGn as YlGn,
+  interpolateYlGnBu as YlGnBu,
+  interpolateYlOrBr as YlOrBr,
+  interpolateYlOrRd as YlOrRd,
+  interpolateZoom as interpolateZoom,
+  interrupt as interrupt,
+  intersection as intersection,
+  interval as interval$1,
+  isoFormat as formatIso,
+  isoParse as parseIso,
+  json as json,
+  lab as lab,
+  lch as lch,
+  least as least,
+  leastIndex as leastIndex,
+  line as line,
+  lineRadial as lineRadial$1,
+  linkHorizontal as linkHorizontal,
+  linkRadial as linkRadial,
+  linkVertical as linkVertical,
+  local as local,
+  map as map,
+  matcher as matcher,
+  max as max,
+  maxIndex as maxIndex,
+  mean as mean,
+  median as median,
+  merge as merge,
+  min as min,
+  minIndex as minIndex,
+  namespace as namespace,
+  namespaces as namespaces,
+  nice as nice,
+  now as now,
+  pack as index$3,
+  packEnclose as enclose,
+  packSiblings as siblings,
+  pairs as pairs,
+  partition as partition,
+  path as path,
+  permute as permute,
+  pie as pie,
+  piecewise as piecewise,
+  pointRadial as pointRadial,
+  pointer as pointer,
+  pointers as pointers,
+  polygonArea as area$2,
+  polygonCentroid as centroid$1,
+  polygonContains as contains$2,
+  polygonHull as hull,
+  polygonLength as length$3,
+  precisionFixed as precisionFixed,
+  precisionPrefix as precisionPrefix,
+  precisionRound as precisionRound,
+  quadtree as quadtree,
+  quantile as quantile,
+  quantileSorted as quantileSorted,
+  quantize as quantize,
+  quickselect as quickselect,
+  radialArea as areaRadial,
+  radialLine as lineRadial$1,
+  randomBates as bates,
+  randomBernoulli as bernoulli,
+  randomBeta as beta,
+  randomBinomial as binomial,
+  randomCauchy as cauchy,
+  randomExponential as exponential$1,
+  randomGamma as gamma$1,
+  randomGeometric as geometric,
+  randomInt as int,
+  randomIrwinHall as irwinHall,
+  randomLcg as lcg$1,
+  randomLogNormal as logNormal,
+  randomLogistic as logistic,
+  randomNormal as normal,
+  randomPareto as pareto,
+  randomPoisson as poisson,
+  randomUniform as uniform,
+  randomWeibull as weibull,
+  range as sequence,
+  reduce as reduce,
+  reverse as reverse,
+  rgb as rgb,
+  ribbon as ribbon$1,
+  ribbonArrow as ribbonArrow,
+  rollup as rollup,
+  rollups as rollups,
+  scaleBand as band,
+  scaleDiverging as diverging,
+  scaleDivergingLog as divergingLog,
+  scaleDivergingPow as divergingPow,
+  scaleDivergingSqrt as divergingSqrt,
+  scaleDivergingSymlog as divergingSymlog,
+  scaleIdentity as identity$7,
+  scaleImplicit as implicit,
+  scaleLinear as linear$2,
+  scaleLog as log$1,
+  scaleOrdinal as ordinal,
+  scalePoint as point,
+  scalePow as pow$2,
+  scaleQuantile as quantile$1,
+  scaleQuantize as quantize$1,
+  scaleRadial as radial$1,
+  scaleSequential as sequential,
+  scaleSequentialLog as sequentialLog,
+  scaleSequentialPow as sequentialPow,
+  scaleSequentialQuantile as sequentialQuantile,
+  scaleSequentialSqrt as sequentialSqrt,
+  scaleSequentialSymlog as sequentialSymlog,
+  scaleSqrt as sqrt$1,
+  scaleSymlog as symlog,
+  scaleThreshold as threshold,
+  scaleTime as time,
+  scaleUtc as utcTime,
+  scan as scan,
+  schemeAccent as Accent,
+  schemeBlues as scheme$l,
+  schemeBrBG as scheme,
+  schemeBuGn as scheme$9,
+  schemeBuPu as scheme$a,
+  schemeCategory10 as category10,
+  schemeDark2 as Dark2,
+  schemeGnBu as scheme$b,
+  schemeGreens as scheme$m,
+  schemeGreys as scheme$n,
+  schemeOrRd as scheme$c,
+  schemeOranges as scheme$q,
+  schemePRGn as scheme$1,
+  schemePaired as Paired,
+  schemePastel1 as Pastel1,
+  schemePastel2 as Pastel2,
+  schemePiYG as scheme$2,
+  schemePuBu as scheme$e,
+  schemePuBuGn as scheme$d,
+  schemePuOr as scheme$3,
+  schemePuRd as scheme$f,
+  schemePurples as scheme$o,
+  schemeRdBu as scheme$4,
+  schemeRdGy as scheme$5,
+  schemeRdPu as scheme$g,
+  schemeRdYlBu as scheme$6,
+  schemeRdYlGn as scheme$7,
+  schemeReds as scheme$p,
+  schemeSet1 as Set1,
+  schemeSet2 as Set2,
+  schemeSet3 as Set3,
+  schemeSpectral as scheme$8,
+  schemeTableau10 as Tableau10,
+  schemeYlGn as scheme$i,
+  schemeYlGnBu as scheme$h,
+  schemeYlOrBr as scheme$j,
+  schemeYlOrRd as scheme$k,
+  select as select,
+  selectAll as selectAll,
+  selection as selection,
+  selector as selector,
+  selectorAll as selectorAll,
+  shuffle as shuffle,
+  shuffler as shuffler,
+  some as some,
+  sort as sort,
+  stack as stack,
+  stackOffsetDiverging as diverging$1,
+  stackOffsetExpand as expand,
+  stackOffsetNone as none$1,
+  stackOffsetSilhouette as silhouette,
+  stackOffsetWiggle as wiggle,
+  stackOrderAppearance as appearance,
+  stackOrderAscending as ascending$3,
+  stackOrderDescending as descending$2,
+  stackOrderInsideOut as insideOut,
+  stackOrderNone as none$2,
+  stackOrderReverse as reverse$1,
+  stratify as stratify,
+  style as styleValue,
+  subset as subset,
+  sum as sum,
+  superset as superset,
+  svg as svg,
+  symbol as symbol,
+  symbolCircle as circle$2,
+  symbolCross as cross$2,
+  symbolDiamond as diamond,
+  symbolSquare as square$1,
+  symbolStar as star,
+  symbolTriangle as triangle,
+  symbolWye as wye,
+  symbols as symbols,
+  text as text,
+  thresholdFreedmanDiaconis as freedmanDiaconis,
+  thresholdScott as scott,
+  thresholdSturges as thresholdSturges,
+  tickFormat as tickFormat,
+  tickIncrement as tickIncrement,
+  tickStep as tickStep,
+  ticks as ticks,
+  timeDay as day,
+  timeDays as days,
+  timeFormatDefaultLocale as defaultLocale$1,
+  timeFormatLocale as formatLocale$1,
+  timeFriday as friday,
+  timeFridays as fridays,
+  timeHour as hour,
+  timeHours as hours,
+  timeInterval as newInterval,
+  timeMillisecond as millisecond,
+  timeMilliseconds as milliseconds,
+  timeMinute as minute,
+  timeMinutes as minutes,
+  timeMonday as monday,
+  timeMondays as mondays,
+  timeMonth as month,
+  timeMonths as months,
+  timeSaturday as saturday,
+  timeSaturdays as saturdays,
+  timeSecond as second,
+  timeSeconds as seconds,
+  timeSunday as sunday,
+  timeSundays as sundays,
+  timeThursday as thursday,
+  timeThursdays as thursdays,
+  timeTuesday as tuesday,
+  timeTuesdays as tuesdays,
+  timeWednesday as wednesday,
+  timeWednesdays as wednesdays,
+  timeWeek as sunday,
+  timeWeeks as sundays,
+  timeYear as year,
+  timeYears as years,
+  timeout as timeout$1,
+  timer as timer,
+  timerFlush as timerFlush,
+  transition as transition,
+  transpose as transpose,
+  tree as tree,
+  treemap as index$4,
+  treemapBinary as binary,
+  treemapDice as treemapDice,
+  treemapResquarify as resquarify,
+  treemapSlice as treemapSlice,
+  treemapSliceDice as sliceDice,
+  treemapSquarify as squarify,
+  tsv as tsv$1,
+  tsvFormat as tsvFormat,
+  tsvFormatBody as tsvFormatBody,
+  tsvFormatRow as tsvFormatRow,
+  tsvFormatRows as tsvFormatRows,
+  tsvFormatValue as tsvFormatValue,
+  tsvParse as tsvParse,
+  tsvParseRows as tsvParseRows,
+  union as union,
+  utcDay as utcDay,
+  utcDays as utcDays,
+  utcFriday as utcFriday,
+  utcFridays as utcFridays,
+  utcHour as utcHour,
+  utcHours as utcHours,
+  utcMillisecond as millisecond,
+  utcMilliseconds as milliseconds,
+  utcMinute as utcMinute,
+  utcMinutes as utcMinutes,
+  utcMonday as utcMonday,
+  utcMondays as utcMondays,
+  utcMonth as utcMonth,
+  utcMonths as utcMonths,
+  utcSaturday as utcSaturday,
+  utcSaturdays as utcSaturdays,
+  utcSecond as second,
+  utcSeconds as seconds,
+  utcSunday as utcSunday,
+  utcSundays as utcSundays,
+  utcThursday as utcThursday,
+  utcThursdays as utcThursdays,
+  utcTuesday as utcTuesday,
+  utcTuesdays as utcTuesdays,
+  utcWednesday as utcWednesday,
+  utcWednesdays as utcWednesdays,
+  utcWeek as utcSunday,
+  utcWeeks as utcSundays,
+  utcYear as utcYear,
+  utcYears as utcYears,
+  variance as variance,
+  version as version,
+  window as defaultView,
+  xml as xml,
+  zip as zip,
+  zoom as zoom,
+  zoomIdentity as identity$9,
+  zoomTransform as transform$1,
+}
