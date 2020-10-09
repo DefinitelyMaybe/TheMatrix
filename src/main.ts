@@ -20,6 +20,7 @@ const extraContributionsInput = document.querySelector("input#extraContributions
 const extraAmountInput = document.querySelector("input#extraAmount")! as HTMLInputElement
 const totalYearsInput = document.querySelector("input#term")! as HTMLInputElement
 const totalYearsInputNumber = document.querySelector("label#termNumberLabel")!
+const graph = document.querySelector("output#graph")!
 const resultOutput = document.querySelector("output#result")!
 
 // functionality
