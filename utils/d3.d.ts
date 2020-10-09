@@ -7124,6 +7124,47 @@ export function polygonLength(polygon: Array<[number, number]>): number;
 // Last module patch version validated against: 2.0.0
 
 /**
+ * Create an empty selection.
+ */
+export function selectAll(): Selection<null, undefined, null, undefined>;
+/**
+ * Create an empty selection.
+ */
+export function selectAll(selector: null): Selection<null, undefined, null, undefined>;
+/**
+ * Create an empty selection.
+ */
+export function selectAll(selector: undefined): Selection<null, undefined, null, undefined>;
+/**
+ * Select all elements that match the specified selector string. The elements will be selected in document order (top-to-bottom).
+ * If no elements in the document match the selector, returns an empty selection.
+ *
+ * The first generic "GElement" refers to the type of element to be selected. The second generic "OldDatum" refers to the type of the
+ * datum, of a selected element. This is useful when re-selecting elements with a previously set, know datum type.
+ *
+ * @param selector CSS selector string
+ */
+export function selectAll<GElement extends BaseType, OldDatum>(selector: string): Selection<GElement, OldDatum, HTMLElement, any>;
+/**
+ * Select the specified array of nodes.
+ *
+ * The first generic "GElement" refers to the type of element to be selected. The second generic "OldDatum" refers to the type of the
+ * datum, of a selected element. This is useful when re-selecting elements with a previously set, know datum type.
+ *
+ * @param nodes An Array of nodes
+ */
+export function selectAll<GElement extends BaseType, OldDatum>(nodes: GElement[]): Selection<GElement, OldDatum, null, undefined>;
+/**
+ * Select the specified nodes. This signature allows the selection of nodes contained in a NodeList, HTMLCollection or similar data structure.
+ *
+ * The first generic "GElement" refers to the type of element to be selected. The second generic "OldDatum" refers to the type of the
+ * datum, of a selected element. This is useful when re-selecting elements with a previously set, know datum type.
+ *
+ * @param nodes An Array-like collection of nodes
+ */
+export function selectAll<GElement extends BaseType, OldDatum>(nodes: ArrayLike<GElement>): Selection<GElement, OldDatum, null, undefined>;
+
+/**
  * Extend interface 'Selection' by declaration merging with 'd3-selection'
  */
 interface Selection<GElement extends BaseType, Datum, PElement extends BaseType, PDatum> {
