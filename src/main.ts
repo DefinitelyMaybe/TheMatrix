@@ -2,8 +2,6 @@
 // graph library
 import * as c3 from "./libs/c3.js";
 
-console.log(c3);
-
 // variables used in calculation
 let yearlyInterestRate = 0.0
 let initialAmount = 0.0
@@ -22,7 +20,15 @@ const extraContributionsInput = document.querySelector("input#extraContributions
 const extraAmountInput = document.querySelector("input#extraAmount")! as HTMLInputElement
 const totalYearsInput = document.querySelector("input#term")! as HTMLInputElement
 const totalYearsInputNumber = document.querySelector("label#termNumberLabel")!
-const graph = document.querySelector("output#graph")!
+const graph = c3.generate({
+  bindto: 'output#graph',
+  data: {
+    columns: [
+      ['data1', 30, 200, 100, 400, 150, 250],
+      ['data2', 50, 20, 10, 40, 15, 25]
+    ]
+  }
+})
 const resultOutput = document.querySelector("output#result")!
 
 // functionality
