@@ -1,6 +1,7 @@
 // graph library
 import * as d3 from "https://deno.land/x/d3_4_deno@v6.2.0.1/src/mod.js";
 // https://observablehq.com/@d3/line-chart
+// https://www.d3-graph-gallery.com/graph/line_basic.html
 
 console.log(d3);
 
