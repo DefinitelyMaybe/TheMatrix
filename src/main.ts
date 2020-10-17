@@ -4,7 +4,6 @@ import * as d3 from "https://deno.land/x/d3_4_deno@v6.2.0.1/src/d3-array/mod.js"
 // https://observablehq.com/@d3/line-chart
 console.log(d3);
 
-const html = `<p></p>`
 // variables used in calculation
 let yearlyInterestRate = 0.0
 let initialAmount = 0.0
