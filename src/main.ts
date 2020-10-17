@@ -1,6 +1,6 @@
 /// <reference lib="dom" />
 // graph library
-import * as abc from "./libs/c3.js";
+import * as abc from "https://deno.land/x/c3_4_deno@v0.7.20.1/src/mod.js";
 
 const c3 = abc.default
 
