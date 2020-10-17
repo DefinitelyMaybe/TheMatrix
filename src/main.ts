@@ -1,9 +1,10 @@
 /// <reference lib="dom" />
 // graph library
-import * as abc from "https://deno.land/x/c3_4_deno@v0.7.20.1/src/mod.js";
+import * as d3 from "https://deno.land/x/d3_4_deno@v6.2.0.1/src/d3-array/mod.js";
+// https://observablehq.com/@d3/line-chart
+console.log(d3);
 
-const c3 = abc.default
-
+const html = `<p></p>`
 // variables used in calculation
 let yearlyInterestRate = 0.0
 let initialAmount = 0.0
@@ -22,15 +23,15 @@ const extraContributionsInput = document.querySelector("input#extraContributions
 const extraAmountInput = document.querySelector("input#extraAmount")! as HTMLInputElement
 const totalYearsInput = document.querySelector("input#term")! as HTMLInputElement
 const totalYearsInputNumber = document.querySelector("label#termNumberLabel")!
-const graph = c3.generate({
-  bindto: 'output#graph',
-  data: {
-    columns: [
-      ['data1', 30, 200, 100, 400, 150, 250],
-      ['data2', 50, 20, 10, 40, 15, 25]
-    ]
-  }
-})
+// const graph = c3.generate({
+//   bindto: 'output#graph',
+//   data: {
+//     columns: [
+//       ['data1', 30, 200, 100, 400, 150, 250],
+//       ['data2', 50, 20, 10, 40, 15, 25]
+//     ]
+//   }
+// })
 const resultOutput = document.querySelector("output#result")!
 
 // functionality
