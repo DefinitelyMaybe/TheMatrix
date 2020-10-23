@@ -15,10 +15,43 @@ var svg = d3.select("output#graph")
   .append("g")
   .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
-const data = d3.csv(
+d3.csv(
   "https://raw.githubusercontent.com/holtzy/data_to_viz/master/Example_dataset/3_TwoNumOrdered_comma.csv",
-);
-console.log(data);
+)
+  .then((data) => {
+    const minDate = data[0].date;
+    const maxDate = data[data.length - 1].date;
+    // Add X axis --> it is a date format
+    var x = d3.scaleTime([minDate, maxDate]);
+    svg.append("g")
+      .attr("transform", "translate(0," + height + ")")
+
+    const valueIter = {
+      *[Symbol.iterator](d:any) {
+        for (let i = 0; i < d.length; i++) {
+          yield d[i];
+        }
+      }
+    }
+    // const maxValue = d3.max(data)
+    // Add Y axis
+    var y = d3.scaleLinear()
+      .domain([
+        0,
+        100,
+      ])
+      .range([height, 0]);
+    svg.append("g")
+      .call(d3.axisLeft(y));
+
+    // Add the line
+    svg.append("path")
+      .datum(data)
+      .attr("fill", "none")
+      .attr("stroke", "steelblue")
+      .attr("stroke-width", 1.5)
+  });
+
 //Read the data
 // d3.csv(
 //   ,
@@ -30,43 +63,6 @@ console.log(data);
 //   // Now I can use this dataset:
 //   function (data) {
 //     console.log(data);
-//     // Add X axis --> it is a date format
-//     var x = d3.scaleTime()
-//       .domain(d3.extent(data, function (d) {
-//         return d.date;
-//       }))
-//       .range([0, width]);
-//     svg.append("g")
-//       .attr("transform", "translate(0," + height + ")")
-//       .call(d3.axisBottom(x));
 
-//     // Add Y axis
-//     var y = d3.scaleLinear()
-//       .domain([
-//         0,
-//         d3.max(data, function (d) {
-//           return +d.value;
-//         }),
-//       ])
-//       .range([height, 0]);
-//     svg.append("g")
-//       .call(d3.axisLeft(y));
-
-//     // Add the line
-//     svg.append("path")
-//       .datum(data)
-//       .attr("fill", "none")
-//       .attr("stroke", "steelblue")
-//       .attr("stroke-width", 1.5)
-//       .attr(
-//         "d",
-//         d3.line()
-//           .x(function (d) {
-//             return x(d.date);
-//           })
-//           .y(function (d) {
-//             return y(d.value);
-//           }),
-//       );
 //   },
 // );
