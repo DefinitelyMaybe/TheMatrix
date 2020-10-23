@@ -1,6 +1,7 @@
 /// <reference lib="dom" />
 
 import "./lineChart.ts";
+
 // variables used in calculation
 let yearlyInterestRate = 0.0;
 let initialAmount = 0.0;
